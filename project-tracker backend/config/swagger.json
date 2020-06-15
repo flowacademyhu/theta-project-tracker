@@ -1,0 +1,28 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Express Typescript Skeleton",
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Hello World",
+        "operationId": "helloWorld",
+        "responses": {
+          "200": {
+            "description": "Return with Hello World message"
+          }
+        }
+      }
+    }
+  }
+}

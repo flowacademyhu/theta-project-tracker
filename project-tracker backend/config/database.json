@@ -1,0 +1,18 @@
+{
+  "development": {
+    "client": "mysql",
+    "connection": {
+      "host": "express-typescript-skeleton-db",
+      "user": "root",
+      "password": "toor",
+      "database": "database"
+    },
+    "migrations": {
+      "tableName": "migrations",
+      "directory": "../migrations"
+    },
+    "seeds": {
+      "directory": "../seeds"
+    }
+  }
+}
