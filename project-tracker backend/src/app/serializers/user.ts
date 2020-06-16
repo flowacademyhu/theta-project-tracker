@@ -1,3 +1,5 @@
+import {User} from "../models/user";
+
 export interface UserSerializer {
     firstName: string,
     lastName: string,
@@ -12,6 +14,6 @@ export const show = (user): UserSerializer => {
     }
 };
 
-export const index = (users: Array<any>): Array<UserSerializer> => {
-    return users.map((user: any) => show(user));
+export const index = (users: Array<User>): Array<UserSerializer> => {
+    return users.map((user: User) => show(user));
 }
