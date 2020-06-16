@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Express Typescript Skeleton",
+    "title": "Project Tracker",
   },
   "schemes": [
     "http"
