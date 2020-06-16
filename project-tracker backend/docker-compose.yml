@@ -1,0 +1,42 @@
+version: "2"
+services:
+  project-tracker-db:
+    container_name: project-tracker-db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: "database"
+      MYSQL_USER: "database"
+      MYSQL_PASSWORD: "toor"
+      MYSQL_ROOT_PASSWORD: "toor"
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    volumes:
+      - project-tracker-db-data:/var/lib/mysql
+    networks:
+      inner:
+        aliases:
+          - project-tracker-db
+  project-tracker:
+    container_name: project-tracker
+    build:
+      context: ./
+      dockerfile: Dockerfile.development
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - project-tracker-db
+    volumes:
+      - "./:/usr/src/app"
+      - "~/.ssh:/root/.ssh"
+    networks:
+      inner:
+        aliases:
+          - project-tracker
+networks:
+  inner: {}
+volumes:
+  project-tracker-db-data: {}
