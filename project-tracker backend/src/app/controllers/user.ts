@@ -21,7 +21,6 @@ export const index = async (req: Request, res: Response) => {
 export const show = async (req: Request, res: Response) => {
   try {
     const user: User = await database(TableNames.users).select().where({ id: req.params.id }).first();
-    console.log(user);
     if (typeof user !== 'undefined') {
       res.json(userSerializer.show(user));
     } else {
@@ -36,7 +35,6 @@ export const show = async (req: Request, res: Response) => {
 export const create = async (req: Request, res: Response) => {
   try {
     const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
-    console.log('REQ', req.body.password, 'HASH', encryptedPassword)
     const user: User = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
