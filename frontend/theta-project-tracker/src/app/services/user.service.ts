@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, asapScheduler, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { User, Role } from '../models/user.model'
 
 @Injectable({
@@ -7,7 +7,7 @@ import { User, Role } from '../models/user.model'
 })
 export class UserService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   public users: User[] = [{
     id: 1,
