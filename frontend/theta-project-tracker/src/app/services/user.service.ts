@@ -49,7 +49,3 @@ export class UserService {
     return this.http.delete<>(`/$(id)`)
   } 
 }
-
-
-
-
