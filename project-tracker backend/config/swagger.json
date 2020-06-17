@@ -90,7 +90,7 @@
         ],
         "responses": {
           "200": {
-            "description": "all users",
+            "description": "All users",
             "schema": {
               "type": "array",
               "items": {
@@ -175,6 +175,126 @@
           }
         }
       }
+    },
+    "/client": {
+      "post": {
+        "summary": "Create new client",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ClientCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Client created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all clients",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All clients",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ClientResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/{id}": {
+      "get": {
+        "summary": "Get client by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific client object",
+            "schema": {
+              "$ref": "#definitions/ClientResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update client by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ClientCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete client by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -232,7 +352,7 @@
         }
       }
     },
-    "Client": {
+    "ClientCreate": {
       "type": "object",
       "properties": {
         "name": {
@@ -246,6 +366,20 @@
         "name",
         "description"
       ]
+    },
+    "ClientResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
     }
   }
 }
