@@ -2,7 +2,7 @@ import { Client } from "../models/client";
 import { database } from "../../lib/database";
 import { Request, Response } from "express";
 import { QueryBuilder } from "knex";
-import { TableNames } from "../../lib/table_names";
+import { TableNames } from "../../lib/tableNames";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.clients).select();
