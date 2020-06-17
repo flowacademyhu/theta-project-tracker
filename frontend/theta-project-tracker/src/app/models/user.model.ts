@@ -8,12 +8,10 @@ export interface User {
   userCostToCompanyPerHour: number;
   projectAssigned: ProjectAssigned
 }
-
 export interface ProjectAssigned {
   projectName: String,
   userCostPerHour : number
 }
-
 export enum Role {
   USER = 'USER',
   ADMIN = 'ADMIN'
