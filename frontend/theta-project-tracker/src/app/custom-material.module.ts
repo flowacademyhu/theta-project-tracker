@@ -16,10 +16,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatSidenavModule} from '@angular/material/sidenav';
+
 
 @NgModule({
   declarations: [],
@@ -30,7 +31,6 @@ import { MatRadioModule } from '@angular/material/radio';
     MatTableModule, MatToolbarModule, MatIconModule, MatTabsModule, MatExpansionModule,
     MatGridListModule, MatRadioModule, MatSelectModule,
     MatProgressSpinnerModule, MatSnackBarModule, MatDialogModule,
-    MatMenuModule, MatDividerModule, MatSlideToggleModule, MatListModule,
-    ],
+    MatMenuModule, MatDividerModule, MatSlideToggleModule, MatListModule, MatSidenavModule],
 })
 export class CustomMaterialModule { }
