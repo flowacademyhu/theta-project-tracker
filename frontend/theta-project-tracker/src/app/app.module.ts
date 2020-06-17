@@ -1,3 +1,5 @@
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { CustomMaterialModule } from './custom-material.module';
 import { ReportsComponent } from './components/reports.component';
 import { LoginComponent } from './components/login.component';
@@ -13,6 +15,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar.component';
 
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { HighlightDirective } from './directives/highlite.directive';
+
 
 
 @NgModule({
@@ -23,7 +28,8 @@ import { CalendarComponent } from './components/calendar.component';
     TimesheetComponent,
     HeaderComponent,
     LoginComponent,
-    ReportsComponent
+    ReportsComponent,
+    HighlightDirective,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +37,10 @@ import { CalendarComponent } from './components/calendar.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    CustomMaterialModule
+    CustomMaterialModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

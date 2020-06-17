@@ -19,7 +19,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatSidenavModule} from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -31,6 +30,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatTableModule, MatToolbarModule, MatIconModule, MatTabsModule, MatExpansionModule,
     MatGridListModule, MatRadioModule, MatSelectModule,
     MatProgressSpinnerModule, MatSnackBarModule, MatDialogModule,
-    MatMenuModule, MatDividerModule, MatSlideToggleModule, MatListModule, MatSidenavModule],
+    MatMenuModule, MatDividerModule, MatSlideToggleModule, MatListModule],
 })
 export class CustomMaterialModule { }

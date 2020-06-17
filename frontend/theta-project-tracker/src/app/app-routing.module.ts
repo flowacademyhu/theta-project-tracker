@@ -1,3 +1,4 @@
+import { AppComponent } from './app.component';
 import { ReportsComponent } from './components/reports.component';
 import { UsersComponent } from './components/users.component';
 import { NgModule } from '@angular/core';
@@ -9,8 +10,7 @@ import { CalendarComponent } from './components/calendar.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    component: AppComponent
   },
   {
     path: 'login',
