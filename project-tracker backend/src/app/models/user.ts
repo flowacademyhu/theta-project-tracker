@@ -9,5 +9,5 @@ export interface User {
     password?: string;
     costToCompanyPerHour: number;
     createdAt?: string;
-    updatedAt?: string;   
-  }
+    updatedAt?: string;
+}
