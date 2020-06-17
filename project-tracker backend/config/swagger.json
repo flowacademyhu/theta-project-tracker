@@ -48,18 +48,7 @@
                   "type": "string"
                 },
                 "user": {
-                  "type": "object",
-                  "properties": {
-                    "firstName": {
-                      "type": "string"
-                    },
-                    "lastName": {
-                      "type": "string"
-                    },
-                    "fullName": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#definitions/UserResponse"
                 }
               }
             }
@@ -72,47 +61,191 @@
         "summary": "Create new user",
         "parameters": [
           {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "type": "string"
-                },
-                "lastName": {
-                  "type": "string"
-                },
-                "role": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
-                },
-                "costToCompanyPerHour": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "firstName",
-                "lastName",
-                "role",
-                "email",
-                "password",
-                "costToCompanyPerHour"
-              ]
+              "$ref": "#definitions/UserCreate"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": ""
+            "description": "User created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all users",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/UserResponse"
+              }
+            }
           }
         }
       }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific user object",
+            "schema": {
+              "$ref": "#definitions/UserResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/UserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserCreate": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "costToCompanyPerHour": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "role",
+        "email",
+        "password",
+        "costToCompanyPerHour"
+      ]
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "costToCompanyPerHour": {
+          "type": "number"
+        }
+      }
+    },
+    "Client": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "description"
+      ]
     }
   }
 }
