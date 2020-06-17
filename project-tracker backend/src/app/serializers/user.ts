@@ -1,16 +1,25 @@
-import {User} from "../models/user";
+import { User } from "../models/user";
+import { Roles } from "../../lib/roles";
 
 export interface UserSerializer {
-    firstName: string,
-    lastName: string,
-    fullName: string
+    id?: number;
+    firstName: string;
+    lastName: string;
+    role: Roles;
+    costToCompanyPerHour: number;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export const show = (user): UserSerializer => {
     return {
+        id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        fullName: `${user.firstName} ${user.lastName}`
+        role: user.role,
+        costToCompanyPerHour: user.costToCompanyPerHour,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
     }
 };
 
