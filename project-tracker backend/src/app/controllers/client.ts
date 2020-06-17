@@ -1,8 +1,6 @@
 import { Client } from "../models/client";
 import { database } from "../../lib/database";
 import { Request, Response } from "express";
-import * as clientSerializer from '../serializers/client';
-import * as bcrypt from 'bcrypt';
 import { QueryBuilder } from "knex";
 import { TableNames } from "../../lib/table_names";
 
@@ -15,14 +13,14 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const clients: Array<Client> = await query;
-  res.json(clientSerializer.index(clients));
+  res.json(clients);
 };
 
 export const show = async (req: Request, res: Response) => {
   try {
     const client: Client = await database(TableNames.clients).select().where({ id: req.params.id }).first();
     if (typeof client !== 'undefined') {
-      res.json(clientSerializer.show(client));
+      res.json(client);
     } else {
       res.sendStatus(404);
     }
