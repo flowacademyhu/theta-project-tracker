@@ -2,6 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Project Tracker",
+    "version": "1.0.0"
   },
   "schemes": [
     "http"
@@ -13,13 +14,102 @@
     "application/json"
   ],
   "paths": {
-    "/": {
-      "get": {
-        "summary": "Hello World",
-        "operationId": "helloWorld",
+    "/login": {
+      "post": {
+        "summary": "Login with user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Return with Hello World message"
+            "description": "Token and user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "fullName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "summary": "Create new user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "costToCompanyPerHour": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "role",
+                "email",
+                "password",
+                "costToCompanyPerHour"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
           }
         }
       }
