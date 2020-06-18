@@ -43,5 +43,4 @@ export class ProjectService {
     this.projects.splice(this.projects.findIndex(u=> u.id === id), 1);
     return this.projects$.next([...this.projects]);
   }
-
 }

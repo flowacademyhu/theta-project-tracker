@@ -146,14 +146,4 @@ export class NewUserComponent implements OnInit {
     this.newUser.get('project').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
   }
- 
-
-
-
-
-
-
-
-
 }
-
