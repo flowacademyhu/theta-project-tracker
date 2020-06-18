@@ -5,11 +5,9 @@ import { Component, OnInit } from '@angular/core';
   template: ``,
   styles: [``]
 })
+
 export class TimesheetComponent implements OnInit {
-
   constructor() { }
-
   ngOnInit(): void {
   }
-
 }
