@@ -10,7 +10,7 @@ import { CalendarComponent } from './components/calendar.component';
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent
+    component: LoginComponent
   },
   {
     path: 'login',

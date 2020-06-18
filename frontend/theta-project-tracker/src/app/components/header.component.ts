@@ -26,13 +26,19 @@ import { AuthService } from '../services/auth.service';
         <button mat-raised-button color="primary" routerLink='/clients' routerLinkActive='router-link-active' appHighlight>Clients</button>
         </span>
         <span id="spanTwo">
-        <p>Loged in as:</p>
+          <p>Loged in as:</p>
         <button mat-raised-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighlight>Logout</button>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
     `,
   styles: [`
+  span p {
+    display: flex;
+    margin: inherit;
+    align-items: center;
+  }
+
   img {
   line-height: 1.5;
   font-family: inherit;
@@ -89,6 +95,8 @@ import { AuthService } from '../services/auth.service';
   .mat-toolbar.mat-primary {
   background: #222;
   color: #f0ead6;
+  font: 18px  Roboto, "Helvetica Neue", 'Aerial';
+  font-size: 20;
   }`],
 
 })
