@@ -12,30 +12,30 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewUser()" mat-raised-button>+ Add New User</button>
+    <button (click)="onAddNewUser()" mat-raised-button>{{'Add user' | translate}}</button>
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="firstName">
-                <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{ 'Firstname' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="lastName">
-            <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>{{'Lastname' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
         </ng-container>
             <ng-container matColumnDef="role">
-                <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'Role' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.role }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="cost">
-                <mat-header-cell *matHeaderCellDef>Cost (£/h)</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'Cost' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.userCostToCompanyPerHour }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="projects" >
-                <mat-header-cell *matHeaderCellDef>Projects</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'Projects' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user" > <p *ngFor="let project of user.projectAssigned">{{ project.projectName }}</p></mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions" class="actions">
-                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'Actions' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">
                     <mat-icon>edit</mat-icon>
                     <mat-icon (click)="onOpenDeleteModal(user)">clear</mat-icon>
