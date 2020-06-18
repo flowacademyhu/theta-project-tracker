@@ -37,8 +37,8 @@ import { UserService } from '../services/user.service';
     <div>
         <mat-form-field>
             <mat-select formControlName="role">
-                <mat-option value="USER">User</mat-option>
-                <mat-option value="ADMIN">Admin</mat-option>
+                <mat-option value="user">User</mat-option>
+                <mat-option value="admin">Admin</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -111,7 +111,15 @@ export class NewUserComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  newUser: FormGroup;
+  newUser = new FormGroup({
+    firstName: new FormControl(null, Validators.required),
+    lastName: new FormControl(null, Validators.required),
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    cost: new FormControl(null, [Validators.required, Validators.min(0)]),
+    role: new FormControl(null, Validators.required),
+    project: new FormControl(null, Validators.required),
+    costToClient: new FormControl(null, Validators.required),
+  })
   availableProjects = ['Project0', 'Project1', 'Project2', 'Project3'];
   assignedProjects: ProjectAssigned[] = [];
   createdUser: User;
@@ -120,25 +128,11 @@ export class NewUserComponent implements OnInit {
   ngOnInit(): void {
     if (this.userToEdit) {
       this.assignedProjects = this.userToEdit.projectAssigned;
-      this.newUser = new FormGroup({
-        firstName: new FormControl(this.userToEdit.firstName, [Validators.required]),
-        lastName: new FormControl(this.userToEdit.lastName, [Validators.required]),
-        email: new FormControl(this.userToEdit.email, [Validators.required, Validators.email]),
-        cost: new FormControl(this.userToEdit.costToCompanyPerHour, [Validators.required, Validators.min(0)]),
-        role: new FormControl(this.userToEdit.role.valueOf(), [Validators.required]),
-        project: new FormControl(this.assignedProjects.map(p => p.projectName)),
-        costToClient: new FormControl(this.assignedProjects.map(p => p.userCostPerHour)),
-      })
-    } else {
-      this.newUser = new FormGroup({
-        firstName: new FormControl(null, [Validators.required]),
-        lastName: new FormControl(null, [Validators.required]),
-        email: new FormControl(null, [Validators.required, Validators.email]),
-        cost: new FormControl(null, [Validators.required, Validators.min(0)]),
-        role: new FormControl(null, [Validators.required]),
-        project: new FormControl(null),
-        costToClient: new FormControl(null),
-      })
+      this.newUser.get('firstName').patchValue(this.userToEdit.firstName);
+      this.newUser.get('lastName').patchValue(this.userToEdit.lastName);
+      this.newUser.get('email').patchValue(this.userToEdit.email);
+      this.newUser.get('cost').patchValue(this.userToEdit.costToCompanyPerHour);
+      this.newUser.get('role').patchValue(this.userToEdit.role);
     }
   }
   onAddNewUser() {
@@ -177,7 +171,7 @@ export class NewUserComponent implements OnInit {
   assignProjectsToUser() {
     this.assignedProjects.push({
       projectName: this.newUser.get('project').value,
-      userCostPerHour: this.newUser.get('costToClient').value
+      costToClientPerHour: this.newUser.get('costToClient').value
     });
   }
   onCloseDialog() {
