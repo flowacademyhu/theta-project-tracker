@@ -1,0 +1,20 @@
+{
+  "Add user": "+ Add New User",
+  "Firstname": "First Name",
+  "Lastname": "Last Name",
+  "Role": "Role",
+  "Cost": "Cost (£/h)",
+  "Projects": "Projects",
+  "Actions": "Actions",
+  "Email": "E-mail",
+  "User": "User",
+  "Admin": "Admin",
+  "ProjectsAssigned": "Project(s) Assigned",
+  "ProjectNAme": "Project Name",
+  "CostToClient": "Cost to Client (£/h)",
+  "Unassign": "Unassign",
+  "Add": "Add New",
+  "Cancel": "Cancel",
+  "Save": "Save"
+}
+
