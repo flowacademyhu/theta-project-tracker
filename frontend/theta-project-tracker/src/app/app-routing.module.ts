@@ -1,45 +1,11 @@
-import { ReportsComponent } from './components/reports.component';
-import { NewUserComponent } from './components/new-user.component';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login.component';
-import { TimesheetComponent } from './components/timesheet.component';
-import { CalendarComponent } from './components/calendar.component';
+import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'users',
-    component:  NewUserComponent
-  },
-  {
-    path: 'timesheet',
-    component: TimesheetComponent,
-  },
-  {
-    path: 'reports',
-    component: ReportsComponent,
-  },
-  {
-    path: 'calendar',
-    component: CalendarComponent,
-  },
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
-];
+
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
