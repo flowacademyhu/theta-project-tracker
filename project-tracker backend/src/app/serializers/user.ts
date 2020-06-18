@@ -1,16 +1,22 @@
 import {User} from "../models/user";
 
 export interface UserSerializer {
+    id: number,
     firstName: string,
     lastName: string,
-    fullName: string
+    role: string,
+    email: string,
+    costToCompanyPerHour: number
 }
 
 export const show = (user): UserSerializer => {
     return {
+        id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        fullName: `${user.firstName} ${user.lastName}`
+        role: user.role,
+        email: user.email,
+        costToCompanyPerHour: user.costToCompanyPerHour
     }
 };
 
