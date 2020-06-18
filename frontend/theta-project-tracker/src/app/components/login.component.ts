@@ -1,3 +1,4 @@
+import { User } from './../models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -5,40 +6,39 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@ang
 
 @Component({
   selector: 'app-login',
-  template: ``,
-//     <div class="panel panel-default">
-//       <div class="form-group">
-//         <label for="email">Email</label>
-//         <input
-//           type="text"
-//           id="email"
-//           class="form-control"
-//           [(ngModel)]="email"
-//         />
-//       </div>
-//       <div class="form-group">
-//         <label for="password">Password</label>
-//         <input
-//           type="text"
-//           class="form-control"
-//           id="password"
-//           [(ngModel)]="password"
-//         />
-//       </div>
-//       <button class="btn btn-primary" type="submit" (click)="onLogin()">
-//         Login
-//       </button>
-//     </div>
-//   `,
-//     <mat-form-field>
-//       <input matInput type="password" placeholder="Password" formControlName="password">
-//     </mat-form-field>
-
-//     <button [disabled]="!loginForm.valid" mat-raised-button color="primary" mat-button>Sign In</button>
-//   </div>
-// </form>
-
-
+  template: `
+  <!-- <form>
+   <mat-form-field>
+      <input matInput type="password" placeholder="Password" formControlName="password">
+    </mat-form-field>
+    <button [disabled]="!loginForm.valid" mat-raised-button color="primary" mat-button>Sign In</button>
+</form> -->
+<form [formGroup]="loginForm">
+    <div class="panel panel-default">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          class="form-control"
+          formControlName="email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="text"
+          class="form-control"
+          id="password"
+          formControlName="password"
+        />
+      </div>
+      <button class="btn btn-primary" type="submit" (click)="onLogin()">
+        Login
+      </button>
+    </div>
+  </form>
+  `,
   styles: [
     `
       .panel {
@@ -66,21 +66,27 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@ang
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  email: string;
-  password: string;
+  user: User;
+
 
   constructor(private authService: AuthService, private router: Router) {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required])
+  }
+  ngOnInit(): void {
+    this.authService.loggedInUser.subscribe(u => {
+      this.user = u;
     });
+    this.loginForm = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required])
+    });
+
   }
 
-  ngOnInit(): void { }
-
   public onLogin() {
+    console.log(this.user);
+    console.log(this.loginForm.get("email").value);
     this.authService
-      .login(this.email)
+      .login(this.loginForm.get('email').value)
       .then(() => {
         this.router.navigate(['timesheet']);
       })

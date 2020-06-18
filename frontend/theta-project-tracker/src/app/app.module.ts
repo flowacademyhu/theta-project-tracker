@@ -1,3 +1,4 @@
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CustomMaterialModule } from './custom-material.module';
@@ -41,6 +42,7 @@ import { HighlightDirective } from './directives/highlite.directive';
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

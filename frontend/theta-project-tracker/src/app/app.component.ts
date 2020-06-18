@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
   template: `
       <app-header></app-header>
       <main>
+        <router-outlet></router-outlet>
       </main>`,
   styles: [``],
 

@@ -13,7 +13,6 @@ export class HighlightDirective {
 
   @HostListener('mouseenter') public mouseEnter() {
     this.boxShadow = '3px 3px 4px rgba(0, 0, 0, .5)';
-    this.background = '	#00008B';
 
   }
 

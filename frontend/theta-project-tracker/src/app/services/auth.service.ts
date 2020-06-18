@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Role, User } from '../models/user.model';
 
@@ -21,18 +22,16 @@ export class AuthService {
       userCostToCompanyPerHour: 2,
       projectAssigned: { projectName: 'Voodoo', userCostPerHour: 2 } },
   ];
-  private loggedInUser: User;
+  public loggedInUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
   public login(email: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      setTimeout(() => {
         const user = this.users.find(u => u.email === email);
         if (user) {
-          this.loggedInUser = user;
+          this.loggedInUser.next(user);
           resolve(true);
         }
         reject(false);
-      }, 500);
     });
   }
 
@@ -41,13 +40,13 @@ export class AuthService {
   }
 
   public authenticate(): User {
-    return this.loggedInUser;
+    return this.loggedInUser.getValue();
   }
 
   public authenticateAsync(): Promise<User> {
     return new Promise<User>((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.loggedInUser);
+        resolve(this.loggedInUser.getValue());
       }, 100);
     });
   }

@@ -1,3 +1,4 @@
+import { LoginComponent } from './login.component';
 import { User } from './../models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -8,36 +9,58 @@ import { AuthService } from '../services/auth.service';
   template: `
     <mat-toolbar color="primary" role="heading">
       <mat-toolbar-row>
-        <span [routerLink]="['/timesheet']" routerLinkActive="router-link-active" >
-        <button mat-raised-button color="primary">Timesheet</button>
-    </span>
-        <span [routerLink]="['/users']" routerLinkActive="router-link-active" id="User" >User</span>
+        <span id="spanOne">
+        <button mat-raised-button color="primary" routerLink='/timesheet' routerLinkActive='router-link-active' appHighlight>Timesheet</button>
+
+        <button mat-raised-button color="primary" routerLink='/user' routerLinkActive='router-link-active' appHighlight>User</button>
+        <button mat-raised-button color="primary" routerLink='/reports' routerLinkActive='router-link-active' appHighlight>Reports</button>
+        <button mat-raised-button color="primary" routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Calendar</button>
+        <button mat-raised-button color="primary" routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Projects</button>
+        <button mat-raised-button color="primary" routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Milestones</button>
+        <button mat-raised-button color="primary" routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Clients</button>
+        </span>
+        <span id="spanTwo">
+        <p>Loged in as:</p>
+        <button mat-raised-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighlight>Logout</button>
+        </span>
+
+        <!-- <span [routerLink]="['/users']" routerLinkActive="router-link-active" id="User" >User</span>
         <span [routerLink]="['/reports']" routerLinkActive="router-link-active" id="Reports">Reports</span>
-        <span [routerLink]="['/calendar']" routerLinkActive="router-link-active" id="Calendar">Calendar</span>
-        <span></span>
-        <span></span>
-        <span [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut">Log Out</span>
+        <span [routerLink]="['/calendar']" routerLinkActive="router-link-active" id="Calendar">Calendar</span> -->
+
       </mat-toolbar-row>
     </mat-toolbar>
     `,
   styles: [`
+  mat-mat-toolbar-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  span {
+    display: flex;
+    flex:1 1 auto;
+    flex-wrap: nowrap
+  }
+  #spanTwo {
+    display: flex;
+    justify-content: flex-end;
+  }
+
 
   button {
   display: flex;
-  justify-content: center;
   font-size: large;
-  background: #007bff;
+  background: transparent;
+  border: transparent;
   }
   #User #Reports #Calendar {
     display: flex;
-    flex: 2 6 auto;
-    justify-content: flex-start, space-evenly;
+    justify-content: flex-start
 
   }
   #logOut {
-    display: flex;
-    flex: 2 6 auto;
-    justify-content: flex-end, space-evenly;
+    align-items: center;
   }
   .mat-toolbar.mat-primary {
   background: #007bff;
@@ -49,7 +72,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    LoginComponent.user.value();
+  }
 
 
 

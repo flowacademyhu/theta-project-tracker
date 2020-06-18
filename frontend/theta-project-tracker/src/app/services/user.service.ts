@@ -7,7 +7,7 @@ import { User, Role } from '../models/user.model'
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  constructor() { };
 
   public users: User[] = [{
     id: 1,
@@ -31,7 +31,7 @@ export class UserService {
   }
   ]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
-  
+
   public fetchUsers (): User[] {
     return this.users
   }
