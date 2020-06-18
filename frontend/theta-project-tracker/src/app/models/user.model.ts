@@ -1,12 +1,12 @@
 export interface User {
-  id: number;
+  id?: number;
   firstName: String;
   lastName: String;
   role: Role;
   email: String;
-  password: String;
+  password?: String;
   userCostToCompanyPerHour: number;
-  projectAssigned: ProjectAssigned
+  projectAssigned: ProjectAssigned[]
 }
 export interface ProjectAssigned {
   projectName: String,

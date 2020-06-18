@@ -163,7 +163,6 @@ export class NewUserComponent implements OnInit {
     this.newUser.get('costToClient').patchValue(null);
   }
   editUser() {
-    /* this.assignProjectsToUser(); */
     this.userToEdit = {
       id: this.userToEdit.id,
       firstName: this.newUser.getRawValue().firstName,
@@ -183,7 +182,6 @@ export class NewUserComponent implements OnInit {
   }
   onCloseDialog() {
     if (this.userToEdit) {
-      console.log(this.userToEdit)
       this.editUser();
     } else {
       this.onAddNewUser()
