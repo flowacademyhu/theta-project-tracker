@@ -19,7 +19,9 @@ import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { NewUserComponent } from '../app/components/new-user.component';
 import { UsersComponent } from '../app/components/users.component';
-
+import { ClientsComponent } from './components/clients.component';
+import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
+import { NewClientComponent } from './components/new-client.component'
 
 @NgModule({
   declarations: [
@@ -28,8 +30,9 @@ import { UsersComponent } from '../app/components/users.component';
     NewUserComponent,
     UsersComponent,
     DeleteModalComponent,
-    
-
+    ClientsComponent,
+    NewClientModalComponent,
+    NewClientComponent
   ],
   imports: [
     BrowserModule,

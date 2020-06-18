@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { User, Role } from '../models/user.model';
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class UserService {
     email: 'asd@asd.com',
     password: 'asdasd',
     costToCompanyPerHour: 50,
-    projectAssigned: [{projectName: 'xy', userCostPerHour: 50}]
+    projectAssigned: [{projectName: 'xy', costToClientPerHour: 50}]
   },
   {
     id: 2,
@@ -28,7 +27,7 @@ export class UserService {
     email: 'asdasd@asd.com',
     password: 'asdasdasd',
     costToCompanyPerHour: 70,
-    projectAssigned: [{projectName: 'xyz', userCostPerHour: 70}]
+    projectAssigned: [{projectName: 'xyz', costToClientPerHour: 70}]
   }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
   

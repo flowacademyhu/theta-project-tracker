@@ -9,10 +9,12 @@ export interface User {
   projectAssigned: ProjectAssigned[]
 }
 export interface ProjectAssigned {
-  projectName: String,
-  userCostPerHour : number
+  projectId?: number;
+  projectName?: String;
+  userId?: number;
+  costToClientPerHour : number
 }
 export enum Role {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
+  USER = 'user',
+  ADMIN = 'admin'
 }
