@@ -1,4 +1,3 @@
-import { ProjectUser } from "../models/projectUser";
 import { Project } from "../models/project";
 import { database } from "../../lib/database";
 import { Request, Response } from "express";
