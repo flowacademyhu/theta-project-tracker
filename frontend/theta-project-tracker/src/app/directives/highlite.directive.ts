@@ -4,7 +4,7 @@ import { Directive, HostBinding, HostListener } from '@angular/core';
   selector: '[appHighlight]'
 })
 export class HighlightDirective {
-  @HostBinding('style.boxShadow') public boxShadow = 'none';
+  @HostBinding('style.opacity') public fontColor = 'none';
 
   @HostBinding('style.background') public background = 'none';
 
@@ -12,12 +12,11 @@ export class HighlightDirective {
   constructor() {}
 
   @HostListener('mouseenter') public mouseEnter() {
-    this.boxShadow = '3px 3px 4px rgba(0, 0, 0, .5)';
+    this.fontColor = '0.4';
 
   }
 
   @HostListener('mouseleave') public mouseLeave() {
-    this.boxShadow = 'none';
-    this.background = 'none';
+    this.fontColor = '0.9';
   }
 }

@@ -18,6 +18,8 @@ import { CalendarComponent } from './components/calendar.component';
 
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { HighlightDirective } from './directives/highlite.directive';
+import { MilestonesComponent } from './components/milestones.component';
+import { ClientsComponent } from './components/clients.component';
 
 
 
@@ -31,6 +33,8 @@ import { HighlightDirective } from './directives/highlite.directive';
     LoginComponent,
     ReportsComponent,
     HighlightDirective,
+    MilestonesComponent,
+    ClientsComponent,
   ],
   imports: [
     BrowserModule,

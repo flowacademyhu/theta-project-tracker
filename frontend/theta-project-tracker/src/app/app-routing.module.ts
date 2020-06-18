@@ -33,6 +33,18 @@ const routes: Routes = [
     component: CalendarComponent,
   },
   {
+    path: 'projects',
+    component: CalendarComponent,
+  },
+  {
+    path: 'milestones',
+    component: CalendarComponent,
+  },
+  {
+    path: 'clients',
+    component: CalendarComponent,
+  },
+  {
     path: '**',
     redirectTo: 'login'
   }
