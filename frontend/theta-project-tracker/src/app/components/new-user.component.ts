@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
-
-
 @Component({
   selector: 'app-new-user',
   template: `
@@ -51,8 +49,8 @@ import { UserService } from '../services/user.service';
                 <th>Unassign</th>
             </tr>
             <tr *ngFor="let project of assignedProjects; let i = index">
-                <td> {{project.projectName}}</td>
-                <td>{{project.userCostPerHour}}</td>
+                <td>{{project.projectName}}</td>
+                <td>{{project.costToClientPerHour}}</td>
                 <td>
                     <mat-icon (click)="onDeleteProject(project)">clear</mat-icon>
                 </td>
