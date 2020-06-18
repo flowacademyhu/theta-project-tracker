@@ -1,3 +1,6 @@
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { NewUserComponent } from './components/new-user.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,7 +24,8 @@ import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
 
-
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -35,6 +39,7 @@ import { ClientsComponent } from './components/clients.component';
     HighlightDirective,
     MilestonesComponent,
     ClientsComponent,
+    NewUserComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,10 @@ import { ClientsComponent } from './components/clients.component';
     MatToolbarModule,
     MatIconModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatCardModule,
+    MatTableModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -28,34 +28,24 @@ export class UserService {
     password: 'asdasdasd',
     userCostToCompanyPerHour: 70,
     projectAssigned: {projectName: 'xyz', userCostPerHour: 70}
-  }
-  ]
+  }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
 
   public fetchUsers (): User[] {
     return this.users
   }
-
   public fetchUser(id: number) {
     return { ...this.users.find(user => user.id === id) };
   }
-
   public addUser(user: User) {
     user.id = this.users.length + 1;
     this.users.push(user);
   }
-
   public updateUser(id: number, user: User) {
     const index = this.users.findIndex(char => char.id === id);
     this.users[index] = user;
   }
-
   public deleteUser(id: number): Observable<User> {
     return this.http.delete<>(`/$(id)`)
-  }
-
+  } 
 }
-
-
-
-
