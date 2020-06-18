@@ -5,7 +5,7 @@ export interface User {
   role: Role;
   email: String;
   password?: String;
-  userCostToCompanyPerHour: number;
+  costToCompanyPerHour: number;
   projectAssigned: ProjectAssigned[]
 }
 export interface ProjectAssigned {

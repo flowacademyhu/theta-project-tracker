@@ -124,7 +124,7 @@ export class NewUserComponent implements OnInit {
         firstName: new FormControl(this.userToEdit.firstName, [Validators.required]),
         lastName: new FormControl(this.userToEdit.lastName, [Validators.required]),
         email: new FormControl(this.userToEdit.email, [Validators.required, Validators.email]),
-        cost: new FormControl(this.userToEdit.userCostToCompanyPerHour, [Validators.required, Validators.min(0)]),
+        cost: new FormControl(this.userToEdit.costToCompanyPerHour, [Validators.required, Validators.min(0)]),
         role: new FormControl(this.userToEdit.role.valueOf(), [Validators.required]),
         project: new FormControl(this.assignedProjects.map(p => p.projectName)),
         costToClient: new FormControl(this.assignedProjects.map(p => p.userCostPerHour)),
@@ -148,7 +148,7 @@ export class NewUserComponent implements OnInit {
       firstName: this.newUser.getRawValue().firstName,
       lastName: this.newUser.getRawValue().lastName,
       email: this.newUser.getRawValue().email,
-      userCostToCompanyPerHour: this.newUser.getRawValue().cost,
+      costToCompanyPerHour: this.newUser.getRawValue().cost,
       role: this.newUser.getRawValue().role,
       projectAssigned: this.assignedProjects
     };
@@ -168,7 +168,7 @@ export class NewUserComponent implements OnInit {
       firstName: this.newUser.getRawValue().firstName,
       lastName: this.newUser.getRawValue().lastName,
       email: this.newUser.getRawValue().email,
-      userCostToCompanyPerHour: this.newUser.getRawValue().cost,
+      costToCompanyPerHour: this.newUser.getRawValue().cost,
       role: this.newUser.getRawValue().role,
       projectAssigned: this.assignedProjects
     }
