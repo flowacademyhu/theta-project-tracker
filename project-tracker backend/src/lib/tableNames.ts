@@ -3,5 +3,7 @@ export enum TableNames {
     clients = 'clients',
     projects = 'projects',
     milestones = 'milestones',
-    projectUsers = 'projectUsers'
+    projectUsers = 'projectUsers',
+    actionLabels = 'actionLabels',
+    timeRecords = 'timeRecords'
 } 
