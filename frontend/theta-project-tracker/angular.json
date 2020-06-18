@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "theta-project-tracker"
+  "defaultProject": "theta-project-tracker",
+  "cli": {
+    "analytics": false
+  }
 }

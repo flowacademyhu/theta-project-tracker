@@ -1,0 +1,704 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Project Tracker",
+    "version": "1.0.0"
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login with user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token and user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "user": {
+                  "$ref": "#definitions/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "summary": "Create new user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/UserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All users",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/UserResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific user object",
+            "schema": {
+              "$ref": "#definitions/UserResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/UserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/client": {
+      "post": {
+        "summary": "Create new client",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ClientCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Client created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all clients",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All clients",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ClientResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/{id}": {
+      "get": {
+        "summary": "Get client by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific client object",
+            "schema": {
+              "$ref": "#definitions/ClientResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update client by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ClientCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete client by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/project": {
+      "post": {
+        "summary": "Create new project",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ProjectCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Project created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all projects",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All projects",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ProjectResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/{id}": {
+      "get": {
+        "summary": "Get project by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific project object",
+            "schema": {
+              "$ref": "#definitions/ProjectResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update project by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ProjectCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete project by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/milestone": {
+      "post": {
+        "summary": "Create new milestone",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/MilestoneCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Milestone created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all milestones",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All milestones",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/MilestoneResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/milestone/{id}": {
+      "get": {
+        "summary": "Get milestone by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific milestone object",
+            "schema": {
+              "$ref": "#definitions/MilestoneResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update milestone by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/MilestoneCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete milestone by id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserCreate": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "costToCompanyPerHour": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "role",
+        "email",
+        "password",
+        "costToCompanyPerHour"
+      ]
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "costToCompanyPerHour": {
+          "type": "number"
+        }
+      }
+    },
+    "ClientCreate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "description"
+      ]
+    },
+    "ClientResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "ProjectCreate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "budget": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "clientId",
+        "description",
+        "budget"
+      ]
+    },
+    "ProjectResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "budget": {
+          "type": "number"
+        }
+      }
+    },
+    "MilestoneCreate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "projectId",
+        "description"
+      ]
+    },
+    "MilestoneResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
