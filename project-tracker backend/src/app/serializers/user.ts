@@ -6,7 +6,9 @@ export interface UserSerializer {
     lastName: string,
     role: string,
     email: string,
-    costToCompanyPerHour: number
+    costToCompanyPerHour: number,
+    updatedAt: string,
+    createdAt: string
 }
 
 export const show = (user): UserSerializer => {
@@ -16,7 +18,9 @@ export const show = (user): UserSerializer => {
         lastName: user.lastName,
         role: user.role,
         email: user.email,
-        costToCompanyPerHour: user.costToCompanyPerHour
+        costToCompanyPerHour: user.costToCompanyPerHour,
+        updatedAt: user.updatedAt,
+        createdAt: user.createdAt
     }
 };
 

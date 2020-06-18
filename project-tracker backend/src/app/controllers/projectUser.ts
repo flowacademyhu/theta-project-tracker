@@ -3,7 +3,6 @@ import { database } from "../../lib/database";
 import { Request, Response } from "express";
 import { QueryBuilder } from "knex";
 import { TableNames } from "../../lib/enums";
-
 import { User } from "../models/user";
 import * as userSerializer from '../serializers/user'
 

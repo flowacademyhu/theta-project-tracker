@@ -5,7 +5,6 @@ import * as userSerializer from '../serializers/user';
 import * as bcrypt from 'bcrypt';
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
-import {ProjectUser} from "../models/projectUser";
 
 export const index = async (req: Request, res: Response) => {
     let query: QueryBuilder = database(TableNames.users).select();
@@ -33,20 +32,6 @@ export const show = async (req: Request, res: Response) => {
     }
 };
 
-const createProjectUser = async (req: Request) => {
-    const userId: number = await database(TableNames.users).select().where({email: req.body.email}).first();
-    const projects: Array<ProjectUser> = req.body.projectAssigned;
-    let projectUser: Array<ProjectUser> = [];
-    for (let i = 0; i < projects.length; i++) {
-        projectUser.push({
-            userId: userId,
-            projectId: projects[i].projectId,
-            costToClientPerHour: projects[i].costToClientPerHour
-        });
-    }
-    await database(TableNames.projectUsers).insert(projectUser);
-}
-
 export const create = async (req: Request, res: Response) => {
     try {
         const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
@@ -59,18 +44,12 @@ export const create = async (req: Request, res: Response) => {
             costToCompanyPerHour: req.body.costToCompanyPerHour
         }
         await database(TableNames.users).insert(user);
-        await createProjectUser(req);
         res.sendStatus(201);
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
     }
 };
-
-const updateProjectUser = async (req: Request) => {
-    const projects: Array<ProjectUser> = req.body.projectAssigned;
-    await database(TableNames.projectUsers).update(projects).where({userId: req.body.userId});
-}
 
 export const update = async (req: Request, res: Response) => {
     try {
@@ -84,7 +63,6 @@ export const update = async (req: Request, res: Response) => {
                 costToCompanyPerHour: req.body.costToCompanyPerHour
             }
             await database(TableNames.users).update(newUser).where({id: req.params.id});
-            await updateProjectUser(req);
             res.sendStatus(200);
         } else {
             res.sendStatus(404);
