@@ -9,6 +9,7 @@ import { TimesheetComponent } from './components/timesheet.component';
 
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -22,7 +23,8 @@ import { GoogleLoginProvider } from 'angularx-social-login';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    MatCardModule
   ],
   providers: [
     {
