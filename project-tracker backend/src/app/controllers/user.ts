@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import * as userSerializer from '../serializers/user';
 import * as bcrypt from 'bcrypt';
 import { QueryBuilder } from "knex";
-import { TableNames } from "../../lib/table_names";
+import { TableNames } from "../../lib/tableNames";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.users).select();
@@ -44,6 +44,13 @@ export const create = async (req: Request, res: Response) => {
       costToCompanyPerHour: req.body.costToCompanyPerHour
     }
     await database(TableNames.users).insert(user);
+
+    for (let i = 0; i < req.body.projectAssigned.length; i++) {
+      let projectUser = {
+
+      }
+      await database(TableNames.projectUsers).insert(projectUser);
+    }
     res.sendStatus(201);
   } catch(error) {
     console.error(error);
