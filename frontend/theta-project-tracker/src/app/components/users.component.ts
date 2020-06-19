@@ -58,30 +58,29 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
   mat-icon:hover {
       cursor: pointer;
   }
-    `
-  ]
+  `]
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
   subscriptions$: Subscription[] = [];
   projectArrays: any[] = [];
+  displayedColumns = ['firstName', 'lastName', 'role', 'cost', 'projects', 'actions'];
+  dataSource: User[] = [];
 
   constructor(private userService: UserService, private dialog: MatDialog) { }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 
-  displayedColumns = ['firstName','lastName', 'role', 'cost', 'projects', 'actions'];
-  dataSource: User[] = [];
-
   ngOnInit(): void {
     this.subscriptions$.push(this.userService.users$.subscribe(users => {
       this.dataSource = users;
-    }))
+    }));
   }
+
   onOpenDeleteModal(user) {
     const nameToPass = this.dataSource.find(u => u.id === user.id).firstName + ' ' +
-    this.dataSource.find(u => u.id === user.id).lastName;
+      this.dataSource.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -94,6 +93,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',

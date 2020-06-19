@@ -1,19 +1,19 @@
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CustomMaterialModule } from './custom-material.module';
+import { ReportsComponent } from './components/reports.component';
+import { LoginComponent } from './components/login.component';
+import { HeaderComponent } from './components/header.component';
+import { TimesheetComponent } from './components/timesheet.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { NewUserComponent } from '../app/components/new-user.component';
@@ -25,6 +25,21 @@ import { ProjectsComponent } from './components/projects.component';
 import { NewProjectModalComponent } from './modals/new-project-modal.component';
 import { NewProjectComponent } from './components/new-project.component';
 import { DeleteProjectModalComponent } from './modals/delete-project-modal.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarComponent } from './components/calendar.component';
+
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { HighlightDirective } from './directives/highlite.directive';
+import { MilestonesComponent } from './components/milestones.component';
+import { ClientsComponent } from './components/clients.component';
+
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -32,31 +47,42 @@ export function httpTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    NewUserModalComponent,
-    NewUserComponent,
     UsersComponent,
+    CalendarComponent,
+    TimesheetComponent,
+    HeaderComponent,
+    LoginComponent,
+    ReportsComponent,
+    HighlightDirective,
+    MilestonesComponent,
+    ClientsComponent,
+    NewUserComponent,
+    NewUserModalComponent,
     DeleteModalComponent,
     ProjectsComponent,
-    NewProjectModalComponent,
     NewProjectComponent,
-    DeleteProjectModalComponent  
+    NewProjectModalComponent,
+    DeleteProjectModalComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CustomMaterialModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCardModule,
+    MatTableModule,
+    MatDialogModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDialogModule,
-    BrowserAnimationsModule,
     MatInputModule,
-    ReactiveFormsModule,
     MatButtonModule,
-    MatCardModule,
-    MatSelectModule,
     MatRadioModule,
-    MatTableModule,
-    MatIconModule,
     MatPaginatorModule,
-    MatFormFieldModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

@@ -89,4 +89,5 @@ export class NewProjectComponent implements OnInit {
     } else {
       this.onAddNewProject()
     }
-  }}
+  }
+}

@@ -46,6 +46,13 @@ import { DeleteProjectModalComponent } from '../modals/delete-project-modal.comp
   `,
   styles: [
     `
+    .table-container {
+      margin: auto;
+      max-width: 70%;
+      height: 400px;
+      overflow: auto;
+      margin-top: 200px
+  }
     mat-icon:hover {
       cursor: pointer;
   }

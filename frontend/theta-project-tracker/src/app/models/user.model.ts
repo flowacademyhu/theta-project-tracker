@@ -5,12 +5,12 @@ export interface User {
   role: Role;
   email: String;
   password?: String;
-  userCostToCompanyPerHour: number;
+  costToCompanyPerHour: number;
   projectAssigned: ProjectAssigned[]
 }
 export interface ProjectAssigned {
-  projectName: String,
-  userCostPerHour : number
+  projectName: string;
+  userCostPerHour: number;
 }
 export enum Role {
   USER = 'USER',
