@@ -5,7 +5,7 @@ exports.seed = (knex) => {
       firstName: 'Egyes',
       lastName: 'Macska',
       role: 'admin',
-      email: 'teszt@admin.com',
+      email: 'egyes@test.com',
       password: bcrypt.hashSync('admin', 10),
       costToCompanyPerHour: 100
     },
@@ -13,7 +13,7 @@ exports.seed = (knex) => {
       firstName: 'Kettes',
       lastName: 'Macska',
       role: 'user',
-      email: 'teszt@admin.com',
+      email: 'kettes@test.com',
       password: bcrypt.hashSync('miowmiow', 10),
       costToCompanyPerHour: 200
     }])
