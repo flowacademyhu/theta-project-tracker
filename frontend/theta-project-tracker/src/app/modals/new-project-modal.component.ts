@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   template:`
   <h2 mat-dialog-title><strong>Add New Project</strong></h2>
   <mat-dialog-content class="mat-typography">
-    <app-new-project></app-new-project>
+    <app-new-project [projectToEdit]="projectToEdit"></app-new-project>
   </mat-dialog-content>
   `
 })

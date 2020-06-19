@@ -39,6 +39,7 @@ export class ProjectService {
   public updateProject(id: number, project: Project) {
     const index = this.projects.findIndex(char => char.id === id);
     this.projects[index] = project;
+    this.projects$.next([...this.projects]);
   }
   public deleteProject(id: number) {
     this.projects.splice(this.projects.findIndex(u=> u.id === id), 1);

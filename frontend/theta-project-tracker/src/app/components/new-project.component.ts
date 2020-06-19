@@ -35,7 +35,7 @@ import { NewProjectModalComponent } from '../modals/new-project-modal.component'
     </mat-form-field>
     <div class="actions">
   <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
-  <button (click)="onAddNewProject()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">Save</button>
+  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">Save</button>
 </div>
 
 `,
@@ -44,7 +44,7 @@ styles: [`
 })
 export class NewProjectComponent implements OnInit {
 
-  constructor(private projectService: ProjectService, private dialog: MatDialog) { }
+  constructor(private projectService: ProjectService) { }
 
 
   newProject = new FormGroup({
@@ -59,10 +59,7 @@ export class NewProjectComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.projectToEdit) {
-      this.newProject.get('name').patchValue(this.projectToEdit.name);
-      this.newProject.get('client').patchValue(this.projectToEdit.client);
-      this.newProject.get('description').patchValue(this.projectToEdit.description);
-      this.newProject.get('budget').patchValue(this.projectToEdit.budget);
+      this.newProject.patchValue(this.projectToEdit)
     }
   }
 
@@ -74,17 +71,25 @@ export class NewProjectComponent implements OnInit {
       budget: this.newProject.getRawValue().budget,
     };
     this.emitter.emit(this.createdProject);
-    console.log(this.createdProject)
     this.projectService.addProject(this.createdProject);
   }
 
-  onAddNewUser() {
-    this.createdProject = {
+  editProject() {
+    console.log(this.projectToEdit)
+    this.projectToEdit = {
+      id: this.projectToEdit.id,
       name: this.newProject.getRawValue().name,
       client: this.newProject.getRawValue().client,
-      description: this.newProject.getRawValue().description,
+      description: this.newProject.getRawValue().description, 
       budget: this.newProject.getRawValue().budget,
     };
-    this.projectService.addProject(this.createdProject);
+    this.projectService.updateProject(this.projectToEdit.id, this.projectToEdit);
+  }
+   onCloseDialog() {
+    if (this.projectToEdit) {
+      this.editProject();
+    } else {
+      this.onAddNewProject()
+    }
   }
 }
