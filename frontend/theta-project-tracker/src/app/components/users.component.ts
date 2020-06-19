@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { NewUserModalComponent } from '../modals/new-user-modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -67,7 +68,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   projectArrays: any[] = [];
 
-  constructor(private userService: UserService, private dialog: MatDialog) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private route: ActivatedRoute) { }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
@@ -76,9 +77,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   dataSource: User[] = [];
 
   ngOnInit(): void {
-    this.subscriptions$.push(this.userService.users$.subscribe(users => {
-      this.dataSource = users;
+    this.subscriptions$.push(this.route.data.subscribe(data => {
+      this.dataSource = data.users;
     }))
+    console.log(this.dataSource)
   }
   onOpenDeleteModal(user) {
     const nameToPass = this.dataSource.find(u => u.id === user.id).firstName + ' ' +
