@@ -100,7 +100,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
   onOpenEditModal(user) {
-    console.log(user)
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',
       height: '80%',

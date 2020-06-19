@@ -115,7 +115,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   constructor(private userService: UserService) { }
   ngOnDestroy(): void {
-   this.subscriptions$.forEach(sub => sub.unsubscribe())
+    this.subscriptions$.forEach(sub => sub.unsubscribe())
   }
   newUser = new FormGroup({
     firstName: new FormControl(null, Validators.required),
@@ -132,9 +132,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   createdUser: User;
   @Input() userToEdit: User;
   ngOnInit(): void {
-    console.log(this.userToEdit)
     if (this.userToEdit) {
-      console.log(this.userToEdit)
       this.assignedProjects = this.userToEdit.projectAssigned;
       this.newUser.get('firstName').patchValue(this.userToEdit.firstName);
       this.newUser.get('lastName').patchValue(this.userToEdit.lastName);
@@ -175,7 +173,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
       email: this.newUser.getRawValue().email,
       costToCompanyPerHour: this.newUser.getRawValue().cost,
       role: this.newUser.getRawValue().role,
-      projectAssigned: this.assignedProjects
+      /*  projectAssigned: this.assignedProjects */
     }
     console.log(this.userToEdit)
     this.subscriptions$.push(this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe(data => {

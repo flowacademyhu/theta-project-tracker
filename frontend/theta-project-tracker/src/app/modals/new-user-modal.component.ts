@@ -12,7 +12,7 @@ import { User } from '../models/user.model';
   `
 })
 export class NewUserModalComponent implements OnInit {
-  message = "Add New User";
+  message = 'AddNEw User';
   userToEdit: User;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
@@ -22,8 +22,7 @@ export class NewUserModalComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.userToEdit) {
-      this.message = "Edit User";
+      this.message = 'Edit User';
     }
   }
-
 }

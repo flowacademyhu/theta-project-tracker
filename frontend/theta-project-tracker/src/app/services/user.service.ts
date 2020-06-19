@@ -45,14 +45,13 @@ export class UserService {
   public fetchUser(id: number) {
     return this.http.get<User>(this.apiUrl + `user/${id}`, { headers: this.authHeader});
   }
+  
   public addUser(user: User) {
    return this.http.post<User>(this.apiUrl + 'user', user, { headers: this.authHeader, responseType: 'text' });
   }
 
   public updateUser(id: number, user: User) {
-   console.log(user)
     return this.http.put(this.apiUrl + `user/${id}`, user, {headers: this.authHeader, responseType: 'text'  });
-
   }
   public deleteUser(id: number) {
     return this.http.delete(this.apiUrl + `user/${id}`, {headers: this.authHeader}).pipe(
