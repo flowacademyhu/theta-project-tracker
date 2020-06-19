@@ -1,38 +1,97 @@
+import { User } from './../models/user.model';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { User } from '../models/user.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   template: `
-    <form>
-    <label>Email</label>
-    <input name="email" [(ngModel)]="email">
-    <label>Password</label>
-    <input  name="passw" [(ngModel)]="passw">
-    <button (click)="auth(email, passw)">LogIn</button>
-    </form>
+  <!-- <form>
+   <mat-form-field>
+      <input matInput type="password" placeholder="Password" formControlName="password">
+    </mat-form-field>
+    <button [disabled]="!loginForm.valid" mat-raised-button color="primary" mat-button>Sign In</button>
+</form> -->
+<form [formGroup]="loginForm">
+    <div class="panel panel-default">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          class="form-control"
+          formControlName="email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="text"
+          class="form-control"
+          id="password"
+          formControlName="password"
+        />
+      </div>
+      <button class="btn btn-primary" type="submit" (click)="onLogin()">
+        Login
+      </button>
+    </div>
+  </form>
+  `,
+  styles: [
     `
+      .panel {
+        padding: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+        margin-top: 10%;
+      }
+      /* h4, p {
+        font-family: Lato;
+      }
+
+      .example-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .example-container > * {
+        width: 100%;
+      } */
+    `
+  ]
 })
-
 export class LoginComponent implements OnInit {
-  constructor(private userService: UserService, private router: Router,
-    private http: HttpClient, private route: ActivatedRoute) { }
-  email: string;
-  passw: string;
-  users: User[] = [];
-  ngOnInit() {
-    localStorage.setItem('accesToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5MjUwNTEzOH0.7_1yAElpeQdIQejFUuN8iQM_-GX2pImFZSsoF8hgs7E')
-    this.route.data.subscribe(data => {
-      this.users = data.users;
-    })
-  }
-  auth(email: string, passw: string) {
 
-    let cica = this.http.post('http://localhost/3000/login', { email, passw });
-    console.log(cica);
-    this.router.navigate(['..', 'users'])
+  loginForm: FormGroup;
+  user: User;
+
+
+  constructor(private authService: AuthService, private router: Router) {
+  }
+  ngOnInit(): void {
+    this.authService.loggedInUser.subscribe(u => {
+      this.user = u;
+    });
+    this.loginForm = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required])
+    });
+
+  }
+
+  public onLogin() {
+    console.log(this.user);
+    console.log(this.loginForm.get("email").value);
+    this.authService
+      .login(this.loginForm.get('email').value)
+      .then(() => {
+        this.router.navigate(['timesheet']);
+      })
+      .catch(() => {
+        console.log('invalid email');
+      });
   }
 }
