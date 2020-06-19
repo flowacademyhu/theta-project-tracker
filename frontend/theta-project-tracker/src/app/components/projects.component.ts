@@ -6,7 +6,6 @@ import { Project } from '../models/project.model';
 import { NewProjectModalComponent } from '../modals/new-project-modal.component';
 import { DeleteProjectModalComponent } from '../modals/delete-project-modal.component';
 
-
 @Component({
   selector: 'app-projects',
   template: `
@@ -96,7 +95,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   } 
 
-
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '60%',
@@ -108,5 +106,4 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         console.log(result)
       }
     });
-  }
-}
+  }}

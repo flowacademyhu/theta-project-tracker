@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project } from '../models/project.model';
 import { EventEmitter } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { MatDialog } from '@angular/material/dialog';
-import { NewProjectModalComponent } from '../modals/new-project-modal.component';
 
 @Component({
   selector: 'app-new-project',
@@ -91,5 +89,4 @@ export class NewProjectComponent implements OnInit {
     } else {
       this.onAddNewProject()
     }
-  }
-}
+  }}

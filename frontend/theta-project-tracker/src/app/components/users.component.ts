@@ -6,7 +6,6 @@ import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { NewUserModalComponent } from '../modals/new-user-modal.component';
 
-
 @Component({
   selector: 'app-users',
   template: `

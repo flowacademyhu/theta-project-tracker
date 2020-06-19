@@ -4,7 +4,6 @@ import { User, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { EventEmitter } from '@angular/core';
 
-
 @Component({
   selector: 'app-new-user',
   template: `
@@ -145,5 +144,4 @@ export class NewUserComponent implements OnInit {
     this.assignedProjects.push({projectName: this.newUser.get('project').value, userCostPerHour: this.newUser.get('costToClient').value})
     this.newUser.get('project').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
-  }
-}
+  }}
