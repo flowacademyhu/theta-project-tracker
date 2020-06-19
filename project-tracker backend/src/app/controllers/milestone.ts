@@ -2,7 +2,7 @@ import { Milestone } from "../models/milestone";
 import { database } from "../../lib/database";
 import { Request, Response } from "express";
 import { QueryBuilder } from "knex";
-import { TableNames } from "../../lib/tableNames";
+import { TableNames } from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.milestones).select();

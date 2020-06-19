@@ -176,6 +176,35 @@
         }
       }
     },
+    "/user/{userId}/project": {
+      "get": {
+        "summary": "Get all projects by user's id",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return with specific projects",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ProjectResponse"
+              }
+            }
+          }
+        }
+      }
+    },
     "/client": {
       "post": {
         "summary": "Create new client",
@@ -416,6 +445,98 @@
         }
       }
     },
+    "/project/{projectId}/user": {
+      "get": {
+        "summary": "Get all users on a specific project",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "users on a specific project",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/UserResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/{projectId}/user/{userId}": {
+      "post": {
+        "summary": "Add specific user to specific project",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ProjectUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Added"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete specific user from specific project",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
     "/milestone": {
       "post": {
         "summary": "Create new milestone",
@@ -589,6 +710,12 @@
         },
         "costToCompanyPerHour": {
           "type": "number"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     },
@@ -617,6 +744,12 @@
           "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
           "type": "string"
         }
       }
@@ -661,8 +794,25 @@
         },
         "budget": {
           "type": "number"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
+    },
+    "ProjectUser": {
+      "type": "object",
+      "properties": {
+        "costToClientPerHour": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "costToClientPerHour"
+      ]
     },
     "MilestoneCreate": {
       "type": "object",
@@ -696,6 +846,12 @@
           "type": "number"
         },
         "description": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
           "type": "string"
         }
       }
