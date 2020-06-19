@@ -15,7 +15,5 @@ export class NewUserModalComponent implements OnInit {
   
 
   ngOnInit(): void {
-    
   }
-
 }

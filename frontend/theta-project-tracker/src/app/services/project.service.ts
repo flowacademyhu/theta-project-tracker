@@ -34,6 +34,7 @@ export class ProjectService {
   public addProject( project: Project) {
     project.id = this.projects.length + 1;
     this.projects.push(project);
+    this.projects$.next([...this.projects]);
   }
   public updateProject(id: number, project: Project) {
     const index = this.projects.findIndex(char => char.id === id);

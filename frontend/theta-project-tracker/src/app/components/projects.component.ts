@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project.model';
 import { NewProjectModalComponent } from '../modals/new-project-modal.component';
+import { DeleteProjectModalComponent } from '../modals/delete-project-modal.component';
 
 
 @Component({
@@ -34,6 +35,7 @@ import { NewProjectModalComponent } from '../modals/new-project-modal.component'
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let project">
             <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
+            <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
         </mat-cell>
     </ng-container>
     </ng-container>
@@ -80,9 +82,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
  
-/*   onOpenDeleteModal(project) {
+   onOpenDeleteModal(project) {
     const nameToPass = this.dataSource.find(u => u.id === project.id).name;
-    const dialogRef = this.dialog.open(DeleteModalComponent, {
+    const dialogRef = this.dialog.open(DeleteProjectModalComponent, {
       data: { name: nameToPass },
       width: '25%',
       height: '25%'
@@ -92,7 +94,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.projectService.deleteProject(project.id);
       }
     });
-  } */
+  } 
 
 
   onOpenEditModal(project) {

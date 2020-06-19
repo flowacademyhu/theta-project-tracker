@@ -24,6 +24,7 @@ import { UsersComponent } from '../app/components/users.component';
 import { ProjectsComponent } from './components/projects.component';
 import { NewProjectModalComponent } from './modals/new-project-modal.component';
 import { NewProjectComponent } from './components/new-project.component';
+import { DeleteProjectModalComponent } from './modals/delete-project-modal.component';
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -37,7 +38,8 @@ export function httpTranslateLoader(http: HttpClient) {
     DeleteModalComponent,
     ProjectsComponent,
     NewProjectModalComponent,
-    NewProjectComponent  
+    NewProjectComponent,
+    DeleteProjectModalComponent  
   ],
   imports: [
     BrowserModule,

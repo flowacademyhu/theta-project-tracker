@@ -77,4 +77,14 @@ export class NewProjectComponent implements OnInit {
     console.log(this.createdProject)
     this.projectService.addProject(this.createdProject);
   }
+
+  onAddNewUser() {
+    this.createdProject = {
+      name: this.newProject.getRawValue().name,
+      client: this.newProject.getRawValue().client,
+      description: this.newProject.getRawValue().description,
+      budget: this.newProject.getRawValue().budget,
+    };
+    this.projectService.addProject(this.createdProject);
+  }
 }

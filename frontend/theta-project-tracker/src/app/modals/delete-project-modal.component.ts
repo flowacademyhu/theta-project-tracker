@@ -18,7 +18,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     `
   ]
 })
-export class DeleteModalComponent implements OnInit {
+export class DeleteProjectModalComponent implements OnInit {
   name: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any) { }

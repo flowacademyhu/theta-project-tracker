@@ -27,5 +27,4 @@ export class NewProjectModalComponent implements OnInit {
       this.message = "Edit Project";
     }
   }
-
 }
