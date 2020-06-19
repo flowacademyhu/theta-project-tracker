@@ -9,8 +9,8 @@ export interface User {
   projectAssigned: ProjectAssigned[]
 }
 export interface ProjectAssigned {
-  projectName: String,
-  userCostPerHour : number
+  projectName: string;
+  userCostPerHour: number;
 }
 export enum Role {
   USER = 'USER',

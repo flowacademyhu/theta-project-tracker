@@ -31,7 +31,7 @@ export class UserService {
     projectAssigned: [{projectName: 'xyz', userCostPerHour: 70}]
   }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
-  
+
   public fetchUsers (): User[] {
     return this.users
   }
