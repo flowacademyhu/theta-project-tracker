@@ -20,7 +20,7 @@ import { UsersComponent } from '../app/components/users.component';
 import { NewUserComponent } from '../app/components/new-user.component';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './components/login.component';
+
 import { DeleteModalComponent } from './modals/delete-modal.component';
 
 
@@ -30,7 +30,6 @@ import { DeleteModalComponent } from './modals/delete-modal.component';
     UsersComponent,
     NewUserComponent,
     NewUserModalComponent,
-    LoginComponent,
     DeleteModalComponent
   ],
   imports: [
