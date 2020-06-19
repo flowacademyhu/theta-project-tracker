@@ -8,10 +8,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   <mat-dialog-content class="mat-typography">
 </mat-dialog-content>
 <mat-dialog-actions class="actions">
-  <button mat-raised-button mat-dialog-close class="left" color="accent">Cancel</button>
+  <button mat-raised-button mat-dialog-close class="left" color="primary">Cancel</button>
   <button mat-raised-button [mat-dialog-close]="true" class="right" color="warn" >Delete</button>
 </mat-dialog-actions>
-
   `,
   styles: [
     `
@@ -26,5 +25,7 @@ export class DeleteModalComponent implements OnInit {
   ngOnInit(): void {
     this.name = this.data.name;
   }
+  onCloseDialog() {
 
+  }
 }

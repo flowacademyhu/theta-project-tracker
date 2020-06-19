@@ -29,7 +29,7 @@ import { ActivatedRoute } from '@angular/router';
             </ng-container>
             <ng-container matColumnDef="cost">
                 <mat-header-cell *matHeaderCellDef>Cost (£/h)</mat-header-cell>
-                <mat-cell *matCellDef="let user">{{ user.userCostToCompanyPerHour }}</mat-cell>
+                <mat-cell *matCellDef="let user">{{ user.costToCompanyPerHour }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="projects" >
                 <mat-header-cell *matHeaderCellDef>Projects</mat-header-cell>
@@ -38,7 +38,7 @@ import { ActivatedRoute } from '@angular/router';
             <ng-container matColumnDef="actions" class="actions">
                 <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                 <mat-cell *matCellDef="let user">
-                    <mat-icon>edit</mat-icon>
+                    <mat-icon (click)="onOpenEditModal(user)">edit</mat-icon>
                     <mat-icon (click)="onOpenDeleteModal(user)">clear</mat-icon>
                 </mat-cell>
             </ng-container>
@@ -92,8 +92,22 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.deleteUser(user.id);
+        this.subscriptions$.push(this.userService.deleteUser(user.id).subscribe(data => {
+          console.log(data)
+        }));
 
+      }
+    });
+  }
+  onOpenEditModal(user) {
+    console.log(user)
+    const dialogRef = this.dialog.open(NewUserModalComponent, {
+      width: '60%',
+      height: '80%',
+      data: { userToEdit: user }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
       }
     });
   }

@@ -30,7 +30,8 @@ import { DeleteModalComponent } from './modals/delete-modal.component';
     UsersComponent,
     NewUserComponent,
     NewUserModalComponent,
-    LoginComponent
+    LoginComponent,
+    DeleteModalComponent
   ],
   imports: [
     BrowserModule,
