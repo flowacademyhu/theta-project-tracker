@@ -105,12 +105,4 @@ export class UsersComponent implements OnInit, OnDestroy {
       }
     });
   }
- /*  get userProjects() {
-    let arr = this.dataSource.map(u => u.projectAssigned);
-    for (let i = 0; i < arr.length; i++) {
-      
-    }
-    
-  } */
-
 }
