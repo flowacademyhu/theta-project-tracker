@@ -1,11 +1,15 @@
 exports.seed = (knex) => {
     return knex('clients').insert([
         {
-            name: 'EgyesKliens',
-            description: 'desc'
+            name: 'Client One',
+            description: 'this is a description'
         },
         {
-            name: 'KettesKliens',
-            description: 'desc'
+            name: 'Client Two',
+            description: 'also a description'
+        },
+        {
+            name: 'Client Three',
+            description: 'this is not.'
         }])
 }

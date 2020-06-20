@@ -5,4 +5,5 @@ export interface ProjectUser {
     costToClientPerHour: number;
     createdAt?: string;
     updatedAt?: string;
+    isDeleted?: string;
 }

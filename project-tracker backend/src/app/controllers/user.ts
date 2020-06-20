@@ -5,9 +5,11 @@ import * as userSerializer from '../serializers/user';
 import * as bcrypt from 'bcrypt';
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
+import {ProjectUser} from "../models/projectUser";
+import {createUser} from "../serializers/userCreate";
 
 export const index = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.users).select();
+    let query: QueryBuilder = database(TableNames.users).select().where({isDeleted: 'false'});
     if (req.query.limit) {
         query = query.limit(req.query.limit);
     }
@@ -20,7 +22,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
     try {
-        const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
+        const user: User = await database(TableNames.users).select().where({id: req.params.id, isDeleted: 'false'}).first();
         if (user) {
             res.json(userSerializer.show(user));
         } else {
@@ -32,18 +34,32 @@ export const show = async (req: Request, res: Response) => {
     }
 };
 
+const createProjects = async (req: Request) => {
+    const projects: Array<ProjectUser> = req.body.projects;
+    let projectsToSave: Array<ProjectUser> = [];
+    const user: User = await database(TableNames.users).select()
+        .where({email: req.body.user.email}).first();
+    const userId: number = user.id;
+    if (projects.length > 0) {
+        for(let i = 0; i < projects.length; i++) {
+            projectsToSave.push(
+                {
+                    userId: userId,
+                    projectId: projects[i].projectId,
+                    costToClientPerHour: projects[i].costToClientPerHour
+                }
+            );
+        }
+        await database(TableNames.projectUsers).insert(projectsToSave);
+    }
+}
+
 export const create = async (req: Request, res: Response) => {
     try {
-        const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
-        const user: User = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            role: req.body.role,
-            email: req.body.email,
-            password: encryptedPassword,
-            costToCompanyPerHour: req.body.costToCompanyPerHour
-        }
+        const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
+        const user= createUser(req.body.user, encryptedPassword);
         await database(TableNames.users).insert(user);
+        await createProjects(req);
         res.sendStatus(201);
     } catch (error) {
         console.error(error);
@@ -55,14 +71,9 @@ export const update = async (req: Request, res: Response) => {
     try {
         const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
         if (user) {
-            const newUser: User = {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                role: req.body.role,
-                email: req.body.email,
-                costToCompanyPerHour: req.body.costToCompanyPerHour
-            }
-            await database(TableNames.users).update(newUser).where({id: req.params.id});
+            const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
+            const newUser= createUser(req.body.user, encryptedPassword);
+            await database(TableNames.users).update(newUser).where({id: user.id});
             res.sendStatus(200);
         } else {
             res.sendStatus(404);
@@ -77,8 +88,8 @@ export const destroy = async (req: Request, res: Response) => {
     try {
         const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
         if (user) {
-            await database(TableNames.projectUsers).delete().where({userId: req.params.id});
-            await database(TableNames.users).delete().where({id: req.params.id});
+            await database(TableNames.projectUsers).update('isDeleted', true).where({userId: req.params.id});
+            await database(TableNames.users).update('isDeleted', true).where({id: req.params.id});
             res.sendStatus(204);
         } else {
             res.sendStatus(404);

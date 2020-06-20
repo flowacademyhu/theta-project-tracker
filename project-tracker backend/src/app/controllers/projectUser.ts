@@ -6,9 +6,10 @@ import { TableNames } from "../../lib/enums";
 import { User } from "../models/user";
 import * as userSerializer from '../serializers/user'
 
-
 export const index = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.users).join(TableNames.projectUsers, 'users.id', '=', 'projectUsers.userId').where({ projectId: req.params.projectId }).select();
+    let query: QueryBuilder = database(TableNames.users)
+        .join(TableNames.projectUsers, 'users.id', '=', 'projectUsers.userId')
+        .where({ projectId: req.params.projectId, isDeleted: 'false' }).select();
     if (req.query.limit) {
         query = query.limit(req.query.limit);
     }
@@ -21,10 +22,15 @@ export const index = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
     try {
-        const projectUser: ProjectUser = {
-            userId: Number(req.params.userId),
-            projectId: Number(req.params.projectId),
-            costToClientPerHour: req.body.costToClientPerHour
+        const projectUser: Array<ProjectUser> = [];
+        if (req.body.length > 0) {
+            for (let i = 0; i < req.body.length; i++) {
+                projectUser.push({
+                    userId: +req.params.userId,
+                    projectId: req.body[i].projectId,
+                    costToClientPerHour: req.body[i].costToClientPerHour
+                });
+            }
         }
         await database(TableNames.projectUsers).insert(projectUser);
         res.sendStatus(201);
@@ -36,12 +42,17 @@ export const create = async (req: Request, res: Response) => {
 
 export const destroy = async (req: Request, res: Response) => {
     try {
-        const projectUser: ProjectUser = await database(TableNames.projectUsers).select().where({ userid: req.params.userId, projectId: req.params.projectId }).first();
-        if (projectUser) {
-            await database(TableNames.projectUsers).delete().where({ userId: req.params.userId, projectId: req.params.projectId });
+        const projectUser: Array<ProjectUser> = [];
+        if (req.body.length > 0) {
+            for(let i = 0; i < req.body.length; i++) {
+                projectUser.push({
+                    userId: +req.params.userId,
+                    projectId: req.body[i].projectId,
+                    costToClientPerHour: req.body[i].costToClientPerHour
+                });
+                await database(TableNames.projectUsers).update('isDeleted', true).where(projectUser[i]);
+            }
             res.sendStatus(204);
-        } else {
-            res.sendStatus(404);
         }
     } catch (error) {
         console.error(error);

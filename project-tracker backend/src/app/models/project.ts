@@ -6,4 +6,5 @@ export interface Project {
     budget: number;
     createdAt?: string;
     updatedAt?: string;
+    isDeleted?: string;
 }

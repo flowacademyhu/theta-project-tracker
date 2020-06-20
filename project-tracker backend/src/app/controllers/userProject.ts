@@ -5,7 +5,9 @@ import { QueryBuilder } from "knex";
 import { TableNames } from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.projects).join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId').where({ userId: req.params.userId }).select();
+    let query: QueryBuilder = database(TableNames.projects)
+        .join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId')
+        .where({ userId: req.params.userId, isDeleted: 'false' }).select();
     if (req.query.limit) {
         query = query.limit(req.query.limit);
     }

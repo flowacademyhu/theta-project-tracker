@@ -5,7 +5,7 @@ import { QueryBuilder } from "knex";
 import { TableNames } from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.milestones).select();
+  let query: QueryBuilder = database(TableNames.milestones).select().where({isDeleted: 'false'});
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -18,8 +18,8 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id }).first();
-    if (typeof milestone !== 'undefined') {
+    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id, isDeleted: 'false' }).first();
+    if (milestone) {
       res.json(milestone);
     } else {
       res.sendStatus(404);
@@ -47,7 +47,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id }).first();
+    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id, isDeleted: 'false' }).first();
     if (milestone) {
       const newMilestone: Milestone = {
         name: req.body.name,
@@ -69,7 +69,7 @@ export const destroy = async (req: Request, res: Response) => {
   try {
     const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id }).first();
     if (milestone) {
-      await database(TableNames.milestones).delete().where({ id: req.params.id });
+      await database(TableNames.milestones).update('isDeleted', true).where({ id: req.params.id });
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

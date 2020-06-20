@@ -5,4 +5,5 @@ export interface Milestone {
     description: string;
     createdAt?: string;
     updatedAt?: string;
+    isDeleted?: string;
 }
