@@ -112,8 +112,8 @@ export class NewUserComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   newUser = new FormGroup({
-    firstName: new FormControl(null, Validators.required),
-    lastName: new FormControl(null, Validators.required),
+    firstName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    lastName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
     email: new FormControl(null, [Validators.required, Validators.email]),
     cost: new FormControl(null, [Validators.required, Validators.min(0)]),
     role: new FormControl(null, Validators.required),
@@ -171,7 +171,7 @@ export class NewUserComponent implements OnInit {
   assignProjectsToUser() {
     this.assignedProjects.push({
       projectName: this.newUser.get('project').value,
-      costToClientPerHour: this.newUser.get('costToClient').value
+      userCostPerHour: this.newUser.get('costToClient').value
     });
   }
   onCloseDialog() {

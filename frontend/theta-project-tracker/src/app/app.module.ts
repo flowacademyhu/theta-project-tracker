@@ -1,6 +1,8 @@
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
-import { NewUserComponent } from './components/new-user.component';
+import { NewUserComponent } from '../app/components/new-user.component';
+import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
+import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -39,7 +41,9 @@ import {MatCardModule} from '@angular/material/card';
     HighlightDirective,
     MilestonesComponent,
     ClientsComponent,
-    NewUserComponent
+    NewUserComponent,
+    NewUserModalComponent,
+    DeleteModalComponent
   ],
   imports: [
     BrowserModule,

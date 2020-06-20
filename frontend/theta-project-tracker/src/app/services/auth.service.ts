@@ -11,16 +11,16 @@ export class AuthService {
       role: Role.ADMIN,
       email: 'admin',
       password: 'asd',
-      userCostToCompanyPerHour: 2,
-      projectAssigned: { projectName: 'Voodoo', userCostPerHour: 2 } },
+      costToCompanyPerHour: 2,
+      projectAssigned: [{ projectName: 'Voodoo', userCostPerHour: 2 }] },
     { id: 2,
       firstName: 'USer Test',
       lastName: 'User',
       role: Role.USER,
       email: 'user',
       password: 'asd',
-      userCostToCompanyPerHour: 2,
-      projectAssigned: { projectName: 'Voodoo', userCostPerHour: 2 } },
+      costToCompanyPerHour: 2,
+      projectAssigned: [{ projectName: 'Voodoo', userCostPerHour: 2 }] },
   ];
   public loggedInUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
