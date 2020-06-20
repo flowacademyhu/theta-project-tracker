@@ -21,7 +21,7 @@ import { NewUserComponent } from '../app/components/new-user.component';
 import { UsersComponent } from '../app/components/users.component';
 import { ClientsComponent } from './components/clients.component';
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
-import { NewClientComponent } from './components/new-client.component'
+import { ClientManagementComponent } from './components/client-management-component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { NewClientComponent } from './components/new-client.component'
     DeleteModalComponent,
     ClientsComponent,
     NewClientModalComponent,
-    NewClientComponent
+    ClientManagementComponent
   ],
   imports: [
     BrowserModule,
