@@ -26,6 +26,10 @@ const routes: Routes = [
       {
         path: 'add-new',
         component: NewUserComponent
+      },
+      {
+        path: 'edit-user',
+        component: NewUserComponent
       }
     ]
   },

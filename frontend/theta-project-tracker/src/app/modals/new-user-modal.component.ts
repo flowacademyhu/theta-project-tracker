@@ -12,7 +12,7 @@ import { User } from '../models/user.model';
   `
 })
 export class NewUserModalComponent implements OnInit {
-  message = 'AddNEw User';
+  message = 'Add New User';
   userToEdit: User;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {

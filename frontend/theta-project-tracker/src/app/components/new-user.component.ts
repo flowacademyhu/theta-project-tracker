@@ -82,7 +82,7 @@ import { Router, ActivatedRoute } from '@angular/router';
     </div>
 </form>
 <div class="actions">
-    <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+    <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
     <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">Save</button>
 </div>
   `,
@@ -116,7 +116,8 @@ export class NewUserComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) { }
   ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe())
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+    this.router.navigate(['..', 'users'])
   }
   newUser = new FormGroup({
     firstName: new FormControl(null, Validators.required),

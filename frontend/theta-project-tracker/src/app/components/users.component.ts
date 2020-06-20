@@ -10,9 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-users',
   template: `
-  <div>
-  <button (click)="onAddNewUser()" mat-raised-button #newUser>+ Add New User</button>
-  <mat-card class="table-container">
+  <div class="table-container">
+  <button (click)="onAddNewUser()" mat-raised-button #newUser color="primary">+ Add New User</button>
+  <mat-card>
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="firstName">
                 <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
@@ -59,6 +59,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   mat-icon:hover {
       cursor: pointer;
   }
+  #newUser {
+    margin-bottom: 5px;
+  }
   `]
 })
 export class UsersComponent implements OnInit, OnDestroy {
@@ -75,10 +78,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions$.push(this.route.data.subscribe(data => {
-      this.dataSource = data.users;
-    }))
-    console.log(this.dataSource)
+    /*     this.subscriptions$.push(this.route.data.subscribe(data => {
+          this.dataSource = data.users;
+        }))
+        console.log(this.dataSource) */
     this.subscriptions$.push(this.userService.fetchUsers().subscribe(data => {
       this.dataSource = data;
     }))
@@ -95,20 +98,23 @@ export class UsersComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.subscriptions$.push(this.userService.deleteUser(user.id).subscribe(data => {
-          console.log(data)
+          this.ngOnInit();
         }));
       }
     });
   }
   onOpenEditModal(user) {
+    this.router.navigate(['edit-user'], {
+      relativeTo: this.route,
+      queryParams: { id: user.id }
+    })
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',
       height: '80%',
       data: { userToEdit: user }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      }
+      this.ngOnInit()
     });
   }
   onAddNewUser() {
@@ -120,8 +126,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       height: '80%'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      }
+      this.ngOnInit();
     });
   }
 }
