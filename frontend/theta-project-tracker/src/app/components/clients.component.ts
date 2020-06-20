@@ -4,6 +4,7 @@ import { Client } from 'src/app/models/client.model';
 import { DeleteModalComponent } from 'src/app/modals/delete-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NewClientModalComponent } from 'src/app/modals/new-client-modal-component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-clients',
@@ -51,16 +52,16 @@ import { NewClientModalComponent } from 'src/app/modals/new-client-modal-compone
 export class ClientsComponent implements OnInit, OnDestroy {
 
   constructor(private clientService: ClientService, private dialog: MatDialog) { }
-
+  subscriptions$: Subscription[] = [];
   clients: Client[] = [];
   displayedColumns = ['name', 'description', 'actions']
   ngOnInit(): void {
-    this.clientService.clients$.subscribe(clients => {
-      this.clients = clients;
-    })
+    this.subscriptions$.push(this.clientService.clients$.subscribe(c => {
+      this.clients = c;
+    }))
   }
   ngOnDestroy(): void {
-    this.clientService.clients$.unsubscribe();
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
   onOpenEditModal(client) {
     const dialogRef = this.dialog.open(NewClientModalComponent, {

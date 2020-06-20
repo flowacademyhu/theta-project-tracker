@@ -1,27 +1,38 @@
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CustomMaterialModule } from './custom-material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatFormFieldModule } from '@angular/material/form-field';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
+// OUR COMPONENTS + STUFF
+import { AppComponent } from './app.component';
+import { CalendarComponent } from './components/calendar.component';
+import { ReportsComponent } from './components/reports.component';
+import { NewUserComponent } from './components/new-user.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { HighlightDirective } from './directives/highlite.directive';
+import { MilestonesComponent } from './components/milestones.component';
+import { ClientsComponent } from './components/clients.component';
+import { LoginComponent } from './components/login.component';
+import { HeaderComponent } from './components/header.component';
+import { TimesheetComponent } from './components/timesheet.component';
+import { UsersComponent } from './components/users.component';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
-import { NewUserComponent } from '../app/components/new-user.component';
-import { UsersComponent } from '../app/components/users.component';
-import { ClientsComponent } from './components/clients.component';
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
-import { ClientManagementComponent } from './components/client-management-component';
+import { ClientManagementComponent } from '../app/components/client-management-component';
 
 @NgModule({
   declarations: [
@@ -32,7 +43,17 @@ import { ClientManagementComponent } from './components/client-management-compon
     DeleteModalComponent,
     ClientsComponent,
     NewClientModalComponent,
-    ClientManagementComponent
+    ClientManagementComponent,
+    UsersComponent,
+    CalendarComponent,
+    TimesheetComponent,
+    HeaderComponent,
+    LoginComponent,
+    ReportsComponent,
+    HighlightDirective,
+    MilestonesComponent,
+    ClientsComponent,
+    NewUserComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +70,18 @@ import { ClientManagementComponent } from './components/client-management-compon
     MatTableModule,
     MatIconModule,
     MatPaginatorModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CustomMaterialModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCardModule,
+    MatTableModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

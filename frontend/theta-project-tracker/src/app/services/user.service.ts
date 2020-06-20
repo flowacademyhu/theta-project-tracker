@@ -7,7 +7,7 @@ import { User, Role } from '../models/user.model';
 })
 export class UserService {
 
-  constructor() { }
+  constructor() { };
 
   public users: User[] = [{
     id: 1,
@@ -30,7 +30,7 @@ export class UserService {
     projectAssigned: [{projectName: 'xyz', costToClientPerHour: 70}]
   }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
-  
+
   public fetchUsers (): User[] {
     return this.users
   }
@@ -52,7 +52,3 @@ export class UserService {
     return this.users$.next([...this.users]);
   } 
 }
-
-
-
-
