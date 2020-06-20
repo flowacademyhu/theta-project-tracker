@@ -155,9 +155,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
       password: this.newUser.getRawValue().password,
       /* projectAssigned: this.assignedProjects */
     };
-    this.subscriptions$.push(this.userService.addUser(this.createdUser).subscribe(data => {
-      console.log(data);
-    }));
+    this.subscriptions$.push(this.userService.addUser(this.createdUser).subscribe());
   }
   onDeleteProject(project) {
     this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.projectName === project.projectName), 1);
@@ -177,10 +175,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
       role: this.newUser.getRawValue().role,
       /*  projectAssigned: this.assignedProjects */
     }
-    console.log(this.userToEdit)
-    this.subscriptions$.push(this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe(data => {
-      console.log(data);
-    }));
+    this.subscriptions$.push(this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe());
   }
   assignProjectsToUser() {
     /*    this.assignedProjects.push({

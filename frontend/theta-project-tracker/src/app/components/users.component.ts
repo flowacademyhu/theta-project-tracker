@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DeleteModalComponent } from '../modals/delete-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { NewUserModalComponent } from '../modals/new-user-modal.component';
@@ -64,32 +63,23 @@ import { ActivatedRoute, Router } from '@angular/router';
   }
   `]
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent implements OnInit {
 
-  subscriptions$: Subscription[] = [];
   projectArrays: any[] = [];
   displayedColumns = ['firstName', 'lastName', 'role', 'cost', 'projects', 'actions'];
   dataSource: User[] = [];
 
   constructor(private userService: UserService, private dialog: MatDialog, private route: ActivatedRoute,
     private router: Router) { }
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
 
   ngOnInit(): void {
-    /*     this.subscriptions$.push(this.route.data.subscribe(data => {
-          this.dataSource = data.users;
-        }))
-        console.log(this.dataSource) */
-    this.subscriptions$.push(this.userService.fetchUsers().subscribe(data => {
+    this.userService.fetchUsers().subscribe(data => {
       this.dataSource = data;
-    }))
+    })
   }
 
   onOpenDeleteModal(user) {
-    const nameToPass = this.dataSource.find(u => u.id === user.id).firstName + ' ' +
-      this.dataSource.find(u => u.id === user.id).lastName;
+    const nameToPass = user.firstName + ' ' + user.lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -97,12 +87,15 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.subscriptions$.push(this.userService.deleteUser(user.id).subscribe(data => {
-          this.ngOnInit();
-        }));
+        this.userService.deleteUser(user.id).subscribe(() => {
+          this.userService.fetchUsers().subscribe(data => {
+            this.dataSource = data;
+          })
+        });
       }
     });
   }
+
   onOpenEditModal(user) {
     this.router.navigate(['edit-user'], {
       relativeTo: this.route,
@@ -113,10 +106,13 @@ export class UsersComponent implements OnInit, OnDestroy {
       height: '80%',
       data: { userToEdit: user }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      this.ngOnInit()
+    dialogRef.afterClosed().subscribe(() => {
+      this.userService.fetchUsers().subscribe(data => {
+        this.dataSource = data;
+      })
     });
   }
+
   onAddNewUser() {
     this.router.navigate(['add-new'], {
       relativeTo: this.route
@@ -125,8 +121,10 @@ export class UsersComponent implements OnInit, OnDestroy {
       width: '60%',
       height: '80%'
     });
-    dialogRef.afterClosed().subscribe(result => {
-      this.ngOnInit();
+    dialogRef.afterClosed().subscribe(() => {
+      this.userService.fetchUsers().subscribe(data => {
+        this.dataSource = data;
+      })
     });
   }
 }
