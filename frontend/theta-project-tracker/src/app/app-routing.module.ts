@@ -1,25 +1,61 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+import { ReportsComponent } from './components/reports.component';
 import { UsersComponent } from './components/users.component';
-import { UserResolver } from './resolvers/user.resolver';
-/* import { LoginComponent } from './components/login.component'; */
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './components/login.component';
+import { TimesheetComponent } from './components/timesheet.component';
+import { CalendarComponent } from './components/calendar.component';
+import { UserResolver } from '../app/resolvers/user.resolver';
+import { NewUserComponent } from './components/new-user.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'LoginComponent',
-    pathMatch: 'full',
-  }, 
-   {
+    component: LoginComponent
+  },
+  {
     path: 'login',
-    component: LoginComponent,
-    resolve: { users: UserResolver }
+    component: LoginComponent
   },
   {
     path: 'users',
-    component: UsersComponent,
-    resolve: { users: UserResolver }
+    component:  UsersComponent,
+    resolve: {users: UserResolver },
+    children: [
+      {
+        path: 'add-new',
+        component: NewUserComponent
+      }
+    ]
+  },
+  {
+    path: 'timesheet',
+    component: TimesheetComponent,
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent,
+  },
+  {
+    path: 'calendar',
+    component: CalendarComponent,
+  },
+  {
+    path: 'projects',
+    component: CalendarComponent,
+  },
+  {
+    path: 'milestones',
+    component: CalendarComponent,
+  },
+  {
+    path: 'clients',
+    component: CalendarComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'login'
   }
 ];
 
@@ -27,4 +63,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

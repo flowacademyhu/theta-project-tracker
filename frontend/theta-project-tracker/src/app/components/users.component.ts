@@ -5,15 +5,14 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { NewUserModalComponent } from '../modals/new-user-modal.component';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
   template: `
+  <div>
+  <button (click)="onAddNewUser()" mat-raised-button #newUser>+ Add New User</button>
   <mat-card class="table-container">
-    <div>
-    <button (click)="onAddNewUser()" mat-raised-button>+ Add New User</button>
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="firstName">
                 <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
@@ -45,8 +44,8 @@ import { ActivatedRoute } from '@angular/router';
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
-    </div>
 </mat-card>
+</div>
   `,
   styles: [
     `
@@ -60,31 +59,34 @@ import { ActivatedRoute } from '@angular/router';
   mat-icon:hover {
       cursor: pointer;
   }
-    `
-  ]
+  `]
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
   subscriptions$: Subscription[] = [];
   projectArrays: any[] = [];
+  displayedColumns = ['firstName', 'lastName', 'role', 'cost', 'projects', 'actions'];
+  dataSource: User[] = [];
 
-  constructor(private userService: UserService, private dialog: MatDialog, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private route: ActivatedRoute,
+    private router: Router) { }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
-
-  displayedColumns = ['firstName','lastName', 'role', 'cost', 'projects', 'actions'];
-  dataSource: User[] = [];
 
   ngOnInit(): void {
     this.subscriptions$.push(this.route.data.subscribe(data => {
       this.dataSource = data.users;
     }))
     console.log(this.dataSource)
+    this.subscriptions$.push(this.userService.fetchUsers().subscribe(data => {
+      this.dataSource = data;
+    }))
   }
+
   onOpenDeleteModal(user) {
     const nameToPass = this.dataSource.find(u => u.id === user.id).firstName + ' ' +
-    this.dataSource.find(u => u.id === user.id).lastName;
+      this.dataSource.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -95,7 +97,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.subscriptions$.push(this.userService.deleteUser(user.id).subscribe(data => {
           console.log(data)
         }));
-
       }
     });
   }
@@ -111,6 +112,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
   onAddNewUser() {
+    this.router.navigate(['add-new'], {
+      relativeTo: this.route
+    })
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',
       height: '80%'
@@ -120,12 +124,4 @@ export class UsersComponent implements OnInit, OnDestroy {
       }
     });
   }
- /*  get userProjects() {
-    let arr = this.dataSource.map(u => u.projectAssigned);
-    for (let i = 0; i < arr.length; i++) {
-      
-    }
-    
-  } */
-
 }

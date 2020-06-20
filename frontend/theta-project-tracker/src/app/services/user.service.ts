@@ -3,14 +3,14 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
 import { User, Role } from '../models/user.model';
 import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { };
 
   public users: User[] = [{
     id: 1,

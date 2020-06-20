@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-new-user',
   template: `
@@ -113,7 +114,7 @@ import { Subscription } from 'rxjs';
 })
 export class NewUserComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) { }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe())
   }
@@ -189,6 +190,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   onCloseDialog() {
     if (this.userToEdit) {
       this.editUser();
+     
     } else {
       this.onAddNewUser();
     }
