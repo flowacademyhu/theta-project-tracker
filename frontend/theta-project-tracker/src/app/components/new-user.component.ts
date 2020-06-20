@@ -139,14 +139,14 @@ export class NewUserComponent implements OnInit {
     this.userService.addUser(this.createdUser);
   }
   onDeleteProject(project) {
-    this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.projectName === project.projectName), 1); 
+    this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.projectName === project.projectName), 1);
   }
   onAddNewProject() {
     this.assignedProjects.push({projectName: this.newUser.get('project').value, userCostPerHour: this.newUser.get('costToClient').value})
     this.newUser.get('project').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
   }
- 
+
 
 
 
