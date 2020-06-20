@@ -5,25 +5,66 @@ import * as jwtConfig from '../../config/jwt.json'
 import {User} from "../app/models/user";
 
 enum Method {
-    post = 'POST'
+    get = 'GET',
+    post = 'POST',
+    put = 'PUT',
+    destroy = 'DELETE'
 }
 
-interface AnonymusEndpoint {
+interface Endpoint {
     path: string;
     method: Method;
 }
 
-const anonymusEndpoints: Array<AnonymusEndpoint> = [
+const anonymusEndpoints: Array<Endpoint> = [
     {
         path: '/login',
         method: Method.post
     }
-]
+];
+
+const userEndpoints: Array<Endpoint> = [
+    {
+        path: '/user/:userId/project',
+        method: Method.get
+    },
+    {
+        path: '/client',
+        method: Method.get
+    },
+    {
+        path: '/client/:id',
+        method: Method.get
+    },
+    {
+        path: '/project',
+        method: Method.get
+    },
+    {
+        path: '/project/:id',
+        method: Method.get
+    },
+    {
+        path: '/milestone',
+        method: Method.get
+    },
+    {
+        path: '/milestone/:id',
+        method: Method.get
+    },
+];
 
 const isAnonymusEndpoint = (req: Request): boolean => {
     return !!(anonymusEndpoints.find(
         anonymusEndpoint => (
             anonymusEndpoint.method === req.method && anonymusEndpoint.path === req.path
+        )))
+}
+
+const isUserEndpoint = (req: Request): boolean => {
+    return !!(userEndpoints.find(
+        userEndpoints => (
+            userEndpoints.method === req.method && userEndpoints.path === req.path
         )))
 }
 
@@ -41,7 +82,16 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
     }
     try {
         await verifyUser(req, res);
-        next();
+        if(res.locals.user.role === 'user') {
+            if(isUserEndpoint(req)) {
+                return next();
+            } else {
+                res.sendStatus(401);
+            }
+        }
+        if(res.locals.user.role === 'admin') {
+            return next();
+        }
     } catch (error) {
         res.sendStatus(401);
     }
