@@ -1,18 +1,18 @@
 export interface User {
-  id: number;
+  id?: number;
   firstName: string;
   lastName: string;
   role: Role;
   email: string;
-  password: string;
+  password?: string;
   userCostToCompanyPerHour: number;
-  projectAssigned: ProjectAssigned;
+  projectAssigned: ProjectAssigned[];
 }
 export interface ProjectAssigned {
   projectName: string;
   userCostPerHour: number;
 }
 export enum Role {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
+  USER = 'user',
+  ADMIN = 'admin'
 }
