@@ -35,7 +35,6 @@ import { ProjectService } from '../services/project.service';
   <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">Save</button>
 </div>
-
 `,
 styles: [`
 `]
@@ -43,8 +42,6 @@ styles: [`
 export class NewProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService) { }
-
-
   newProject = new FormGroup({
     name: new FormControl(null, Validators.required),
     client: new FormControl(null, Validators.required),
