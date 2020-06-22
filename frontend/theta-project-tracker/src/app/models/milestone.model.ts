@@ -1,5 +1,5 @@
 export interface Milestone {
-  id: number;
+  id?: number;
   name: String;
   project: String;
   description: String  

@@ -36,6 +36,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
+import { DeleteMilestoneComponent } from './modals/delete-milestone.component';
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -58,6 +59,7 @@ export function httpTranslateLoader(http: HttpClient) {
     ProjectsComponent,
     NewMilestoneModalComponent,
     NewMilestoneComponent,
+    DeleteMilestoneComponent,
   ],
   imports: [
     FormsModule,

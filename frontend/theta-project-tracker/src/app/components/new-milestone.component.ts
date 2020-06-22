@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Milestone } from '../models/milestone.model';
 import { MilestoneService } from '../services/milestone.service';
@@ -11,34 +11,70 @@ import { EventEmitter } from '@angular/core';
   <label for="name">Name</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="firstName">
+      <input matInput type="text" formControlName="name">
     </mat-form-field>
   </div>
-  <label for="name">Project</label>
+  <label for="project">Project</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="lastName">
+      <input matInput type="text" formControlName="project">
     </mat-form-field>
   </div>
-  <label for="email">Description</label>
+  <label for="description">Description</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="email">
+      <input matInput type="text" formControlName="description">
     </mat-form-field>
   </div>
+    <div class="actions">
+  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">Save</button>
+</div>
   
   `,
 })
 export class NewMilestoneComponent implements OnInit {
 
-  constructor() { }
+  constructor(private milestoneService: MilestoneService) { }
 
   newMilestone = new FormGroup({
     name: new FormControl(null, Validators.required),
     project: new FormControl(null, Validators.required),
     description: new FormControl(null, [Validators.required]),
   })
+  createdMilestone: Milestone;
+  emitter: EventEmitter<Milestone> = new EventEmitter<Milestone>();
+  @Input() milestoneToEdit: Milestone;
   ngOnInit(): void {
+    if (this.milestoneToEdit) {
+      this.newMilestone.patchValue(this.milestoneToEdit)
+    }
   }
 
+  onAddNewMilestone() {
+    this.createdMilestone = {
+      name: this.newMilestone.getRawValue().name,
+      project: this.newMilestone.getRawValue().project,
+      description: this.newMilestone.getRawValue().description,
+    };
+    this.emitter.emit(this.createdMilestone);
+    this.milestoneService.addMilestone(this.createdMilestone);
+  }
+  editMilestone() {
+    console.log(this.milestoneToEdit)
+    this.milestoneToEdit = {
+      id: this.milestoneToEdit.id,
+      name: this.newMilestone.getRawValue().name,
+      project: this.newMilestone.getRawValue().project,
+      description: this.newMilestone.getRawValue().description, 
+    };
+    this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.milestoneToEdit);
+  }
+  onCloseDialog() {
+    if (this.milestoneToEdit) {
+      this.editMilestone();
+    } else {
+      this.onAddNewMilestone()
+    }
+  }
 }
