@@ -9,7 +9,7 @@ import {ProjectUser} from "../models/projectUser";
 import {createUser} from "../serializers/userCreate";
 
 export const index = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.users).select().where({isDeleted: 'false'});
+    let query: QueryBuilder = database(TableNames.users).select().where({deletedAt: null});
     if (req.query.limit) {
         query = query.limit(req.query.limit);
     }
@@ -22,7 +22,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
     try {
-        const user: User = await database(TableNames.users).select().where({id: req.params.id, isDeleted: 'false'}).first();
+        const user: User = await database(TableNames.users).select().where({id: req.params.id, deletedAt: null}).first();
         if (user) {
             res.json(userSerializer.show(user));
         } else {
@@ -88,8 +88,8 @@ export const destroy = async (req: Request, res: Response) => {
     try {
         const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
         if (user) {
-            await database(TableNames.projectUsers).update('isDeleted', true).where({userId: req.params.id});
-            await database(TableNames.users).update('isDeleted', true).where({id: req.params.id});
+            await database(TableNames.projectUsers).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({userId: req.params.id});
+            await database(TableNames.users).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({id: req.params.id});
             res.sendStatus(204);
         } else {
             res.sendStatus(404);

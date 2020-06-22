@@ -5,7 +5,7 @@ import { QueryBuilder } from "knex";
 import { TableNames } from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.clients).select().where({isDeleted: 'false'});
+  let query: QueryBuilder = database(TableNames.clients).select().where({deletedAt: null});
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -18,7 +18,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const client: Client = await database(TableNames.clients).select().where({ id: req.params.id, isDeleted: 'false' }).first();
+    const client: Client = await database(TableNames.clients).select().where({ id: req.params.id, deletedAt: null }).first();
     if (client) {
       res.json(client);
     } else {
@@ -46,7 +46,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const client: Client = await database(TableNames.clients).select().where({ id: req.params.id, isDeleted: 'false' }).first();
+    const client: Client = await database(TableNames.clients).select().where({ id: req.params.id, deletedAt: null }).first();
     if (client) {
       const newClient: Client = {
         name: req.body.name,
@@ -67,7 +67,7 @@ export const destroy = async (req: Request, res: Response) => {
   try {
     const client: Client = await database(TableNames.clients).select().where({ id: req.params.id }).first();
     if (client) {
-      await database(TableNames.clients).update('isDeleted', true).where({ id: req.params.id });
+      await database(TableNames.clients).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({ id: req.params.id });
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

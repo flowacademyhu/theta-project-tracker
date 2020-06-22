@@ -4,5 +4,4 @@ export interface Client {
     description: string;
     createdAt?: string;
     updatedAt?: string;
-    isDeleted?: string;
 }

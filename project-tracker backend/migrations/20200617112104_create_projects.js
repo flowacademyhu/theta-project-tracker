@@ -7,7 +7,7 @@ exports.up = function(knex) {
         table.integer('budget').notNullable();
         table.timestamp('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
-        table.enu('isDeleted', ['true', 'false']).defaultTo('false');
+        table.string('deletedAt').defaultTo(null);
     });
 };
 
