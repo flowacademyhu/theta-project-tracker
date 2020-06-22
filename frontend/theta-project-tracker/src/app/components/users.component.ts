@@ -44,7 +44,6 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
     </div>
-</mat-card>
   `,
   styles: [
     `

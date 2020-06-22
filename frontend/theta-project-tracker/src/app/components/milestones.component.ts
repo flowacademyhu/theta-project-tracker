@@ -27,8 +27,17 @@ import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.compon
             <ng-container matColumnDef="actions" class="actions">
                 <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">
+                <mat-icon>edit</mat-icon>
+                    <mat-icon >clear</mat-icon>
                 </mat-cell>
             </ng-container>
+            <ng-container matColumnDef="action" class="action">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let project">
+                <mat-icon>edit</mat-icon>
+                <mat-icon>clear</mat-icon>
+            </mat-cell>
+        </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>

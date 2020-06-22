@@ -33,6 +33,11 @@ export class NewMilestoneComponent implements OnInit {
 
   constructor() { }
 
+  newMilestone = new FormGroup({
+    name: new FormControl(null, Validators.required),
+    project: new FormControl(null, Validators.required),
+    description: new FormControl(null, [Validators.required]),
+  })
   ngOnInit(): void {
   }
 
