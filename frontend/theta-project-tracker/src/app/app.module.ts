@@ -9,18 +9,15 @@ import { HeaderComponent } from './components/header.component';
 import { TimesheetComponent } from './components/timesheet.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
-import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -29,12 +26,16 @@ export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 import { CalendarComponent } from './components/calendar.component';
-
+import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
+import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { RecordOneWeekComponent } from './components/record-one-week.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     HighlightDirective,
     MilestonesComponent,
     ClientsComponent,
-    NewUserComponent
+    NewUserComponent,
+    NewUserModalComponent,
+    DeleteModalComponent,
+    RecordOneWeekComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +82,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
         useFactory: httpTranslateLoader,
         deps: [HttpClient],
       }
-    })
+    }),
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
