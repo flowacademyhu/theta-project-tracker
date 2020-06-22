@@ -2,7 +2,7 @@ exports.seed = (knex) => {
     return knex('projectUsers').insert([
         {
             projectId: 3,
-            userId: 2,
+            userId: 4,
             costToClientPerHour: 10
         },
         {
