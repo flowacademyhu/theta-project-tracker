@@ -50,7 +50,7 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
     .table-container {
       margin: auto;
       max-width: 70%;
-      height: 400px;
+      height: 450px;
       overflow: auto;
       margin-top: 200px
   }

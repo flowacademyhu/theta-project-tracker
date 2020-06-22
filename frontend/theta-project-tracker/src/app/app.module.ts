@@ -21,13 +21,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UsersComponent } from '../app/components/users.component';
 import { ProjectsComponent } from './components/projects.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar.component';
-import { DeleteModalComponent } from './modals/delete-modal.component';
-
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
@@ -36,6 +36,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
+import { RecordOneWeekComponent } from './components/record-one-week.component';
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -57,7 +58,8 @@ export function httpTranslateLoader(http: HttpClient) {
     ProjectsComponent,
     NewMilestoneModalComponent,
     NewMilestoneComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    RecordOneWeekComponent
   ],
   imports: [
     FormsModule,
@@ -78,6 +80,8 @@ export function httpTranslateLoader(http: HttpClient) {
     MatRadioModule,
     MatPaginatorModule,
     HttpClientModule,
+    MatInputModule,
+    MatButtonModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

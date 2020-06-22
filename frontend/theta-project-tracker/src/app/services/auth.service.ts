@@ -12,7 +12,9 @@ export class AuthService {
       email: 'admin',
       password: 'asd',
       userCostToCompanyPerHour: 2,
-      projectAssigned: [{ projectName: 'Voodoo', userCostPerHour: 2 }] },
+      projectAssigned: [{ projectName: 'Voodoo', userCostPerHour: 2 },
+      { projectName: 'Project0', userCostPerHour: 150},
+      { projectName: 'Project Zero Dawn', userCostPerHour: 200}] },
     { id: 2,
       firstName: 'USer Test',
       lastName: 'User',
@@ -49,5 +51,8 @@ export class AuthService {
         resolve(this.loggedInUser.getValue());
       }, 100);
     });
+  }
+  getAdmin() {
+    return this.users[0];
   }
 }
