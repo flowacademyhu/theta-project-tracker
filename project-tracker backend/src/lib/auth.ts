@@ -23,48 +23,10 @@ const anonymusEndpoints: Array<Endpoint> = [
     }
 ];
 
-const userEndpoints: Array<Endpoint> = [
-    {
-        path: '/user/:userId/project',
-        method: Method.get
-    },
-    {
-        path: '/client',
-        method: Method.get
-    },
-    {
-        path: '/client/:id',
-        method: Method.get
-    },
-    {
-        path: '/project',
-        method: Method.get
-    },
-    {
-        path: '/project/:id',
-        method: Method.get
-    },
-    {
-        path: '/milestone',
-        method: Method.get
-    },
-    {
-        path: '/milestone/:id',
-        method: Method.get
-    },
-];
-
 const isAnonymusEndpoint = (req: Request): boolean => {
     return !!(anonymusEndpoints.find(
         anonymusEndpoint => (
             anonymusEndpoint.method === req.method && anonymusEndpoint.path === req.path
-        )))
-}
-
-const isUserEndpoint = (req: Request): boolean => {
-    return !!(userEndpoints.find(
-        userEndpoints => (
-            userEndpoints.method === req.method && userEndpoints.path === req.path
         )))
 }
 
@@ -82,17 +44,16 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
     }
     try {
         await verifyUser(req, res);
-        if(res.locals.user.role === 'user') {
-            if(isUserEndpoint(req)) {
-                return next();
-            } else {
-                res.sendStatus(401);
-            }
-        }
-        if(res.locals.user.role === 'admin') {
-            return next();
-        }
+        next();
     } catch (error) {
         res.sendStatus(401);
+    }
+}
+
+export const authorization = (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals.user.role === 'admin') {
+        return next();
+    } else {
+        res.sendStatus(403);
     }
 }

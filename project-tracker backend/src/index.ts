@@ -4,7 +4,7 @@ import * as createMiddleware from 'swagger-express-middleware';
 import {SwaggerMiddleware} from 'swagger-express-middleware';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../config/swagger.json';
-import {authentication} from './lib/authentication';
+import {authentication} from './lib/auth';
 import {router} from './app/routers';
 
 const app: Application = express();
@@ -23,7 +23,7 @@ createMiddleware('config/swagger.json', app, (err, middleware: SwaggerMiddleware
 
     const {PORT = 3000} = process.env;
 
-    app.use(authentication)
+    app.use(authentication);
     app.use(router);
 
     app.listen(PORT, () => {
