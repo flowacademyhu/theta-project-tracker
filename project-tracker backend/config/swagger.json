@@ -13,10 +13,24 @@
   "produces": [
     "application/json"
   ],
+  "tags": [
+    {
+      "name": "user",
+      "description": ""
+    },
+    {
+      "name": "admin",
+      "description": ""
+    }
+  ],
   "paths": {
     "/login": {
       "post": {
         "summary": "Login with user",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -59,6 +73,9 @@
     "/user": {
       "post": {
         "summary": "Create new user",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -81,6 +98,9 @@
       },
       "get": {
         "summary": "Get all users",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -104,6 +124,10 @@
     "/user/{id}": {
       "get": {
         "summary": "Get user by id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -128,6 +152,10 @@
       },
       "put": {
         "summary": "Update user by id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -156,6 +184,9 @@
       },
       "delete": {
         "summary": "Delete user by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -179,6 +210,10 @@
     "/user/{userId}/project": {
       "get": {
         "summary": "Get all projects by user's id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -208,6 +243,9 @@
     "/client": {
       "post": {
         "summary": "Create new client",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -230,6 +268,9 @@
       },
       "get": {
         "summary": "Get all clients",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -253,6 +294,9 @@
     "/client/{id}": {
       "get": {
         "summary": "Get client by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -277,6 +321,9 @@
       },
       "put": {
         "summary": "Update client by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -305,6 +352,9 @@
       },
       "delete": {
         "summary": "Delete client by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -328,6 +378,9 @@
     "/project": {
       "post": {
         "summary": "Create new project",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -350,6 +403,9 @@
       },
       "get": {
         "summary": "Get all projects",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -373,6 +429,9 @@
     "/project/{id}": {
       "get": {
         "summary": "Get project by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -397,6 +456,9 @@
       },
       "put": {
         "summary": "Update project by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -425,6 +487,9 @@
       },
       "delete": {
         "summary": "Delete project by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -448,6 +513,9 @@
     "/project/{projectId}/user": {
       "get": {
         "summary": "Get all users on a specific project",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -477,6 +545,9 @@
     "/project/{projectId}/user/{userId}": {
       "post": {
         "summary": "Add specific user to specific project",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -511,6 +582,9 @@
       },
       "delete": {
         "summary": "Delete specific user from specific project",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -540,6 +614,9 @@
     "/milestone": {
       "post": {
         "summary": "Create new milestone",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -562,6 +639,10 @@
       },
       "get": {
         "summary": "Get all milestones",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -585,6 +666,10 @@
     "/milestone/{id}": {
       "get": {
         "summary": "Get milestone by id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -609,6 +694,7 @@
       },
       "put": {
         "summary": "Update milestone by id",
+        "tags": ["admin"],
         "parameters": [
           {
             "in": "header",
@@ -637,6 +723,7 @@
       },
       "delete": {
         "summary": "Delete milestone by id",
+        "tags": ["admin"],
         "parameters": [
           {
             "in": "header",

@@ -19,8 +19,13 @@ export const index = async (req: Request, res: Response) => {
 };
 
 export const show = async (req: Request, res: Response) => {
+    let user: User;
     try {
-        const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
+        if (res.locals.user.role !== 'admin') {
+            user = res.locals.user;
+        } else {
+            user = await database(TableNames.users).select().where({id: req.params.id}).first();
+        }
         if (user) {
             res.json(userSerializer.show(user));
         } else {
@@ -62,7 +67,13 @@ export const update = async (req: Request, res: Response) => {
                 email: req.body.email,
                 costToCompanyPerHour: req.body.costToCompanyPerHour
             }
-            await database(TableNames.users).update(newUser).where({id: req.params.id});
+            let userId: number;
+            if (res.locals.user.role !== 'admin') {
+                userId = res.locals.user.id;
+            } else {
+                userId = +req.params.id;
+            }
+            await database(TableNames.users).update(newUser).where({id: userId});
             res.sendStatus(200);
         } else {
             res.sendStatus(404);
