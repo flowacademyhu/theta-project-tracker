@@ -11,19 +11,19 @@ import { EventEmitter } from '@angular/core';
   <label for="name">Name</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="firstName">
+      <input matInput type="text" formControlName="name">
     </mat-form-field>
   </div>
   <label for="name">Project</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="lastName">
+      <input matInput type="text" formControlName="project">
     </mat-form-field>
   </div>
   <label for="email">Description</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="email">
+      <input matInput type="text" formControlName="description">
     </mat-form-field>
   </div>
   

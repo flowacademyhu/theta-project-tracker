@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
-import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { NewUserComponent } from '../app/components/new-user.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -26,6 +25,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar.component';
+import { DeleteModalComponent } from './modals/delete-modal.component';
 
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { HighlightDirective } from './directives/highlite.directive';
@@ -54,10 +54,10 @@ export function httpTranslateLoader(http: HttpClient) {
     ClientsComponent,
     NewUserComponent,
     NewUserModalComponent,
-    DeleteModalComponent,
     ProjectsComponent,
     NewMilestoneModalComponent,
     NewMilestoneComponent,
+    DeleteModalComponent
   ],
   imports: [
     FormsModule,

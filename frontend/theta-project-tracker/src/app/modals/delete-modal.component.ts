@@ -13,10 +13,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 </mat-dialog-actions>
 
   `,
-  styles: [
-    `
-    `
-  ]
+  styles: [`
+    `]
 })
 export class DeleteModalComponent implements OnInit {
   name: string;
