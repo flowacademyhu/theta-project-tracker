@@ -130,7 +130,7 @@ export class NewUserComponent implements OnInit {
       firstName: this.newUser.getRawValue().firstName,
       lastName: this.newUser.getRawValue().lastName,
       email: this.newUser.getRawValue().email,
-      userCostToCompanyPerHour: this.newUser.getRawValue().cost,
+      costToCompanyPerHour: this.newUser.getRawValue().cost,
       role: this.newUser.getRawValue().role,
       projectAssigned: this.assignedProjects
     };
