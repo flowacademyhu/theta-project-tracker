@@ -9,7 +9,7 @@ import {ProjectUser} from "../models/projectUser";
 import {createUser} from "../serializers/userCreate";
 
 export const index = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.users).select().where({deletedAt: null});
+    let query: QueryBuilder = database(TableNames.users).select().whereNull('deletedAt');
     if (req.query.limit) {
         query = query.limit(req.query.limit);
     }
@@ -22,7 +22,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
     try {
-        const user: User = await database(TableNames.users).select().where({id: req.params.id, deletedAt: null}).first();
+        const user: User = await database(TableNames.users).select().where({id: req.params.id}).whereNull('deletedAt').first();
         if (user) {
             res.json(userSerializer.show(user));
         } else {
@@ -41,12 +41,12 @@ const createProjects = async (req: Request) => {
         .where({email: req.body.user.email}).first();
     const userId: number = user.id;
     if (projects.length > 0) {
-        for(let i = 0; i < projects.length; i++) {
+        for (let project of projects) {
             projectsToSave.push(
                 {
                     userId: userId,
-                    projectId: projects[i].projectId,
-                    costToClientPerHour: projects[i].costToClientPerHour
+                    projectId: project.projectId,
+                    costToClientPerHour: project.costToClientPerHour
                 }
             );
         }
@@ -57,7 +57,7 @@ const createProjects = async (req: Request) => {
 export const create = async (req: Request, res: Response) => {
     try {
         const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
-        const user= createUser(req.body.user, encryptedPassword);
+        const user = createUser(req.body.user, encryptedPassword);
         await database(TableNames.users).insert(user);
         await createProjects(req);
         res.sendStatus(201);
@@ -72,7 +72,7 @@ export const update = async (req: Request, res: Response) => {
         const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
         if (user) {
             const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
-            const newUser= createUser(req.body.user, encryptedPassword);
+            const newUser = createUser(req.body.user, encryptedPassword);
             await database(TableNames.users).update(newUser).where({id: user.id});
             res.sendStatus(200);
         } else {
