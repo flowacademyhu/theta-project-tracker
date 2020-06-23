@@ -1,7 +1,7 @@
 export interface Project {
   id?: number;
-  name: String;
-  client: String;
-  description: String;
+  name: string;
+  client: string;
+  description: string;
   budget: number;
 }
