@@ -3,6 +3,7 @@ import {database} from "./database";
 import * as jwt from "jsonwebtoken";
 import * as jwtConfig from '../../config/jwt.json'
 import {User} from "../app/models/user";
+import {Roles} from "./enums";
 
 enum Method {
     get = 'GET',
@@ -51,7 +52,7 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
 }
 
 export const authorization = (req: Request, res: Response, next: NextFunction) => {
-    if (res.locals.user.role === 'admin') {
+    if (res.locals.user.role === Roles.admin) {
         return next();
     } else {
         res.sendStatus(403);
