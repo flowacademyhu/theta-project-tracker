@@ -126,24 +126,12 @@ export class NewUserComponent implements OnInit {
   ngOnInit(): void {
     if (this.userToEdit) {
       this.assignedProjects = this.userToEdit.projectAssigned;
-      this.newUser.get('firstName').patchValue(this.userToEdit.firstName);
-      this.newUser.get('lastName').patchValue(this.userToEdit.lastName);
-      this.newUser.get('email').patchValue(this.userToEdit.email);
-      this.newUser.get('cost').patchValue(this.userToEdit.costToCompanyPerHour);
-      this.newUser.get('role').patchValue(this.userToEdit.role);
+     this.newUser.patchValue(this.userToEdit)
     }
   }
   onAddNewUser() {
     this.assignProjectsToUser();
-    this.createdUser = {
-      id: this.userService.fetchUsers().length + 1,
-      firstName: this.newUser.getRawValue().firstName,
-      lastName: this.newUser.getRawValue().lastName,
-      email: this.newUser.getRawValue().email,
-      costToCompanyPerHour: this.newUser.getRawValue().cost,
-      role: this.newUser.getRawValue().role,
-      projectAssigned: this.assignedProjects
-    };
+    this.createdUser = this.newUser.getRawValue();
     this.userService.addUser(this.createdUser);
   }
   onDeleteProject(project) {
@@ -155,15 +143,7 @@ export class NewUserComponent implements OnInit {
     this.newUser.get('costToClient').patchValue(null);
   }
   editUser() {
-    this.userToEdit = {
-      id: this.userToEdit.id,
-      firstName: this.newUser.getRawValue().firstName,
-      lastName: this.newUser.getRawValue().lastName,
-      email: this.newUser.getRawValue().email,
-      costToCompanyPerHour: this.newUser.getRawValue().cost,
-      role: this.newUser.getRawValue().role,
-      projectAssigned: this.assignedProjects
-    }
+    this.userToEdit = this.newUser.getRawValue();
     this.userService.updateUser(this.userToEdit.id, this.userToEdit);
   }
   assignProjectsToUser() {
