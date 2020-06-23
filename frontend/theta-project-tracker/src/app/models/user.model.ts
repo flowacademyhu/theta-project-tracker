@@ -13,6 +13,6 @@ export interface ProjectAssigned {
   userCostPerHour: number;
 }
 export enum Role {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
+  USER = 'user',
+  ADMIN = 'admin'
 }

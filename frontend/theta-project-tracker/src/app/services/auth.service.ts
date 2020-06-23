@@ -50,4 +50,7 @@ export class AuthService {
       }, 100);
     });
   }
+  getAdmin() {
+    return this.users[0];
+  }
 }
