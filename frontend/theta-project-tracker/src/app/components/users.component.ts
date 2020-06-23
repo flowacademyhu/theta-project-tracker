@@ -103,7 +103,6 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userService.deleteUser(user.id);
-
       }
     });
   }
