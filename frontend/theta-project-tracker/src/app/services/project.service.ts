@@ -25,8 +25,8 @@ export class ProjectService {
   }]
   projects$: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(this.projects)
 
-  public fetchProjects(): Project[] {
-    return this.projects
+  public fetchProjects() {
+    return this.projects$
   }
   public fetchProject(id: number) {
     return {...this.projects.find(project => project.id === id)}

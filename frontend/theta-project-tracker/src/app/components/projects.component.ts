@@ -82,9 +82,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       width: '60%',
       height: '80%'
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.projectService.fetchProjects().subscribe(data => {
+        this.dataSource = data;
+      })
     });
   }
  
