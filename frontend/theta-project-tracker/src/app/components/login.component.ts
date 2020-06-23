@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
 
   public onLogin() {
     console.log(this.user);
-    console.log(this.loginForm.get("email").value);
+    console.log(this.loginForm.get('email').value);
     this.authService
       .login(this.loginForm.get('email').value, this.loginForm.get('password').value)
       .then(() => {
