@@ -26,6 +26,7 @@ import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
+import { ReportsTableComponent } from '../app/components/reports-table.component'
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -46,7 +47,8 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     NewUserComponent,
     NewUserModalComponent,
     DeleteModalComponent,
-    RecordOneWeekComponent
+    RecordOneWeekComponent,
+    ReportsTableComponent
   ],
   imports: [
     BrowserModule,
