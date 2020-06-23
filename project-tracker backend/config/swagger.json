@@ -113,7 +113,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -137,7 +137,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -165,7 +165,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -188,7 +188,7 @@
           {
             "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -262,7 +262,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -286,7 +286,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -314,7 +314,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -382,7 +382,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -406,7 +406,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -434,7 +434,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -457,7 +457,7 @@
           {
             "in": "path",
             "name": "projectId",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -486,7 +486,7 @@
           {
             "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -514,7 +514,7 @@
           {
             "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -589,7 +589,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -613,7 +613,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -641,7 +641,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
