@@ -106,22 +106,21 @@ import { EventEmitter } from '@angular/core';
 export class NewUserComponent implements OnInit {
 
   constructor(private userService: UserService) { }
-  newUser: FormGroup;
+  newUser = new FormGroup({
+    firstName: new FormControl(null, [Validators.required]),
+    lastName: new FormControl(null, [Validators.required]),
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    cost: new FormControl(null, [Validators.required, Validators.min(0)]),
+    role: new FormControl(null, [Validators.required]),
+    project: new FormControl(null),
+    costToClient: new FormControl(null),
+  })
   availableProjects = ['Project0', 'Project1', 'Project2', 'Project3'];
   assignedProjects: ProjectAssigned[] = [];
   createdUser: User;
   emitter: EventEmitter<User> = new EventEmitter<User>();
 
   ngOnInit(): void {
-    this.newUser = new FormGroup({
-      firstName: new FormControl(null, [Validators.required]),
-      lastName: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      cost: new FormControl(null, [Validators.required, Validators.min(0)]),
-      role: new FormControl(null, [Validators.required]),
-      project: new FormControl(null),
-      costToClient: new FormControl(null),
-    })
   }
 
   onAddNewUser() {
@@ -130,7 +129,7 @@ export class NewUserComponent implements OnInit {
       firstName: this.newUser.getRawValue().firstName,
       lastName: this.newUser.getRawValue().lastName,
       email: this.newUser.getRawValue().email,
-      userCostToCompanyPerHour: this.newUser.getRawValue().cost,
+      costToCompanyPerHour: this.newUser.getRawValue().cost,
       role: this.newUser.getRawValue().role,
       projectAssigned: this.assignedProjects
     };

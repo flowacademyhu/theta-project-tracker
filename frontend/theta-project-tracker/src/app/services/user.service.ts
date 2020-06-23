@@ -16,7 +16,7 @@ export class UserService {
     role: Role.ADMIN,
     email: 'asd@asd.com',
     password: 'asdasd',
-    userCostToCompanyPerHour: 50,
+    costToCompanyPerHour: 50,
     projectAssigned: [
       {projectName: 'xy', userCostPerHour: 50},
       { projectName: 'Project23', userCostPerHour: 50}]
@@ -28,7 +28,7 @@ export class UserService {
     role: Role.USER,
     email: 'asdasd@asd.com',
     password: 'asdasdasd',
-    userCostToCompanyPerHour: 70,
+    costToCompanyPerHour: 70,
     projectAssigned: [
       {projectName: 'xyz', userCostPerHour: 70},
       { projectName: 'Project0', userCostPerHour: 150},
