@@ -17,7 +17,7 @@ export const index = async (req: Request, res: Response) => {
         query = query.offset(req.query.offset);
     }
     const users: Array<User> = await query;
-    res.json(userSerializer.index(users));
+    res.status(200).json(userSerializer.index(users));
 };
 
 export const create = async (req: Request, res: Response) => {

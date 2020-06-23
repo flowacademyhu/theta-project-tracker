@@ -17,14 +17,14 @@ export const index = async (req: Request, res: Response) => {
         query = query.offset(req.query.offset);
     }
     const users: Array<User> = await query;
-    res.json(userSerializer.index(users));
+    res.status(200).json(userSerializer.index(users));
 };
 
 export const show = async (req: Request, res: Response) => {
     try {
         const user: User = await database(TableNames.users).select().where({id: req.params.id}).whereNull('deletedAt').first();
         if (user) {
-            res.json(userSerializer.show(user));
+            res.status(200).json(userSerializer.show(user));
         } else {
             res.sendStatus(404);
         }

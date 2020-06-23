@@ -15,5 +15,5 @@ export const index = async (req: Request, res: Response) => {
         query = query.offset(req.query.offset);
     }
     const projects: Array<Project> = await query;
-    res.json(projects);
+    res.status(200).json(projects);
 };

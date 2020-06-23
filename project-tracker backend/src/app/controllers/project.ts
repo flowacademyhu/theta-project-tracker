@@ -13,14 +13,14 @@ export const index = async (req: Request, res: Response) => {
         query = query.offset(req.query.offset);
     }
     const projects: Array<Project> = await query;
-    res.json(projects);
+    res.status(200).json(projects);
 };
 
 export const show = async (req: Request, res: Response) => {
     try {
         const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
         if (project) {
-            res.json(project);
+            res.status(200).json(project);
         } else {
             res.sendStatus(404);
         }
