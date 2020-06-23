@@ -22,8 +22,8 @@ export class MilestoneService {
   }]
   milestones$: BehaviorSubject<Milestone[]> = new BehaviorSubject<Milestone[]>(this.milestones)
 
-  public fetchMilsetones (): Milestone[] {
-    return this.milestones
+  public fetchMilestones () {
+    return this.milestones$
   }
   public fetchMilestone(id: number) {
     return { ...this.milestones.find(milestone => milestone.id === id) };

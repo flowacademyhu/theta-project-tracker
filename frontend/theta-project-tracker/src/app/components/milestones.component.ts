@@ -75,9 +75,10 @@ export class MilestonesComponent implements OnInit {
       width: '60%',
       height: '80%'
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.milestoneService.fetchMilestones().subscribe(data => {
+        this.dataSource = data;
+      })
     });
   }
 }
