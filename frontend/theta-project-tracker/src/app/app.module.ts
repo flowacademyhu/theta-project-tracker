@@ -27,23 +27,22 @@ import { NewProjectComponent } from './components/new-project.component';
 import { DeleteProjectModalComponent } from './modals/delete-project-modal.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar.component';
-
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
 
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
+import { RecordOneWeekComponent } from './components/record-one-week.component';
+
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +61,8 @@ export function httpTranslateLoader(http: HttpClient) {
     ProjectsComponent,
     NewProjectComponent,
     NewProjectModalComponent,
-    DeleteProjectModalComponent
+    DeleteProjectModalComponent,
+    RecordOneWeekComponent
   ],
   imports: [
     FormsModule,
@@ -90,7 +90,9 @@ export function httpTranslateLoader(http: HttpClient) {
         useFactory: httpTranslateLoader,
         deps: [HttpClient],
       }
-    })
+    }),
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

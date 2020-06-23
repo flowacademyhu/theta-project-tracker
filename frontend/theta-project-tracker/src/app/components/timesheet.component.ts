@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-timesheet',
-  template: '',
+  template: `
+  <app-record-one-week></app-record-one-week>
+  `,
   styles: [''],
 })
 export class TimesheetComponent implements OnInit {
