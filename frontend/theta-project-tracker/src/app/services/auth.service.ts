@@ -22,7 +22,7 @@ export class AuthService {
       firstName: 'USer Test',
       lastName: 'User',
       role: Role.USER,
-      email: 'user',
+      email: 'user@user',
       password: 'asd',
       userCostToCompanyPerHour: 2,
       projectAssigned: [{ projectName: 'Voodoo', userCostPerHour: 2 }]
