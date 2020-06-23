@@ -11,37 +11,37 @@ import { DeleteProjectModalComponent } from '../modals/delete-project-modal.comp
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewProject()" mat-raised-button>+ Add New Project</button>
-    <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+     <button (click)="onAddNewProject()" mat-raised-button>+ Add New Project</button>
+     <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
     <ng-container matColumnDef="actions" class="actions">
-    <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-    <mat-cell *matCellDef="let project">{{ project.name }}</mat-cell>
-</ng-container>
-    <ng-container matColumnDef="client">
-        <mat-header-cell *matHeaderCellDef>Client</mat-header-cell>
-        <mat-cell *matCellDef="let project">{{ project.client }}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let project">{{ project.description }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let project">{{ project.name }}</mat-cell>
+      </ng-container>
+     <ng-container matColumnDef="client">
+      <mat-header-cell *matHeaderCellDef>Client</mat-header-cell>
+      <mat-cell *matCellDef="let project">{{ project.client }}</mat-cell>
+     </ng-container>
+     <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+      <mat-cell *matCellDef="let project">{{ project.description }}</mat-cell>
+     </ng-container>
     <ng-container matColumnDef="budget">
-        <mat-header-cell *matHeaderCellDef>Budget</mat-header-cell>
-        <mat-cell *matCellDef="let project">{{ project.budget }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef>Budget</mat-header-cell>
+      <mat-cell *matCellDef="let project">{{ project.budget }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="action" class="action">
-        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-        <mat-cell *matCellDef="let project">
-            <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
-            <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
-        </mat-cell>
-    </ng-container>
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let project">
+       <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
+       <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
+      </mat-cell>
+     </ng-container>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-</div>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+ </div>
 </mat-card>
   `,
   styles: [
