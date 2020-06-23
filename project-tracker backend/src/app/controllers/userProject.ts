@@ -5,19 +5,19 @@ import {QueryBuilder} from "knex";
 import {Roles, TableNames} from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-    let userId: number;
-    if (res.locals.user.role !== Roles.admin) {
-        userId = res.locals.user.id;
-    } else {
-        userId = +req.params.userId;
-    }
-    let query: QueryBuilder = database(TableNames.projects).join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId').where({userId}).select();
-    if (req.query.limit) {
-        query = query.limit(req.query.limit);
-    }
-    if (req.query.offset) {
-        query = query.offset(req.query.offset);
-    }
-    const projects: Array<Project> = await query;
-    res.json(projects);
+  let userId: number;
+  if (res.locals.user.role !== Roles.admin) {
+    userId = res.locals.user.id;
+  } else {
+    userId = +req.params.userId;
+  }
+  let query: QueryBuilder = database(TableNames.projects).join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId').where({userId}).select();
+  if (req.query.limit) {
+    query = query.limit(req.query.limit);
+  }
+  if (req.query.offset) {
+    query = query.offset(req.query.offset);
+  }
+  const projects: Array<Project> = await query;
+  res.json(projects);
 };

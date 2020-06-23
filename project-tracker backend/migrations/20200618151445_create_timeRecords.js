@@ -1,4 +1,4 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
     return knex.schema.createTable('timeRecords', (table) => {
         table.increments();
         table.integer('userId').unsigned().references('users.id');
@@ -13,6 +13,6 @@ exports.up = function(knex) {
     });
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema.dropTable('timeRecords');
 };
