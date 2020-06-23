@@ -1,14 +1,14 @@
-import { ProjectUser } from "../models/projectUser";
-import { database } from "../../lib/database";
-import { Request, Response } from "express";
-import { QueryBuilder } from "knex";
-import { TableNames } from "../../lib/enums";
-import { User } from "../models/user";
+import {ProjectUser} from "../models/projectUser";
+import {database} from "../../lib/database";
+import {Request, Response} from "express";
+import {QueryBuilder} from "knex";
+import {TableNames} from "../../lib/enums";
+import {User} from "../models/user";
 import * as userSerializer from '../serializers/user'
 
 
 export const index = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.users).join(TableNames.projectUsers, 'users.id', '=', 'projectUsers.userId').where({ projectId: req.params.projectId }).select();
+    let query: QueryBuilder = database(TableNames.users).join(TableNames.projectUsers, 'users.id', '=', 'projectUsers.userId').where({projectId: req.params.projectId}).select();
     if (req.query.limit) {
         query = query.limit(req.query.limit);
     }
@@ -36,9 +36,15 @@ export const create = async (req: Request, res: Response) => {
 
 export const destroy = async (req: Request, res: Response) => {
     try {
-        const projectUser: ProjectUser = await database(TableNames.projectUsers).select().where({ userid: req.params.userId, projectId: req.params.projectId }).first();
+        const projectUser: ProjectUser = await database(TableNames.projectUsers).select().where({
+            userid: req.params.userId,
+            projectId: req.params.projectId
+        }).first();
         if (projectUser) {
-            await database(TableNames.projectUsers).delete().where({ userId: req.params.userId, projectId: req.params.projectId });
+            await database(TableNames.projectUsers).delete().where({
+                userId: req.params.userId,
+                projectId: req.params.projectId
+            });
             res.sendStatus(204);
         } else {
             res.sendStatus(404);

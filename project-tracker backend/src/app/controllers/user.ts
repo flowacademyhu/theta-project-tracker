@@ -4,7 +4,7 @@ import {Request, Response} from "express";
 import * as userSerializer from '../serializers/user';
 import * as bcrypt from 'bcrypt';
 import {QueryBuilder} from "knex";
-import {TableNames} from "../../lib/enums";
+import {Roles, TableNames} from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
     let query: QueryBuilder = database(TableNames.users).select();
@@ -21,7 +21,7 @@ export const index = async (req: Request, res: Response) => {
 export const show = async (req: Request, res: Response) => {
     let user: User;
     try {
-        if (res.locals.user.role !== 'admin') {
+        if (res.locals.user.role !== Roles.admin) {
             user = res.locals.user;
         } else {
             user = await database(TableNames.users).select().where({id: req.params.id}).first();
@@ -68,7 +68,7 @@ export const update = async (req: Request, res: Response) => {
                 costToCompanyPerHour: req.body.costToCompanyPerHour
             }
             let userId: number;
-            if (res.locals.user.role !== 'admin') {
+            if (res.locals.user.role !== Roles.admin) {
                 userId = res.locals.user.id;
             } else {
                 userId = +req.params.id;

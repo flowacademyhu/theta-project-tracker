@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import * as milestoneController from '../controllers/milestone';
 import {authorization} from "../../lib/auth";
 
-export const router: Router = Router({ mergeParams: true });
+export const router: Router = Router({mergeParams: true});
 
 router.get('/', milestoneController.index);
 router.get('/:id', milestoneController.show);

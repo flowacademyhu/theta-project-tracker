@@ -2,7 +2,7 @@ import {Router} from 'express';
 import * as userController from '../controllers/user';
 import {authorization} from '../../lib/auth';
 
-export const router: Router = Router({ mergeParams: true });
+export const router: Router = Router({mergeParams: true});
 
 router.get('/:id', userController.show);
 router.put('/:id', userController.update);

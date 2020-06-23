@@ -3,5 +3,5 @@ export interface Client {
     name: string;
     description: string;
     createdAt?: string;
-    updatedAt?: string;   
+    updatedAt?: string;
 }

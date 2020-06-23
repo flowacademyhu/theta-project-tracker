@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import * as projectController from '../controllers/project';
 import {authorization} from "../../lib/auth";
 
-export const router: Router = Router({ mergeParams: true });
+export const router: Router = Router({mergeParams: true});
 
 router.use(authorization);
 router.get('/:id', projectController.show);
