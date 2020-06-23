@@ -12,10 +12,8 @@ import { Component, OnInit } from '@angular/core';
 export class NewUserModalComponent implements OnInit {
 
   constructor() { }
-  
 
   ngOnInit(): void {
-    
   }
 
 }

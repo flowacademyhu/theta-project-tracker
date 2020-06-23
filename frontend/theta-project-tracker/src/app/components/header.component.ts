@@ -1,23 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Observable } from 'rxjs';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/internal/operators/map';
-import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   template: `
   <mat-toolbar color="primary" role="heading">
     <mat-toolbar-row>
-    <span>
+    <span id="spanOne">
         <a
           class="img"
-          (mouseenter)="sidenav.toggle()"
+          (mouseenter)=onTrigger()
+          (mouseleave)=onTrigger()
           aria-label="Toggle sidenav"
           mat-icon-button
-          routerLink="/timesheet" #toolBarPic>
+          routerLink="/timesheet" id="toolBarPic">
           <img width="1136" height="378"
           src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
           alt="Voodoo Park"
@@ -28,51 +25,25 @@ import { shareReplay } from 'rxjs/operators';
           sizes="(max-width: 1136px) 100vw, 1136px">
         </a>
       </span>
-      <span>
+      <span id="spanTwo">
         <p>Loged in as:</p>
-      </span>
-      <span>
-        <button mat-raised-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighlight>Logout</button>
+        <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>Logout</button>
       </span>
   </mat-toolbar-row>
 </mat-toolbar>
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav class="sidenav" mode="over" (mouseleave)="sidenav.close()">
-    <mat-nav-list>
-      <span>
-        <a routerLink='/users' routerLinkActive='router-link-active' appHighlight>User</a>
-        <br>
-        <a routerLink='/reports' routerLinkActive='router-link-active' appHighlight>Reports</a>
-          <br>
-          <a routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Calendar</a>
-          <br>
-          <a routerLink='/projects' routerLinkActive='router-link-active' appHighlight>Projects</a>
-          <br>
-          <a routerLink='/milestones' routerLinkActive='router-link-active' appHighlight>Milestones</a>
-          <br>
-          <a routerLink='/clients' routerLinkActive='router-link-active' appHighlight>Clients</a>
-        </span>
-      </mat-nav-list>
-    </mat-sidenav>
-</mat-sidenav-container>
     `,
   styles: [`
-
-.sidenav-container {
-  height: 100%;
-}
-.sidenav  {
-  position: absolute;
-  display: flex;
-  width: 200px;
+.mat-toolbar.mat-primary {
+  position: top;
+  top: 0;
   background: #222;
-  opacity: 0.6;
   color: #f0ead6;
-  font: 18px  Roboto, "Helvetica Neue", 'Aerial';
-  font-size: 20;
-  align: center;
-  }
-  img {
+  font-size: 12;
+  align-items: center;
+}
+
+img {
+  display: flex;
   line-height: 1.5;
   font-family: inherit;
   font-size: 100%;
@@ -81,33 +52,54 @@ import { shareReplay } from 'rxjs/operators';
   color: inherit;
   box-sizing: border-box;
   hyphens: none;
-  border: 0;
   width: auto;
-  height: auto;
+  height: 2.5rem;
   display: block;
   float: left;
-  margin: 0;
-  margin-right: .75em;
+  margin: auto;
+  margin-right: 1em;
   position: relative;
   max-width: 250px;
   max-height: 50px;
-  margin-bottom: 0;
+  margin-bottom: 0.75em;
   opacity: 1;
-  color: #fff;
 }
-.img {
-    display: flex;
-    justify-content: flex-start;
-  }
-  .mat-toolbar.mat-primary {
-  width: 100%;
-  position: top;
-  top: 0;
-  background: #222;
-  }`],
+#spanOne {
+  display: flex;
+  flex:1 1 auto;
+  justify-content: flex-start;
 
+}
+#spanTwo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 12;
+}
+button {
+display: flex;
+font-size: 12;
+border: none;
+color:#f0ead6;
+opacity: 0.9;
+outline: 0;
+}
+
+#logOut {
+  align-items: center;
+  background: transparent;
+  border: none
+}`],
 })
+
 export class HeaderComponent implements OnInit {
+
+  @Output() public sidenavTriggerd: EventEmitter< any > = new EventEmitter< any >();
+
+  public onTrigger() {
+    this.sidenavTriggerd.emit();
+  }
+
 
   constructor(private authService: AuthService, private router: Router) { }
 

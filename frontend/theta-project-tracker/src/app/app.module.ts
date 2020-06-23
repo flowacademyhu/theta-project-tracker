@@ -33,6 +33,7 @@ import { ClientsComponent } from './components/clients.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
+import { SidenavContainerComponent } from './components/sidenav-container.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     NewUserComponent,
     NewUserModalComponent,
     DeleteModalComponent,
-    RecordOneWeekComponent
+    RecordOneWeekComponent,
+    SidenavContainerComponent
   ],
   imports: [
     BrowserModule,

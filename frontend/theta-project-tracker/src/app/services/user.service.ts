@@ -36,8 +36,8 @@ export class UserService {
   }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
 
-  public fetchUsers (): User[] {
-    return this.users
+  public fetchUsers(): User[] {
+    return this.users;
   }
   public fetchUser(id: number) {
     return { ...this.users.find(user => user.id === id) };

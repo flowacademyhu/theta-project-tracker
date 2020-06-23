@@ -5,9 +5,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-      <app-header></app-header>
-      <router-outlet></router-outlet>
-        `,
+
+    <app-sidenav-container>
+    </app-sidenav-container>
+       `,
   styles: [`
     .mat-sidenav-container {
       height: auto;
