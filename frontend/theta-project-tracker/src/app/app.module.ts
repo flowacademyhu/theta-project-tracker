@@ -15,6 +15,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,7 +48,7 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     NewUserComponent,
     NewUserModalComponent,
     DeleteModalComponent,
-    RecordOneWeekComponent
+    RecordOneWeekComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +66,9 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     MatTableModule,
     MatDialogModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatGridListModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
