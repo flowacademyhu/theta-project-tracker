@@ -16,7 +16,7 @@ import { ProjectAssigned } from '../models/user.model';
   <div class="footer">
   Total 
   <mat-grid-list cols="7" rowHeight="30px">
-  <mat-grid-tile *ngFor="let day of days" [colspan]="1" > <p>{{ getDailyTotals(day.name) }}&emsp;</p><p [ngStyle]="{'color': 'red'}">{{ day.overTime }}</p></mat-grid-tile>
+  <mat-grid-tile *ngFor="let day of days" [colspan]="1" ><p>{{ day.total }}&emsp;</p><p [ngStyle]="{'color': 'red'}">{{ day.overTime }}</p></mat-grid-tile>
   </mat-grid-list>
   
   </div>
@@ -90,43 +90,42 @@ export class TimesheetComponent implements OnInit {
     { name: 'sunday', total: this.sunday, overTime: this.sundayOver },
   ]
   constructor(private authService: AuthService) { }
-  
+
 
   ngOnInit(): void {
     this.projects = this.authService.getAdmin().projectAssigned;
   }
   recordDailyHours(event: any) {
-    console.log(event.name)
+    console.log(event.name);
     if (this.projectsArrived.length === 0) {
       this.projectsArrived.push(event)
-    } else {
-      if (this.projectsArrived.length === this.projects.length) {
-        return;
-      }
+    } else if (this.projectsArrived.length > 0) {
+      this.projectsArrived.push(event);
       for (let i = 0; i < this.projectsArrived.length; i++) {
-     
         if (this.projectsArrived[i].name === event.name) {
-          this.projectsArrived[i] = event
-        } else if (this.projectsArrived[i].name !== event.name) {
-         
-          this.projectsArrived.push(event);
-          
+          this.projectsArrived[i] = event;
         }
-       
       }
-
     }
+
     console.log(this.projectsArrived)
+    this.getMondayTotals()
   }
-  getDailyTotals(day: string) {
-    console.log(this.projectsArrived)
+  getMondayTotals() {
     let total = 0;
-   for (let i = 0; i < this.projectsArrived.length; i++) {
-   
-   }
-   console.log('total', total)
-   console.log(`this.projectsArrived[i].normalHours.${day}`)
-   return total
+    for (let i = 0; i < this.projectsArrived.length; i++) {
+      total += this.projectsArrived[i].normalHours.monday
+    }
+    this.monday = total;
+    this.days = [
+      { name: 'monday', total: this.monday, overTime: this.mondayOver },
+      { name: 'tuesday', total: this.tuesday, overTime: this.tuesdayOver },
+      { name: 'wednesday', total: this.wednesday, overTime: this.wednesdayOver },
+      { name: 'thursday', total: this.thursday, overTime: this.thursdayOver },
+      { name: 'friday', total: this.friday, overTime: this.fridayOver },
+      { name: 'saturday', total: this.saturday, overTime: this.saturdayOver },
+      { name: 'sunday', total: this.sunday, overTime: this.sundayOver },
+    ]
   }
   destroyProject(event: any) {
     this.projects.splice(this.projects.findIndex(p => p.projectName === event), 1);

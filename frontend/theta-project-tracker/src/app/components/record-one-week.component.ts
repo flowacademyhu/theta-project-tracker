@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { ProjectAssigned } from 'src/app/models/user.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
-import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-record-one-week',
