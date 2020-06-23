@@ -9,6 +9,33 @@ import { shareReplay } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   template: `
+  <mat-toolbar color="primary" role="heading">
+    <mat-toolbar-row>
+    <span>
+        <a
+          class="img"
+          (mouseenter)="sidenav.toggle()"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          routerLink="/timesheet" #toolBarPic>
+          <img width="1136" height="378"
+          src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
+          alt="Voodoo Park"
+          srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
+          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-300x100.png 300w,
+          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-768x256.png 768w,
+          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-1024x341.png 1024w"
+          sizes="(max-width: 1136px) 100vw, 1136px">
+        </a>
+      </span>
+      <span>
+        <p>Loged in as:</p>
+      </span>
+      <span>
+        <button mat-raised-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighlight>Logout</button>
+      </span>
+  </mat-toolbar-row>
+</mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav class="sidenav" mode="over" (mouseleave)="sidenav.close()">
     <mat-nav-list>
@@ -27,30 +54,6 @@ import { shareReplay } from 'rxjs/operators';
         </span>
       </mat-nav-list>
     </mat-sidenav>
-  <mat-sidenav-content class="sidenav-content">
-    <span>
-      <mat-toolbar color="primary">
-        <a
-          class="img"
-          (mouseenter)="sidenav.toggle()"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          routerLink="/timesheet" #toolBarPic>
-          <img width="1136" height="378"
-          src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
-          alt="Voodoo Park"
-          srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
-          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-300x100.png 300w,
-          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-768x256.png 768w,
-          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-1024x341.png 1024w"
-          sizes="(max-width: 1136px) 100vw, 1136px">
-        </a>
-      <span #logOut routerLink='/login' routerLinkActive='router-link-active' appHighlight>
-        <p>Logout</p>
-      </span>
-    </mat-toolbar>
-  </span>
-  </mat-sidenav-content>
 </mat-sidenav-container>
     `,
   styles: [`
