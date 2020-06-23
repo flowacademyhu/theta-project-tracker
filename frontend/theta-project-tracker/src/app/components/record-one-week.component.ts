@@ -27,13 +27,10 @@ import { EventEmitter } from '@angular/core';
       </form>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="2" [rowspan]="1">
-      <button mat-icon-button *ngIf="isEditVisible">
-        <mat-icon (click)="editRecords()">edit</mat-icon>
-      </button>
       <button mat-icon-button>
         <mat-icon (click)="onDeleteProject()">clear</mat-icon>
       </button>
-      <button mat-icon-button (click)="getDailyHours()" *ngIf="!isEditVisible">
+      <button mat-icon-button (click)="getDailyHours()">
         <mat-icon>save</mat-icon>
       </button>
     </mat-grid-tile>
@@ -69,7 +66,6 @@ export class RecordOneWeekComponent implements OnInit {
   ];
   @Output() projectEmitter: EventEmitter<Object> = new EventEmitter<Object>();
   @Output() projectToDelete: EventEmitter<string> = new EventEmitter<string>();
-  isEditVisible: boolean;
   timeSheet = new FormGroup({
     normalHours: new FormGroup({
       monday: new FormControl(null),
