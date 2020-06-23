@@ -6,10 +6,13 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
       <app-header></app-header>
-      <main>
-        <router-outlet></router-outlet>
-      </main>`,
-  styles: [``],
+      <router-outlet></router-outlet>
+        `,
+  styles: [`
+    .mat-sidenav-container {
+      height: auto;
+    }
+  `],
 
 })
 

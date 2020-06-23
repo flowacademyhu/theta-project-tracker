@@ -10,72 +10,65 @@ import { shareReplay } from 'rxjs/operators';
   selector: 'app-header',
   template: `
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav class="sidenav" mode="over">
-    <mat-toolbar color="primary" role="heading">
-      <mat-toolbar-row>
-        <a routerLink="/timesheet" #navBarPic>
-        <img width="1136" height="378"
-        src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
-        alt="Voodoo Park"
-          srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
-          https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-300x100.png 300w,
-            https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-768x256.png 768w,
-            https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-1024x341.png 1024w"
-            sizes="(max-width: 1136px) 100vw, 1136px">
-          </a>
-        </mat-toolbar-row>
-      </mat-toolbar>
-      <mat-nav-list >
-        <span>
-          <a mat-raised-button color="primary" routerLink='/users' routerLinkActive='router-link-active' appHighlight>User</a>
+  <mat-sidenav #sidenav class="sidenav" mode="over" (mouseleave)="sidenav.close()">
+    <mat-nav-list>
+      <span>
+        <a routerLink='/users' routerLinkActive='router-link-active' appHighlight>User</a>
+        <br>
+        <a routerLink='/reports' routerLinkActive='router-link-active' appHighlight>Reports</a>
           <br>
-          <a mat-raised-button color="primary" routerLink='/reports' routerLinkActive='router-link-active' appHighlight>Reports</a>
+          <a routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Calendar</a>
           <br>
-          <a mat-raised-button color="primary" routerLink='/calendar' routerLinkActive='router-link-active' appHighlight>Calendar</a>
+          <a routerLink='/projects' routerLinkActive='router-link-active' appHighlight>Projects</a>
           <br>
-          <a mat-raised-button color="primary" routerLink='/projects' routerLinkActive='router-link-active' appHighlight>Projects</a>
+          <a routerLink='/milestones' routerLinkActive='router-link-active' appHighlight>Milestones</a>
           <br>
-          <a mat-raised-button color="primary" routerLink='/milestones' routerLinkActive='router-link-active' appHighlight>Milestones</a>
-          <br>
-          <a mat-raised-button color="primary" routerLink='/clients' routerLinkActive='router-link-active' appHighlight>Clients</a>
+          <a routerLink='/clients' routerLinkActive='router-link-active' appHighlight>Clients</a>
         </span>
-    </mat-nav-list>
-  </mat-sidenav>
-
-  <mat-sidenav-content #sidenavContent>
-    <mat-toolbar color="primary">
-
-      <a
-      appSidenavHover
-      aria-label="Toggle sidenav"
-      mat-icon-button
-      routerLink="/timesheet" #toolBarPic>
-      <img width="1136" height="378"
-      src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
-        alt="Voodoo Park"
-        srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
+      </mat-nav-list>
+    </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <span>
+      <mat-toolbar color="primary">
+        <a
+          class="img"
+          (mouseenter)="sidenav.toggle()"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          routerLink="/timesheet" #toolBarPic>
+          <img width="1136" height="378"
+          src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
+          alt="Voodoo Park"
+          srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
           https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-300x100.png 300w,
           https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-768x256.png 768w,
           https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1-1024x341.png 1024w"
-        sizes="(max-width: 1136px) 100vw, 1136px">
-      </a>
-  </mat-toolbar>
-    <!-- Add Content Here -->
+          sizes="(max-width: 1136px) 100vw, 1136px">
+        </a>
+      <span #logOut routerLink='/login' routerLinkActive='router-link-active' appHighlight>
+        <p>Logout</p>
+      </span>
+    </mat-toolbar>
+  </span>
   </mat-sidenav-content>
 </mat-sidenav-container>
     `,
   styles: [`
 
-
-  .sidenav-container {
-    height: 100%;
+.sidenav-container {
+  height: 100%;
+}
+.sidenav  {
+  position: absolute;
+  display: flex;
+  width: 200px;
+  background: #222;
+  opacity: 0.6;
+  color: #f0ead6;
+  font: 18px  Roboto, "Helvetica Neue", 'Aerial';
+  font-size: 20;
+  align: center;
   }
-  .sidenav {
-    width: 200px;
-    background: #222;
-    opacity: 0.4;
-  }
-
   img {
   line-height: 1.5;
   font-family: inherit;
@@ -98,46 +91,23 @@ import { shareReplay } from 'rxjs/operators';
   margin-bottom: 0;
   opacity: 1;
   color: #fff;
-  }
-
-  #img {
+}
+.img {
     display: flex;
     justify-content: flex-start;
   }
-
-  span a{
-    font-style: bold;
-
-  }
   .mat-toolbar.mat-primary {
+  width: 100%;
   position: top;
   top: 0;
-  z-index: 1;
   background: #222;
-  color: #f0ead6;
-  font: 18px  Roboto, "Helvetica Neue", 'Aerial';
-  font-size: 20;
   }`],
 
 })
 export class HeaderComponent implements OnInit {
 
-  timedOutCloser;
-
   constructor(private authService: AuthService, private router: Router) { }
 
-  mouseEnter(trigger) {
-    if (this.timedOutCloser) {
-      clearTimeout(this.timedOutCloser);
-    }
-    trigger.openMenu();
-  }
-
-  mouseLeave(trigger) {
-    this.timedOutCloser = setTimeout(() => {
-      trigger.closeMenu();
-    }, 50);
-  }
 
   ngOnInit() {
   }

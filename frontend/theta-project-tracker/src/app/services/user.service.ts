@@ -50,15 +50,8 @@ export class UserService {
     const index = this.users.findIndex(u => u.id === id);
     this.users[index] = user;
   }
-<<<<<<< HEAD
-  public deleteUser(id: number): Observable<User> {
-    return this.http.delete<>(`/$(id)`)
-  }
-}
-=======
   public deleteUser(id: number) {
     this.users.splice(this.users.findIndex(u => u.id === id), 1);
     this.users$.next(this.users);
-  } 
+  }
 }
->>>>>>> master

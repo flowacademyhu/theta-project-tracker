@@ -24,7 +24,6 @@ import { CalendarComponent } from './components/calendar.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
-import { SidenavHoverDirective } from './directives/sidenav-hover.directive';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
@@ -47,7 +46,6 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     MilestonesComponent,
     ClientsComponent,
     NewUserComponent,
-    SidenavHoverDirective,
     NewUserModalComponent,
     DeleteModalComponent,
     RecordOneWeekComponent
