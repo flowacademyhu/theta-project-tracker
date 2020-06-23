@@ -33,6 +33,7 @@ import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
 import { ClientManagementComponent } from '../app/components/client-management-component';
+import { RecordOneWeekComponent } from '../app/components/record-one-week.component'
 
 @NgModule({
   declarations: [
@@ -53,7 +54,10 @@ import { ClientManagementComponent } from '../app/components/client-management-c
     HighlightDirective,
     MilestonesComponent,
     ClientsComponent,
-    NewUserComponent
+    NewUserComponent,
+    NewUserModalComponent,
+    DeleteModalComponent,
+    RecordOneWeekComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +85,9 @@ import { ClientManagementComponent } from '../app/components/client-management-c
     MatSelectModule,
     MatCardModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
