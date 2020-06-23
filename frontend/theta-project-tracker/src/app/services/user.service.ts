@@ -17,7 +17,9 @@ export class UserService {
     email: 'asd@asd.com',
     password: 'asdasd',
     userCostToCompanyPerHour: 50,
-    projectAssigned: {projectName: 'xy', userCostPerHour: 50}
+    projectAssigned: [
+      {projectName: 'xy', userCostPerHour: 50},
+      { projectName: 'Project23', userCostPerHour: 50}]
   },
   {
     id: 2,
@@ -27,7 +29,10 @@ export class UserService {
     email: 'asdasd@asd.com',
     password: 'asdasdasd',
     userCostToCompanyPerHour: 70,
-    projectAssigned: {projectName: 'xyz', userCostPerHour: 70}
+    projectAssigned: [
+      {projectName: 'xyz', userCostPerHour: 70},
+      { projectName: 'Project0', userCostPerHour: 150},
+      { projectName: 'Project Zero Dawn', userCostPerHour: 200}]
   }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
 
@@ -42,10 +47,11 @@ export class UserService {
     this.users.push(user);
   }
   public updateUser(id: number, user: User) {
-    const index = this.users.findIndex(char => char.id === id);
+    const index = this.users.findIndex(u => u.id === id);
     this.users[index] = user;
   }
-  public deleteUser(id: number): Observable<User> {
-    return this.http.delete<>(`/$(id)`)
+  public deleteUser(id: number) {
+    this.users.splice(this.users.findIndex(u => u.id === id), 1);
+    this.users$.next(this.users);
   } 
 }
