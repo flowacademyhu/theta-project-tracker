@@ -58,7 +58,7 @@
     },
     "/user": {
       "post": {
-        "summary": "Create new user",
+        "summary": "Create new user and assign it to projects",
         "parameters": [
           {
             "in": "header",
@@ -113,7 +113,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -137,14 +137,14 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#definitions/UserCreate"
+              "$ref": "#definitions/User"
             }
           }
         ],
@@ -165,7 +165,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -188,7 +188,7 @@
           {
             "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -198,7 +198,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#definitions/ProjectResponse"
+                "$ref": "#definitions/UserProjectResponse"
               }
             }
           }
@@ -262,7 +262,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -286,7 +286,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -314,7 +314,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -382,7 +382,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -406,7 +406,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -434,7 +434,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -457,7 +457,7 @@
           {
             "in": "path",
             "name": "projectId",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -474,9 +474,9 @@
         }
       }
     },
-    "/project/{projectId}/user/{userId}": {
+    "/project/user/{userId}": {
       "post": {
-        "summary": "Add specific user to specific project",
+        "summary": "Add specific user to projects",
         "parameters": [
           {
             "in": "header",
@@ -485,14 +485,8 @@
           },
           {
             "in": "path",
-            "name": "projectId",
-            "type": "string",
-            "required": true
-          },
-          {
-            "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -510,7 +504,7 @@
         }
       },
       "delete": {
-        "summary": "Delete specific user from specific project",
+        "summary": "Delete specific user from projects",
         "parameters": [
           {
             "in": "header",
@@ -519,15 +513,16 @@
           },
           {
             "in": "path",
-            "name": "projectId",
-            "type": "string",
+            "name": "userId",
+            "type": "number",
             "required": true
           },
           {
-            "in": "path",
-            "name": "userId",
-            "type": "string",
-            "required": true
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ProjectUser"
+            }
           }
         ],
         "responses": {
@@ -594,7 +589,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -618,7 +613,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -646,7 +641,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -659,35 +654,77 @@
     }
   },
   "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "costToCompanyPerHour": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
     "UserCreate": {
       "type": "object",
       "properties": {
-        "firstName": {
-          "type": "string"
+        "user": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "costToCompanyPerHour": {
+              "type": "number"
+            }
+          }
         },
-        "lastName": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "costToCompanyPerHour": {
-          "type": "number"
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "projectId": {
+                "type": "number"
+              },
+              "costToClientPerHour": {
+                "type": "number"
+              }
+            }
+          }
         }
       },
       "required": [
-        "firstName",
-        "lastName",
-        "role",
-        "email",
-        "password",
-        "costToCompanyPerHour"
+        "user",
+        "projects"
       ]
     },
     "UserResponse": {
@@ -716,6 +753,41 @@
         },
         "createdAt": {
           "type": "string"
+        }
+      }
+    },
+    "UserProjectResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "budget": {
+          "type": "number"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "number"
+        },
+        "userId": {
+          "type": "number"
+        },
+        "costToClientPerHour": {
+          "type": "number"
         }
       }
     },
@@ -804,12 +876,18 @@
       }
     },
     "ProjectUser": {
-      "type": "object",
-      "properties": {
-        "costToClientPerHour": {
-          "type": "number"
-        }
-      },
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "number"
+          },
+          "costToClientPerHour": {
+            "type": "number"
+          }
+      }
+    },
       "required": [
         "costToClientPerHour"
       ]
