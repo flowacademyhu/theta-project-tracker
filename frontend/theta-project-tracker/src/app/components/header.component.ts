@@ -33,6 +33,11 @@ import { AuthService } from '../services/auth.service';
 </mat-toolbar>
     `,
   styles: [`
+  p, .mat-typhography p {
+    font-size: 15px;
+    margin:0;
+    opacity: 0.8;
+  }
 .mat-toolbar.mat-primary {
   position: top;
   top: 0;
