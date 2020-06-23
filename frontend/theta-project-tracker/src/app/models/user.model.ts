@@ -1,10 +1,10 @@
 export interface User {
   id?: number;
-  firstName: String;
-  lastName: String;
+  firstName: string;
+  lastName: string;
   role: Role;
-  email: String;
-  password?: String;
+  email: string;
+  password?: string;
   costToCompanyPerHour: number;
   projectAssigned: ProjectAssigned[]
 }
