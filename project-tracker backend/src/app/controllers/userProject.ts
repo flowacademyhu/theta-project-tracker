@@ -11,7 +11,9 @@ export const index = async (req: Request, res: Response) => {
   } else {
     userId = +req.params.userId;
   }
-  let query: QueryBuilder = database(TableNames.projects).join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId').where({userId}).select();
+  let query: QueryBuilder = database(TableNames.projects)
+    .join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId')
+    .where({userId: userId}).whereNull('deletedAt').select();
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -19,5 +21,5 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const projects: Array<Project> = await query;
-  res.json(projects);
-};
+  res.status(200).json(projects);
+}

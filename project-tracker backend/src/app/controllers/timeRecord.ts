@@ -13,14 +13,14 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const timeRecords: Array<TimeRecord> = await query;
-  res.json(timeRecords);
+  res.status(200).json(timeRecords);
 };
 
 export const show = async (req: Request, res: Response) => {
   try {
     const timeRecord: TimeRecord = await database(TableNames.timeRecords).select().where({id: req.params.id}).first();
     if (timeRecord) {
-      res.json(timeRecord);
+      res.status(200).json(timeRecord);
     } else {
       res.sendStatus(404);
     }

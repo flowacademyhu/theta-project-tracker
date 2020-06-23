@@ -16,6 +16,7 @@ router.use('/user', userRouter);
 router.use('/client', clientRouter);
 router.use('/project', projectRouter);
 router.use('/milestone', milestoneRouter);
-router.use('/project/:projectId/user', projectUserRouter);
+router.use('/project/user', projectUserRouter);
+router.use('/user/:userId/project', userProjectRouter);
 router.use('/timeRecord', timeRecordRouter);
 router.use('/actionLabel', actionLabelRouter);

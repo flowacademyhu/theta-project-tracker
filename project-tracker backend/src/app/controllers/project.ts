@@ -5,7 +5,7 @@ import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.projects).select();
+  let query: QueryBuilder = database(TableNames.projects).select().whereNull('deletedAt');
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -13,14 +13,14 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const projects: Array<Project> = await query;
-  res.json(projects);
+  res.status(200).json(projects);
 };
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).first();
+    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
     if (project) {
-      res.json(project);
+      res.status(200).json(project);
     } else {
       res.sendStatus(404);
     }
@@ -48,7 +48,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).first();
+    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
     if (project) {
       const newProject: Project = {
         name: req.body.name,
@@ -69,9 +69,9 @@ export const update = async (req: Request, res: Response) => {
 
 export const destroy = async (req: Request, res: Response) => {
   try {
-    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).first();
+    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
     if (project) {
-      await database(TableNames.projects).delete().where({id: req.params.id});
+      await database(TableNames.projects).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({id: req.params.id});
       res.sendStatus(204);
     } else {
       res.sendStatus(404);
