@@ -48,7 +48,7 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     NewUserComponent,
     NewUserModalComponent,
     DeleteModalComponent,
-    RecordOneWeekComponent,
+    RecordOneWeekComponent
   ],
   imports: [
     BrowserModule,
