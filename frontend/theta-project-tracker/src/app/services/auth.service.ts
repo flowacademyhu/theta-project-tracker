@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Role, User } from '../models/user.model';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuthResponse } from '../models/auth-response';
@@ -41,9 +41,9 @@ export class AuthService {
       .post<AuthResponse>(environment.baseUrl + 'login', { email, password })
       .pipe(
         switchMap((resp) => {
-          console.log(resp);
           localStorage.setItem('token', resp.token);
-          return this.http.get<User>(environment.baseUrl + 'user/' + resp.user.id ).pipe(
+          const authHeader = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}`});
+          return this.http.get<User>(environment.baseUrl + 'user/' + resp.user.id, { headers: authHeader } ).pipe(
             tap((user) => {
               this.loggedInUser.next(user);
               return user;
