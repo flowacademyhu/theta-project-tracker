@@ -1,4 +1,8 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { ProjectService } from '../services/project.service';
+import { Subscription } from 'rxjs';
+import { Project } from '../models/project.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-reports-table',
@@ -6,61 +10,72 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
   <div class="wrapper">
   <button id="excel" mat-raised-button>Export to Excel</button>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
-  <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef> Weight </th>
-    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-  </ng-container>
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef> Symbol </th>
-    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-  </div>
+    <ng-container matColumnDef="availableProjects">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let project"> {{project.name}} project</td>
+    </ng-container>
+    <ng-container *ngFor="let user of displayedColumns | slice:1:displayedColumns.length-1; let i = index">
+      <ng-container [matColumnDef]="displayedColumns[i+1]">
+        <th mat-header-cell *matHeaderCellDef> {{ user }} </th>
+        <td mat-cell *matCellDef="let project"> {{ getHours(i) }} </td>
+      </ng-container>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef><strong>Total</strong></th>
+      <td mat-cell *matCellDef="let project"> <strong>{{ getTotalHours() }}</strong> </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
   `,
   styles: [`
   .wrapper {
-      max-width: 70%;
-      margin-top: 150px
+    margin: auto;
+    width: 70%;
+    margin-top: 200px
   }
   table {
-    width: 150%;
+    width: 100%;
   }
   `]
 })
 
-export class ReportsTableComponent implements OnInit, OnChanges {
-  constructor() { }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      console.log('changes', changes)
-    }
-  }
+export class ReportsTableComponent implements OnInit, OnDestroy {
+  constructor(private projectService: ProjectService, private userService: UserService) { }
+
+  subscriptions$: Subscription[] = [];
   @Input() columns: string;
   @Input() rows: string;
-
+  dataSource: Project[] = [];
+  displayedColumns: string[] = ['availableProjects'];
   ngOnInit() {
+    this.subscriptions$.push(this.projectService.projects$.subscribe(value => {
+      this.dataSource = value;
+    }));
+    this.subscriptions$.push(this.userService.users$.subscribe(value => {
+      let contractors = value.map(c => c.firstName + ' ' + c.lastName);
+      this.displayedColumns.push(...contractors);
+      console.log(this.displayedColumns)
+      this.displayedColumns.push('total')
+    }))
   }
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-    { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-    { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-    { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-    { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-    { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  ];
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
+  getHours(i: number) {
+    let hour = 0;
+    this.userService.users$.subscribe(value => {
+      console.log(value[i].costToCompanyPerHour)
+      hour = value[i].costToCompanyPerHour
+    })
+    return hour;
+  }
+  getTotalHours() {
+    let total = 0;
+    this.userService.users$.subscribe(value => {
+      value.map(c => c.costToCompanyPerHour).forEach(e => total += e);
+    })
+    return total;
+  }
 }
