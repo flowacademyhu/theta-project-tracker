@@ -30,6 +30,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { SidenavContainerComponent } from './components/sidenav-container.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { SidenavContainerComponent } from './components/sidenav-container.compon
     NewUserModalComponent,
     DeleteModalComponent,
     RecordOneWeekComponent,
-    SidenavContainerComponent
+    SidenavContainerComponent,
+    MatDatepickerModule
   ],
   imports: [
     BrowserModule,
