@@ -15,13 +15,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar.component';
-
-
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
@@ -29,7 +26,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
-
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';

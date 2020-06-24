@@ -7,7 +7,7 @@ import { User, Role } from '../models/user.model'
 })
 export class UserService {
 
-  constructor() { };
+  constructor() {}
 
   public users: User[] = [{
     id: 1,
