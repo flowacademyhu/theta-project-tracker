@@ -17,9 +17,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { NewUserComponent } from '../app/components/new-user.component';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UsersComponent } from '../app/components/users.component';
 import { ProjectsComponent } from './components/projects.component';
 import { NewProjectModalComponent } from './modals/new-project-modal.component';
@@ -39,9 +36,13 @@ import { ClientsComponent } from './components/clients.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 @NgModule({
   declarations: [
