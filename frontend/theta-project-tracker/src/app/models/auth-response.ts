@@ -1,4 +1,4 @@
-export interface Authresponse {
+export interface AuthResponse {
   token: string;
   user: {
     id: number,

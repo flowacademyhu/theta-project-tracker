@@ -26,10 +26,10 @@ import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
-
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -65,7 +65,8 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
