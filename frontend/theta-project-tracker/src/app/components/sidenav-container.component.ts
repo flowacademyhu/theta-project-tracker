@@ -9,20 +9,10 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '
         <mat-nav-list>
           <span>
             <button mat-stroked-button routerLink='/users' routerLinkActive='router-link-active' appHighLight>User</button>
-          </span>
-          <span>
             <button mat-stroked-button routerLink='/reports' routerLinkActive='router-link-active' appHighLight>Reports</button>
-          </span>
-          <span>
             <button mat-stroked-button routerLink='/calendar' routerLinkActive='router-link-active' appHighLight>Calendar</button>
-          </span>
-          <span>
             <button mat-stroked-button routerLink='/projects' routerLinkActive='router-link-active' appHighLight>Projects</button>
-          </span>
-          <span>
             <button mat-stroked-button routerLink='/milestones' routerLinkActive='router-link-active' appHighLight>Milestones</button>
-          </span>
-          <span>
             <button mat-stroked-button routerLink='/clients' routerLinkActive='router-link-active' appHighLight>Clients</button>
           </span>
         </mat-nav-list>
@@ -31,7 +21,6 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '
   </mat-sidenav-container>`,
 styles: [`
   .sidenav{
-    position: absolute;
     display: flex;
     width: 200px;
     background: #222;
