@@ -32,6 +32,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { HighlightDirective } from './directives/highlite.directive';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
+import { ReportsTableComponent } from '../app/components/reports-table.component'
 
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
@@ -63,7 +64,8 @@ export function httpTranslateLoader(http: HttpClient) {
     NewProjectComponent,
     NewProjectModalComponent,
     DeleteProjectModalComponent,
-    RecordOneWeekComponent
+    RecordOneWeekComponent,
+    ReportsTableComponent
   ],
   imports: [
     FormsModule,
