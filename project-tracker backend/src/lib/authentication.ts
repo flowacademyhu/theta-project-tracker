@@ -5,20 +5,23 @@ import * as jwtConfig from '../../config/jwt.json'
 import {User} from "../app/models/user";
 
 enum Method {
-    post = 'POST'
+    get = 'GET',
+    post = 'POST',
+    put = 'PUT',
+    destroy = 'DELETE'
 }
 
-interface AnonymusEndpoint {
+interface Endpoint {
     path: string;
     method: Method;
 }
 
-const anonymusEndpoints: Array<AnonymusEndpoint> = [
+const anonymusEndpoints: Array<Endpoint> = [
     {
         path: '/login',
         method: Method.post
     }
-]
+];
 
 const isAnonymusEndpoint = (req: Request): boolean => {
     return !!(anonymusEndpoints.find(
