@@ -22,7 +22,12 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const user: User = await database(TableNames.users).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    let user: User;
+    if (res.locals.user.role !== Roles.admin) {
+      user = res.locals.user;
+    } else {
+      user = await database(TableNames.users).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    }
     if (user) {
       res.status(200).json(userSerializer.show(user));
     } else {
@@ -68,19 +73,18 @@ export const create = async (req: Request, res: Response) => {
 }
 
 export const update = async (req: Request, res: Response) => {
-
   try {
-    const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
+    let id: number;
+    if (res.locals.user.role !== Roles.admin) {
+      id = res.locals.user.id;
+    } else {
+      id = +req.params.id;
+    }
+    const user: User = await database(TableNames.users).select().where({id}).first();
     if (user) {
-      let userId: number;
-      if (res.locals.user.role !== Roles.admin) {
-        userId = res.locals.user.id;
-      } else {
-        userId = +req.params.id;
-      }
       const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
       const newUser = createUser(req.body.user, encryptedPassword);
-      await database(TableNames.users).update(newUser).where({id: userId});
+      await database(TableNames.users).update(newUser).where({id});
       res.sendStatus(200);
     } else {
       res.sendStatus(404);
