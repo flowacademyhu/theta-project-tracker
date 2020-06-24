@@ -4,7 +4,7 @@ import * as createMiddleware from 'swagger-express-middleware';
 import {SwaggerMiddleware} from 'swagger-express-middleware';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../config/swagger.json';
-import {authentication} from './lib/auth';
+import {authentication} from './lib/authentication';
 import {router} from './app/routers';
 
 const app: Application = express();

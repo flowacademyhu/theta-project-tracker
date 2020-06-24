@@ -1,12 +1,12 @@
 import {Router} from 'express';
 import * as milestoneController from '../controllers/milestone';
-import {authorization} from "../../lib/auth";
+import {adminAuthorization} from "../../lib/authorization/admin";
 
 export const router: Router = Router({mergeParams: true});
 
 router.get('/', milestoneController.index);
 router.get('/:id', milestoneController.show);
-router.use(authorization);
+router.use(adminAuthorization);
 router.post('/', milestoneController.create);
 router.put('/:id', milestoneController.update);
 router.delete('/:id', milestoneController.destroy); 
