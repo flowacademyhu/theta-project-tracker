@@ -13,14 +13,14 @@ export const index = async (req: Request, res: Response) => {
         query = query.offset(req.query.offset);
     }
     const actionLabels: Array<ActionLabel> = await query;
-    res.json(actionLabels);
+    res.status(200).json(actionLabels);
 };
 
 export const show = async (req: Request, res: Response) => {
     try {
         const actionLabel: ActionLabel = await database(TableNames.actionLabels).select().where({id: req.params.id}).first();
         if (actionLabel) {
-            res.json(actionLabel);
+            res.status(200).json(actionLabel);
         } else {
             res.sendStatus(404);
         }

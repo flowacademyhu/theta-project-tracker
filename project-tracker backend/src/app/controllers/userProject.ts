@@ -5,13 +5,15 @@ import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.projects).join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId').where({userId: req.params.userId}).select();
-  if (req.query.limit) {
-    query = query.limit(req.query.limit);
-  }
-  if (req.query.offset) {
-    query = query.offset(req.query.offset);
-  }
-  const projects: Array<Project> = await query;
-  res.json(projects);
+    let query: QueryBuilder = database(TableNames.projects)
+        .join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId')
+        .where({userId: req.params.userId}).whereNull('deletedAt').select();
+    if (req.query.limit) {
+        query = query.limit(req.query.limit);
+    }
+    if (req.query.offset) {
+        query = query.offset(req.query.offset);
+    }
+    const projects: Array<Project> = await query;
+    res.status(200).json(projects);
 };
