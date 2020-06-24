@@ -23,7 +23,7 @@ createMiddleware('config/swagger.json', app, (err, middleware: SwaggerMiddleware
 
     const {PORT = 3000} = process.env;
 
-    app.use(authentication)
+    app.use(authentication);
     app.use(router);
 
     app.listen(PORT, () => {
