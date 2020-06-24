@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReportsTableComponent } from './reports-table.component';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-reports',
@@ -24,8 +23,6 @@ export class ReportsComponent implements OnInit {
   rows = 'projects';
   columns = 'contractors';
   constructor() { }
-
-  @ViewChild(ReportsTableComponent, { static: false }) child: ReportsTableComponent;
   ngOnInit(): void {
   }
 

@@ -48,9 +48,7 @@ export class ReportsTableComponent implements OnInit, OnChanges {
   @Input() columns: string;
   @Input() rows: string;
 
-  ngOnInit() { 
-    console.log(this.columns);
-    console.log(this.rows);
+  ngOnInit() {
   }
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = [
