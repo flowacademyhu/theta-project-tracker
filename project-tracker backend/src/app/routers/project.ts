@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import * as projectController from '../controllers/project';
-import {authorization} from "../../lib/auth";
+import {adminAuthorization} from "../../lib/authorization/admin";
 
-export const router: Router = Router({ mergeParams: true });
+export const router: Router = Router({mergeParams: true});
 
-router.use(authorization);
+router.use(adminAuthorization);
 router.get('/:id', projectController.show);
 router.get('/', projectController.index);
 router.post('/', projectController.create);
