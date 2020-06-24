@@ -43,8 +43,8 @@ export class NewProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService) { }
   newProject = new FormGroup({
-    name: new FormControl(null, [Validators.required, Validators.pattern('\S')]),
-    client: new FormControl(null, [Validators.required, Validators.pattern('\S')]),
+    name: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
+    client: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
     description: new FormControl(null, [Validators.required]),
     budget: new FormControl(null, [Validators.required, Validators.min(0)]),
   })
