@@ -13,10 +13,24 @@
   "produces": [
     "application/json"
   ],
+  "tags": [
+    {
+      "name": "user",
+      "description": ""
+    },
+    {
+      "name": "admin",
+      "description": ""
+    }
+  ],
   "paths": {
     "/login": {
       "post": {
         "summary": "Login with user",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -58,7 +72,11 @@
     },
     "/user": {
       "post": {
-        "summary": "Create new user",
+        "summary": "Create new user and assign it to projects",
+        "tags": [
+          "admin"
+        ],
+
         "parameters": [
           {
             "in": "header",
@@ -81,6 +99,9 @@
       },
       "get": {
         "summary": "Get all users",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -104,6 +125,10 @@
     "/user/{id}": {
       "get": {
         "summary": "Get user by id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -113,7 +138,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -128,6 +153,10 @@
       },
       "put": {
         "summary": "Update user by id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -137,14 +166,14 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#definitions/UserCreate"
+              "$ref": "#definitions/User"
             }
           }
         ],
@@ -156,6 +185,9 @@
       },
       "delete": {
         "summary": "Delete user by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -165,7 +197,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -179,6 +211,10 @@
     "/user/{userId}/project": {
       "get": {
         "summary": "Get all projects by user's id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -188,7 +224,7 @@
           {
             "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -198,7 +234,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#definitions/ProjectResponse"
+                "$ref": "#definitions/UserProjectResponse"
               }
             }
           }
@@ -208,6 +244,9 @@
     "/client": {
       "post": {
         "summary": "Create new client",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -230,6 +269,9 @@
       },
       "get": {
         "summary": "Get all clients",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -253,6 +295,9 @@
     "/client/{id}": {
       "get": {
         "summary": "Get client by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -262,7 +307,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -277,6 +322,9 @@
       },
       "put": {
         "summary": "Update client by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -286,7 +334,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -305,6 +353,9 @@
       },
       "delete": {
         "summary": "Delete client by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -314,7 +365,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -328,6 +379,9 @@
     "/project": {
       "post": {
         "summary": "Create new project",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -350,6 +404,9 @@
       },
       "get": {
         "summary": "Get all projects",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -373,6 +430,9 @@
     "/project/{id}": {
       "get": {
         "summary": "Get project by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -382,7 +442,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -397,6 +457,9 @@
       },
       "put": {
         "summary": "Update project by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -406,7 +469,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -425,6 +488,9 @@
       },
       "delete": {
         "summary": "Delete project by id",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -434,7 +500,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -445,9 +511,12 @@
         }
       }
     },
-    "/project/{projectId}/user": {
+    "/project/user/get/{projectId}": {
       "get": {
         "summary": "Get all users on a specific project",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -457,7 +526,7 @@
           {
             "in": "path",
             "name": "projectId",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -474,9 +543,13 @@
         }
       }
     },
-    "/project/{projectId}/user/{userId}": {
+    "/project/user/{userId}": {
       "post": {
-        "summary": "Add specific user to specific project",
+        "summary": "Add specific user to projects",
+        "tags": [
+          "admin"
+        ],
+
         "parameters": [
           {
             "in": "header",
@@ -485,14 +558,8 @@
           },
           {
             "in": "path",
-            "name": "projectId",
-            "type": "string",
-            "required": true
-          },
-          {
-            "in": "path",
             "name": "userId",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -510,7 +577,10 @@
         }
       },
       "delete": {
-        "summary": "Delete specific user from specific project",
+        "summary": "Delete specific user from projects",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -519,15 +589,16 @@
           },
           {
             "in": "path",
-            "name": "projectId",
-            "type": "string",
+            "name": "userId",
+            "type": "number",
             "required": true
           },
           {
-            "in": "path",
-            "name": "userId",
-            "type": "string",
-            "required": true
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/ProjectUser"
+            }
           }
         ],
         "responses": {
@@ -540,6 +611,9 @@
     "/milestone": {
       "post": {
         "summary": "Create new milestone",
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -562,6 +636,10 @@
       },
       "get": {
         "summary": "Get all milestones",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -585,6 +663,10 @@
     "/milestone/{id}": {
       "get": {
         "summary": "Get milestone by id",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -594,7 +676,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -609,6 +691,7 @@
       },
       "put": {
         "summary": "Update milestone by id",
+        "tags": ["admin"],
         "parameters": [
           {
             "in": "header",
@@ -618,7 +701,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           },
           {
@@ -637,6 +720,7 @@
       },
       "delete": {
         "summary": "Delete milestone by id",
+        "tags": ["admin"],
         "parameters": [
           {
             "in": "header",
@@ -646,7 +730,7 @@
           {
             "in": "path",
             "name": "id",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ],
@@ -659,35 +743,77 @@
     }
   },
   "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "costToCompanyPerHour": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
     "UserCreate": {
       "type": "object",
       "properties": {
-        "firstName": {
-          "type": "string"
+        "user": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "costToCompanyPerHour": {
+              "type": "number"
+            }
+          }
         },
-        "lastName": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "costToCompanyPerHour": {
-          "type": "number"
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "projectId": {
+                "type": "number"
+              },
+              "costToClientPerHour": {
+                "type": "number"
+              }
+            }
+          }
         }
       },
       "required": [
-        "firstName",
-        "lastName",
-        "role",
-        "email",
-        "password",
-        "costToCompanyPerHour"
+        "user",
+        "projects"
       ]
     },
     "UserResponse": {
@@ -716,6 +842,41 @@
         },
         "createdAt": {
           "type": "string"
+        }
+      }
+    },
+    "UserProjectResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "budget": {
+          "type": "number"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "number"
+        },
+        "userId": {
+          "type": "number"
+        },
+        "costToClientPerHour": {
+          "type": "number"
         }
       }
     },
@@ -804,12 +965,18 @@
       }
     },
     "ProjectUser": {
-      "type": "object",
-      "properties": {
-        "costToClientPerHour": {
-          "type": "number"
-        }
-      },
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "number"
+          },
+          "costToClientPerHour": {
+            "type": "number"
+          }
+      }
+    },
       "required": [
         "costToClientPerHour"
       ]

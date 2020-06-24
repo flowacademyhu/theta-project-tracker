@@ -1,11 +1,11 @@
-import { Milestone } from "../models/milestone";
-import { database } from "../../lib/database";
-import { Request, Response } from "express";
-import { QueryBuilder } from "knex";
-import { TableNames } from "../../lib/enums";
+import {Milestone} from "../models/milestone";
+import {database} from "../../lib/database";
+import {Request, Response} from "express";
+import {QueryBuilder} from "knex";
+import {TableNames} from "../../lib/enums";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.milestones).select();
+  let query: QueryBuilder = database(TableNames.milestones).select().whereNull('deletedAt');
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -13,18 +13,18 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const milestones: Array<Milestone> = await query;
-  res.json(milestones);
+  res.status(200).json(milestones);
 };
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id }).first();
-    if (typeof milestone !== 'undefined') {
-      res.json(milestone);
+    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    if (milestone) {
+      res.status(200).json(milestone);
     } else {
       res.sendStatus(404);
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
@@ -39,7 +39,7 @@ export const create = async (req: Request, res: Response) => {
     }
     await database(TableNames.milestones).insert(milestone);
     res.sendStatus(201);
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
@@ -47,19 +47,19 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id }).first();
+    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).whereNull('deletedAt').first();
     if (milestone) {
       const newMilestone: Milestone = {
         name: req.body.name,
         projectId: req.body.projectId,
         description: req.body.description,
       }
-      await database(TableNames.milestones).update(newMilestone).where({ id: req.params.id });
+      await database(TableNames.milestones).update(newMilestone).where({id: req.params.id});
       res.sendStatus(200);
     } else {
       res.sendStatus(404);
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
@@ -67,14 +67,14 @@ export const update = async (req: Request, res: Response) => {
 
 export const destroy = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({ id: req.params.id }).first();
+    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).first();
     if (milestone) {
-      await database(TableNames.milestones).delete().where({ id: req.params.id });
+      await database(TableNames.milestones).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({id: req.params.id});
       res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
