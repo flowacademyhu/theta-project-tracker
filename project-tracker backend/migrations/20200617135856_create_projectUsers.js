@@ -1,4 +1,4 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
     return knex.schema.createTable('projectUsers', (table) => {
         table.increments();
         table.integer('projectId').unsigned().references('projects.id').notNullable();
@@ -10,6 +10,6 @@ exports.up = function(knex) {
     });
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema.dropTable('projectUsers');
 }; 

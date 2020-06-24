@@ -10,7 +10,7 @@ const createToken = async (req: Request, res: Response) => {
     const user: User = await database('users').select().where({email: req.body.email}).whereNull('deletedAt').first();
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
         const info = {userId: user.id}
-        const token = jwt.sign(info, jwtConfig.secret);
+        const token = jwt.sign(info, jwtConfig.secret, {expiresIn: '24h'});
         res.status(200).json(loginSerializer.create(token, user));
     } else {
         res.sendStatus(404);
@@ -18,10 +18,10 @@ const createToken = async (req: Request, res: Response) => {
 }
 
 export const create = async (req: Request, res: Response) => {
-    try {
-        await createToken(req, res);
-    } catch (error) {
-        console.error(error);
-        res.sendStatus(500);
-    }
+  try {
+    await createToken(req, res);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
 }

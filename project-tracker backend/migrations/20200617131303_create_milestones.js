@@ -1,4 +1,4 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
     return knex.schema.createTable('milestones', (table) => {
         table.increments();
         table.string('name').unique().notNullable();
@@ -10,6 +10,6 @@ exports.up = function(knex) {
     });
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema.dropTable('milestones');
 };
