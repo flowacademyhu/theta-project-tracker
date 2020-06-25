@@ -42,6 +42,7 @@ import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
 import { ClientManagementComponent } from '../app/components/client-management-component';
+import { ReportsTableComponent } from '../app/components/reports-table.component'
 
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
@@ -53,7 +54,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthInterceptor } from './auth.interceptor';
 
 export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -81,6 +82,7 @@ export function httpTranslateLoader(http: HttpClient) {
     NewMilestoneComponent,
     NewMilestoneModalComponent,
     DeleteMilestoneComponent,
+    ReportsTableComponent
   ],
   imports: [
     MatSidenavModule,
