@@ -12,43 +12,23 @@ export const generateReportProjectByHours = async (req: Request, res: Response) 
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
         .sum('timeRecords.spentTime as timeSpent');
     const report = await query;
-    //res.json(report);
-    parseReportForFrontend((report), res);
+    res.json(parseReportForFrontendGeneric(report, 'userName', 'projectName', 'timeSpent'));
 }
-export const parseReportForFrontendGeneric = (report, res: Response, columnName, rowName, data) => {
-    let uniqueColumnNames = new Set();
-    report.forEach(x => uniqueColumnNames.add(x.projectName));
-    let columnNames: Array<any> = Array.from(uniqueColumnNames);
-    let finalObject = {};
-    for (let i = 0; i < columnNames.length; i++) {
-        finalObject[columnNames[i]] = (new Object());
-    };
-    for (let i = 0; i < Object.keys(finalObject).length; i++) {
-        report.forEach(element => {
-            if (element.projectName === Object.keys(finalObject)[i]) {
-                finalObject[`${element.projectName}`][`${element.userName}`] = element.timeSpent;
-            }
-        });
-    }
-    calculateAndAddTotal(finalObject);
-    res.json(finalObject);
-}
-export const parseReportForFrontend = (report, res: Response) => {
+export const parseReportForFrontendGeneric = (report: Array<object>, columnName: string, rowName: string, data: string): object => {
     let columnNames = getUniqueColumnNames(report);
     let finalObject = {};
-    for (let i = 0; i < columnNames.length; i++) {
-        finalObject[columnNames[i]] = (new Object());
-    };
-    for (let i = 0; i < Object.keys(finalObject).length; i++) {
+    columnNames.forEach(column => finalObject[column] = (new Object()));
+    Object.keys(finalObject).forEach(key => {
         report.forEach(element => {
-            if (element.projectName === Object.keys(finalObject)[i]) {
-                finalObject[`${element.projectName}`][`${element.userName}`] = element.timeSpent;
+            if (element[rowName] === key) {
+                finalObject[element[rowName]][element[columnName]] = element[data];
             }
         });
-    }
+    })
     calculateAndAddTotal(finalObject);
-    res.json(finalObject);
+    return finalObject;
 }
+
 const getUniqueColumnNames = (report): Array<any> => {
     let uniqueColumnNames = new Set();
     report.forEach(x => uniqueColumnNames.add(x.projectName));
