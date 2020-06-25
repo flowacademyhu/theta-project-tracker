@@ -41,13 +41,13 @@ const routes: Routes = [
   },
   {
     path: 'projects',
-    component: CalendarComponent,
+    component: ProjectsComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [Role.ADMIN] }
   },
   {
     path: 'milestones',
-    component: CalendarComponent,
+    component: MilestonesComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [Role.ADMIN] }
   },
