@@ -5,12 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login.component';
 import { TimesheetComponent } from './components/timesheet.component';
 import { CalendarComponent } from './components/calendar.component';
+import { ClientsComponent } from './components/clients.component';
+import { ClientsResolver } from './resolvers/client.resolver';
 
 const routes: Routes = [
-  {
+/*   {
     path: '',
     component: LoginComponent
-  },
+  }, */
   {
     path: 'login',
     component: LoginComponent
@@ -41,7 +43,7 @@ const routes: Routes = [
   },
   {
     path: 'clients',
-    component: CalendarComponent,
+    component: ClientsComponent
   },
   {
     path: '**',

@@ -144,13 +144,13 @@ export class NewUserComponent implements OnInit {
     this.newUser.get('costToClient').patchValue(null);
   }
   editUser() {
-    this.userToEdit = this.newUser.getRawValue()
+    this.userToEdit = this.newUser.getRawValue();
     this.userService.updateUser(this.userToEdit.id, this.userToEdit);
   }
   assignProjectsToUser() {
     this.assignedProjects.push({
       projectName: this.newUser.get('project').value,
-      userCostPerHour: this.newUser.get('costToClient').value
+      costToClientPerHour: this.newUser.get('costToClient').value
     });
   }
   onCloseDialog() {

@@ -26,8 +26,8 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
                 <mat-cell *matCellDef="let user">{{ user.role }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="cost">
-                <mat-header-cell *matHeaderCellDef>{{'Cost' | translate}}</mat-header-cell>
-                <mat-cell *matCellDef="let user">{{ user.userCostToCompanyPerHour }}</mat-cell>
+                <mat-header-cell *matHeaderCellDef>Cost (£/h)</mat-header-cell>
+                <mat-cell *matCellDef="let user">{{ user.costToCompanyPerHour }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="projects" >
                 <mat-header-cell *matHeaderCellDef>{{'Projects' | translate}}</mat-header-cell>
@@ -58,8 +58,7 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
     mat-icon:hover {
       cursor: pointer;
     }
-    `
-  ]
+    `]
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
@@ -113,7 +112,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result)
       }
     });
   }
