@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
   <button mat-raised-button>Report by Contractor - £</button>
   <button mat-raised-button>Project Budget Report</button>
 </div>
-<app-reports-table [columns]="columns" [rows]="rows"></app-reports-table>
+<app-reports-table></app-reports-table>
   `,
   styles: [`
   .reports {
