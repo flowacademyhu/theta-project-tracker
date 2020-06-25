@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { DeleteModalComponent } from '../modals/delete-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { NewUserModalComponent } from '../modals/new-user-modal.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-users',
@@ -43,6 +45,11 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
+        <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons>
+      </mat-paginator>
     </div>
     </mat-card>
   `,
@@ -60,12 +67,14 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
     }
     `]
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   subscriptions$: Subscription[] = [];
   projectArrays: any[] = [];
   displayedColumns = ['firstName', 'lastName', 'role', 'cost', 'projects', 'actions'];
-  dataSource: User[] = [];
+  user: User[] = [];
+  dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private userService: UserService, private dialog: MatDialog) { }
 
@@ -74,14 +83,19 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dataSource.paginator = this.paginator;
     this.subscriptions$.push(this.userService.users$.subscribe(users => {
-      this.dataSource = users;
+      this.dataSource = new MatTableDataSource(users);
     }));
   }
 
+  public ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+   }
+
   onOpenDeleteModal(user) {
-    const nameToPass = this.dataSource.find(u => u.id === user.id).firstName + ' ' +
-      this.dataSource.find(u => u.id === user.id).lastName;
+    const nameToPass = this.user.find(u => u.id === user.id).firstName + ' ' +
+      this.user.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
