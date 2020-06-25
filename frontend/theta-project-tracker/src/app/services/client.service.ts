@@ -44,7 +44,6 @@ export class ClientService {
     return this.http.get<Client>(environment.baseUrl + `client/${id}`);
   }
   addClient(client: Client) {
-    console.log(client);
     return this.http.post<Client>(environment.baseUrl + 'client', client);
   }
   updateClient(id: number, client: Client) {
