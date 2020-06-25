@@ -3,8 +3,8 @@ export interface User {
   firstName: String;
   lastName: String;
   role: Role;
-  email: String;
-  password?: String;
+  email: string;
+  password?: string;
   costToCompanyPerHour: number;
   projectAssigned: ProjectAssigned[]
 }

@@ -4,7 +4,6 @@ import { User, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
 
-
 @Component({
   selector: 'app-new-user',
   template: `
@@ -161,4 +160,3 @@ export class NewUserComponent implements OnInit {
     }
   }
 }
-

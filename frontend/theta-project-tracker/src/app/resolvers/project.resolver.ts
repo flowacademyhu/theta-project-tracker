@@ -5,18 +5,18 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model'
-import { UserService } from '../services/user.service';
+import { Project } from '../models/project.model'
+import { ProjectService } from '../services/project.service';
 
 @Injectable({ providedIn: 'root' })
-export class UserResolver implements Resolve<User[]> {
-  constructor(private UserService: UserService) {}
+export class UserResolver implements Resolve<Project[]> {
+  constructor(private UserService: ProjectService) {}
 
   public resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<User[]> | Promise<User[]> | User[] {
+  ): Observable<Project[]> | Promise<Project[]> | Project[] {
     const id = +route.params.id;
-    return this.UserService.fetchUsers();
+    return this.UserService.fetchProjects();
   }
 }

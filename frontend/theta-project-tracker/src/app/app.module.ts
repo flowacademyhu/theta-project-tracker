@@ -8,27 +8,28 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
 import { SidenavContainerComponent } from './components/sidenav-container.component';
-
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatPaginatorModule } from '@angular/material/paginator';
 
 // OUR COMPONENTS + STUFF
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProjectsComponent } from './components/projects.component';
+import { NewProjectModalComponent } from './modals/new-project-modal.component';
+import { NewProjectComponent } from './components/new-project.component';
+import { DeleteProjectModalComponent } from './modals/delete-project-modal.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './components/calendar.component';
 import { ReportsComponent } from './components/reports.component';
@@ -44,7 +45,9 @@ import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { ClientManagementComponent } from '../app/components/client-management-component';
 import { RecordOneWeekComponent } from '../app/components/record-one-week.component'
 
-
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,23 +56,20 @@ import { RecordOneWeekComponent } from '../app/components/record-one-week.compon
     UsersComponent,
     DeleteModalComponent,
     ClientsComponent,
-    NewUserModalComponent,
     ClientManagementComponent,
-    UsersComponent,
     CalendarComponent,
     TimesheetComponent,
     HeaderComponent,
     LoginComponent,
     ReportsComponent,
     MilestonesComponent,
-    ClientsComponent,
-    NewUserComponent,
-    NewUserModalComponent,
-    DeleteModalComponent,
     RecordOneWeekComponent,
     SidenavContainerComponent,
-    RecordOneWeekComponent,
-    NewClientModalComponent
+    NewClientModalComponent,
+    NewProjectComponent,
+    NewProjectModalComponent,
+    ProjectsComponent,
+    DeleteProjectModalComponent
   ],
   imports: [
     MatSidenavModule,
@@ -77,7 +77,6 @@ import { RecordOneWeekComponent } from '../app/components/record-one-week.compon
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    BrowserAnimationsModule,
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -89,35 +88,22 @@ import { RecordOneWeekComponent } from '../app/components/record-one-week.compon
     MatPaginatorModule,
     MatFormFieldModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCardModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTableModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
     MatToolbarModule,
     HttpClientModule,
+    LayoutModule,
+    MatListModule,
+    MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: httpTranslateLoader,
         deps: [HttpClient],
       }
-    }),
-    MatDialogModule,
-    LayoutModule,
-    MatListModule,
-    MatMenuModule,
-    MatInputModule,
-    MatButtonModule
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent,
+  DeleteProjectModalComponent,]
 })
-export class AppModule { }
+export class AppModule { }  
