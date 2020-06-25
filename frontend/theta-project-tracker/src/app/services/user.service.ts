@@ -53,5 +53,13 @@ export class UserService {
   public deleteUser(id: number) {
     this.users.splice(this.users.findIndex(u => u.id === id), 1);
     this.users$.next(this.users);
-  } 
+  }
+  updatePassword(password, newPassword) {
+    let editable = this.users.find(u => u.password === password);
+    editable.password = newPassword;
+  }
+  updataEmail(password, newEmail) {
+    let editable = this.users.find(u => u.password === password);
+    editable.email = newEmail;
+  }
 }

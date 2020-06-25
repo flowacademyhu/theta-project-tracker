@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-profile',
   template: `
   <div class="wrapper">
   <mat-accordion>
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Change Email
@@ -25,10 +26,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
             <input matInput formControlName="password" type="password">
           </mat-form-field>
         </div>
-        <button mat-raised-button (click)="onSaveNewEmail()" color="warn">Save</button>
+        <button mat-raised-button (click)="onSaveNewEmail()" color="warn"
+        [disabled]="changeEmail.invalid"
+        >Save</button>
       </form>
     </mat-expansion-panel>
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Change Password
@@ -53,7 +56,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
             <input matInput formControlName="oldPassword" type="password">
           </mat-form-field>
         </div>
-        <button mat-raised-button (click)="onSaveNewPassword()" color="warn">Save</button>
+        <div *ngIf="warn"><p>Passwords don't match!</p></div>
+        <button mat-raised-button (click)="onSaveNewPassword()" color="warn"
+        [disabled]="changePassword.invalid"
+        >Save</button>
       </form>
     </mat-expansion-panel>
   </mat-accordion>
@@ -68,6 +74,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   form {
     margin-top: 30px;
   }
+  p {
+    color: red;
+  }
   .full-width {
     width: 200px;
   }
@@ -75,7 +84,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 
 export class ProfileComponent implements OnInit {
-  constructor() { }
+ 
   changePassword = new FormGroup({
     password: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
     passwordAgain: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
@@ -85,15 +94,20 @@ export class ProfileComponent implements OnInit {
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, Validators.required)
   });
+  warn: boolean;
+  panelOpenState: boolean;
+  constructor(private userSerive: UserService) { }
+  ngOnInit() { }
   onSaveNewPassword() {
     if (this.changePassword.get('password').value === this.changePassword.get('passwordAgain').value) {
-      console.log(this.changePassword.getRawValue())
+      this.userSerive.updatePassword(this.changePassword.get('oldPassword').value,this.changePassword.get('password').value);
+      this.panelOpenState = false;
     } else {
-      console.log('nope')
+      this.warn = true;
     }
   }
   onSaveNewEmail() {
-    console.log(this.changeEmail.get('email'))
+    this.userSerive.updataEmail(this.changeEmail.get('password').value, this.changeEmail.get('email').value)
+    this.panelOpenState = false;
   }
-  ngOnInit() { }
 }
