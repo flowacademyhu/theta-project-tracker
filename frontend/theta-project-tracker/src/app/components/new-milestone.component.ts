@@ -72,9 +72,11 @@ export class NewMilestoneComponent implements OnInit {
   }
   onCloseDialog() {
     if (this.milestoneToEdit) {
-      this.editMilestone();
+      this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.newMilestone.getRawValue());
     } else {
-      this.onAddNewMilestone()
+      this.createdMilestone = this.newMilestone.getRawValue();
+      console.log(this.newMilestone.getRawValue())
+      this.milestoneService.addMilestone(this.createdMilestone);
     }
   }
 }
