@@ -42,8 +42,7 @@ export class AuthService {
       .pipe(
         switchMap((resp) => {
           localStorage.setItem('token', resp.token);
-          const authHeader = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token')}`});
-          return this.http.get<User>(environment.baseUrl + 'user/' + resp.user.id, { headers: authHeader } ).pipe(
+          return this.http.get<User>(environment.baseUrl + 'user/' + resp.user.id ).pipe(
             tap((user) => {
               this.loggedInUser.next(user);
               return user;
