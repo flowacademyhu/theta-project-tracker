@@ -11,20 +11,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   <button mat-raised-button mat-dialog-close class="left" color="accent">Cancel</button>
   <button mat-raised-button [mat-dialog-close]="true" class="right" color="warn" >Delete</button>
 </mat-dialog-actions>
-
-  `,
-  styles: [
-    `
-    `
-  ]
+  `
 })
+
 export class DeleteModalComponent implements OnInit {
   name: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any) { }
-
   ngOnInit(): void {
     this.name = this.data.name;
   }
-
 }
