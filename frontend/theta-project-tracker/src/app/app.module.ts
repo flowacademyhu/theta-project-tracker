@@ -1,12 +1,10 @@
 import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
-import {MatMenuModule} from '@angular/material/menu';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatListModule } from '@angular/material/list';
 import { SidenavContainerComponent } from './components/sidenav-container.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -27,27 +25,32 @@ import { ProjectsComponent } from './components/projects.component';
 import { NewProjectModalComponent } from './modals/new-project-modal.component';
 import { NewProjectComponent } from './components/new-project.component';
 import { DeleteProjectModalComponent } from './modals/delete-project-modal.component';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CalendarComponent } from './components/calendar.component';
 import { ReportsComponent } from './components/reports.component';
-import { NewUserComponent } from './components/new-user.component';
-import { MilestonesComponent } from './components/milestones.component';
-import { ClientsComponent } from './components/clients.component';
 import { LoginComponent } from './components/login.component';
 import { HeaderComponent } from './components/header.component';
 import { TimesheetComponent } from './components/timesheet.component';
-import { UsersComponent } from './components/users.component';
-import { DeleteModalComponent } from '../app/modals/delete-modal.component';
 import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
+import { NewUserComponent } from '../app/components/new-user.component';
+import { UsersComponent } from '../app/components/users.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CalendarComponent } from './components/calendar.component';
+import { DeleteModalComponent } from '../app/modals/delete-modal.component';
+
+import { MilestonesComponent } from './components/milestones.component';
+import { ClientsComponent } from './components/clients.component';
 import { ClientManagementComponent } from '../app/components/client-management-component';
 import { RecordOneWeekComponent } from '../app/components/record-one-week.component'
+
+import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
+import { NewMilestoneComponent } from './components/new-milestone.component';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,10 +72,13 @@ export function httpTranslateLoader(http: HttpClient) {
     NewProjectComponent,
     NewProjectModalComponent,
     ProjectsComponent,
-    DeleteProjectModalComponent
+    DeleteProjectModalComponent,
+    NewMilestoneComponent,
+    NewMilestoneModalComponent
   ],
   imports: [
     MatSidenavModule,
+    MatListModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -80,19 +86,16 @@ export function httpTranslateLoader(http: HttpClient) {
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCardModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTableModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
     FormsModule,
     MatToolbarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCardModule,
+    MatRadioModule,
+    MatTableModule,
+    MatPaginatorModule,
     HttpClientModule,
-    LayoutModule,
-    MatListModule,
-    MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

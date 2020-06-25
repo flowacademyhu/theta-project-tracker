@@ -7,6 +7,7 @@ import { TimesheetComponent } from './components/timesheet.component';
 import { CalendarComponent } from './components/calendar.component';
 import { ClientsComponent } from './components/clients.component';
 import { ProjectsComponent } from './components/projects.component';
+import { MilestonesComponent } from './components/milestones.component';
 
 const routes: Routes = [
 /*   {
@@ -39,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: 'milestones',
-    component: CalendarComponent,
+    component: MilestonesComponent,
   },
   {
     path: 'clients',

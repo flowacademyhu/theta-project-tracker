@@ -12,6 +12,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
       <button mat-raised-button [mat-dialog-close]="true" class="right" color="warn" >Delete</button>
     </mat-dialog-actions>
   `,
+  styles: [`
+    `]
 })
 
 export class DeleteModalComponent implements OnInit {
