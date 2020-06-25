@@ -1,198 +1,103 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { User, ProjectAssigned } from 'src/app/models/user.model';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { ProjectAssigned } from 'src/app/models/user.model';
 import { FormGroup, FormControl } from '@angular/forms';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-record-one-week',
   template: `
   <div class="wrapper">
-  <table mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef class="secondary"></th>
-      <td mat-cell *matCellDef="let project"> <strong>{{ project.projectName }} </strong>
-        <p>project.milestone</p>
-      </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-    <ng-container matColumnDef="activity">
-      <th mat-header-cell *matHeaderCellDef class="secondary"></th>
-      <td mat-cell *matCellDef="let project">project.activity?</td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-    <ng-container matColumnDef="addDescription">
-      <th mat-header-cell *matHeaderCellDef class="secondary"></th>
-      <td mat-cell *matCellDef="let project">
-        <mat-icon>sms</mat-icon>
-      </td>
-      <td mat-footer-cell *matFooterCellDef> Total </td>
-    </ng-container>
-    <div class="days">
+  <mat-grid-list cols="30" rowHeight="100px">
+    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1"><strong>{{ project.projectName }}</strong>
+    </mat-grid-tile>
+    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1">
+      project.milestone
+    </mat-grid-tile>
+    <mat-grid-tile class="tile" [colspan]="1" [rowspan]="1">
+      <mat-icon>sms</mat-icon>
+    </mat-grid-tile>
+    <mat-grid-tile class="tile" *ngFor="let day of days" [colspan]="day.cols" [rowspan]="day.rows">
       <form [formGroup]="timeSheet">
-        <ng-container matColumnDef="monday">
-          <th mat-header-cell *matHeaderCellDef> Monday {{03.16}}</th>
-          <td mat-cell *matCellDef="let project; let i = index">
-            <mat-form-field appearance="outline" color="primary">
-              <input type="number" matInput formControlName="mondayNormalTime">
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT" formControlName="mondayOverTime">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            <p>{{ timeSheet.get('mondayNormalTime').value }}</p>
-            <p [ngStyle]="{color: 'red'}">{{ timeSheet.get('mondayOverTime').value }}</p>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="tuesday">
-          <th mat-header-cell *matHeaderCellDef> Tuesday {{03.17}}</th>
-          <td mat-cell *matCellDef="let project">
-            <mat-form-field appearance="outline" color="primary">
-              <input type="number" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-        <ng-container matColumnDef="wednesday">
-          <th mat-header-cell *matHeaderCellDef> Wednesday {{03.18}}</th>
-          <td mat-cell *matCellDef="let project">
-            <mat-form-field appearance="outline" color="primary">
-              <input type="number" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-        <ng-container matColumnDef="thursday">
-          <th mat-header-cell *matHeaderCellDef> Thursday {{03.19}}</th>
-          <td mat-cell *matCellDef="let project">
-            <mat-form-field appearance="outline" color="primary">
-              <input type="number" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-        <ng-container matColumnDef="friday">
-          <th mat-header-cell *matHeaderCellDef> Friday 03.20</th>
-          <td mat-cell *matCellDef="let project">
-            <mat-form-field appearance="outline" color="primary">
-              <input type="number" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-        <ng-container matColumnDef="saturday">
-          <th mat-header-cell *matHeaderCellDef> Saturday {{03.21}}</th>
-          <td mat-cell *matCellDef="let project">
-            <mat-form-field appearance="outline" color="primary">
-              <input type="number" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-        <ng-container matColumnDef="sunday">
-          <th mat-header-cell *matHeaderCellDef> Sunday {{03.22}}</th>
-          <td mat-cell *matCellDef="let project" color="primary">
-            <mat-form-field appearance="outline">
-              <input type="number" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" color="warn">
-              <input type="number" matInput placeholder="OT">
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
+        <mat-form-field appearance="outline" formGroupName="normalHours">
+          <input type="number" matInput formControlName="{{ day.name }}">
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="warn" formGroupName="overTime">
+          <input type="number" matInput placeholder="OT" formControlName="{{ day.name }}">
+        </mat-form-field>
       </form>
-    </div>
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let project">
-        <button mat-icon-button>
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon>clear</mat-icon>
-        </button>
-        <button mat-icon-button (click)="onSaveRecords(project)">
-          <mat-icon>save</mat-icon>
-        </button>
-      </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
-  </table>
-  <button mat-raised-button color="warn" (click)="onSaveTimeSheet()">Save</button>
+    </mat-grid-tile>
+    <mat-grid-tile class="tile" [colspan]="2" [rowspan]="1">
+      <button mat-icon-button>
+        <mat-icon (click)="onDeleteProject()">clear</mat-icon>
+      </button>
+      <button mat-icon-button (click)="getDailyHours()">
+        <mat-icon>save</mat-icon>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>
   `,
   styles: [`
   mat-form-field {
-    width: 60px;
+    width: 50px;
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-   table {
-    height: 400px;
+   .wrapper {
     margin: auto;
-    width: 80%;
+    width: 75%;
     overflow: auto;
-    margin-top: 150px
-}
-td {
-  text-align: left;
-  vertical-align: middle;
-}
-.secondary {
-  width: 120px;
-}
+  }
   `]
 })
 export class RecordOneWeekComponent implements OnInit {
-
-  constructor(private authService: AuthService) { }
-  loggedInUser: User;
-  dataSource: ProjectAssigned[];
-  first: ProjectAssigned;
-  ngOnInit(): void {
-    this.loggedInUser = this.authService.getAdmin();
-    this.dataSource = this.loggedInUser.projectAssigned;
-    this.first = this.dataSource[0];
-  }
-
-  displayedColumns: string[] = ['name', 'activity', 'addDescription', 'monday', 'tuesday',
-    'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'actions'];
-
+  @Input() project: ProjectAssigned;
+  days = [
+    { cols: 3, rows: 1, name: 'monday' },
+    { cols: 3, rows: 1, name: 'tuesday' },
+    { cols: 3, rows: 1, name: 'wednesday' },
+    { cols: 3, rows: 1, name: 'thursday' },
+    { cols: 3, rows: 1, name: 'friday' },
+    { cols: 3, rows: 1, name: 'saturday' },
+    { cols: 3, rows: 1, name: 'sunday' },
+  ];
+  @Output() projectEmitter: EventEmitter<Object> = new EventEmitter<Object>();
+  @Output() projectToDelete: EventEmitter<string> = new EventEmitter<string>();
   timeSheet = new FormGroup({
-    mondayNormalTime: new FormControl(),
-    mondayOverTime: new FormControl()
+    normalHours: new FormGroup({
+      monday: new FormControl(null),
+      tuesday: new FormControl(),
+      wednesday: new FormControl(),
+      thursday: new FormControl(),
+      friday: new FormControl(),
+      saturday: new FormControl(),
+      sunday: new FormControl(),
+    }),
+    overTime: new FormGroup({
+      monday: new FormControl(),
+      tuesday: new FormControl(),
+      wednesday: new FormControl(),
+      thursday: new FormControl(),
+      friday: new FormControl(),
+      saturday: new FormControl(),
+      sunday: new FormControl(),
+    })
   })
-  onSaveTimeSheet() {
-    console.log(this.timeSheet)
-    console.log(this.first);
+  constructor() { }
+  ngOnInit(): void {
   }
-  onSaveRecords(project) {
-    console.log(project)
-    console.log(this.timeSheet)
+  getDailyHours() {
+    let projectTotal = {
+      name: this.project.projectName,
+      normalHours: this.timeSheet.get('normalHours').value,
+      overTime: this.timeSheet.get('overTime').value
+    }
+    this.projectEmitter.emit(projectTotal);
   }
-  getDailyTotal() {
-    return this.timeSheet.get('mondayNormalTime').value + this.timeSheet.get('mondayOverTime').value;
+  onDeleteProject() {
+    this.projectToDelete.emit(this.project.projectName);
   }
 }

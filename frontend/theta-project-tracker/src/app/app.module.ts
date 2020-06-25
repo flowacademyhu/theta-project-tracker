@@ -33,6 +33,8 @@ import { NewUserModalComponent } from '../app/modals/new-user-modal.component';
 import { NewUserComponent } from '../app/components/new-user.component';
 import { UsersComponent } from '../app/components/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -97,6 +99,8 @@ export function httpTranslateLoader(http: HttpClient) {
     MatTableModule,
     MatPaginatorModule,
     HttpClientModule,
+    MatGridListModule,
+    MatDividerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

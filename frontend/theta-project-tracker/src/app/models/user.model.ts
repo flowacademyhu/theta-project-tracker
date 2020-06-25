@@ -1,7 +1,7 @@
 export interface User {
   id?: number;
-  firstName: String;
-  lastName: String;
+  firstName: string;
+  lastName: string;
   role: Role;
   email: string;
   password?: string;
@@ -10,7 +10,7 @@ export interface User {
 }
 export interface ProjectAssigned {
   projectId?: number;
-  projectName?: String;
+  projectName?: string;
   userId?: number;
   costToClientPerHour : number
 }
