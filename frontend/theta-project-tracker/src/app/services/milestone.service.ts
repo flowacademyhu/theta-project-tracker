@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Milestone } from '../models/milestone.model';
-import { BehaviorSubject} from 'rxjs';
+import { BehaviorSubject, Observable} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MilestoneService {
-  constructor() { };
+  constructor(private http: HttpClient) { };
 
   public milestones: Milestone[] = [{
     id: 1,
@@ -22,24 +24,18 @@ export class MilestoneService {
   }]
   milestones$: BehaviorSubject<Milestone[]> = new BehaviorSubject<Milestone[]>(this.milestones)
 
-  public fetchMilestones () {
-    return this.milestones$
-  }
+  public fetchMilestones (): Observable<Milestone[]> {
+    return this.http.get<Milestone[]>(environment.baseUrl + 'milestone') };
+
   public fetchMilestone(id: number) {
-    return { ...this.milestones.find(milestone => milestone.id === id) };
-  }
+    return this.http.get<Milestone>(environment.baseUrl + +`milestone/${id}`) };
+
   public addMilestone(milestone: Milestone) {
-    milestone.id = this.milestones.length + 1;
-    this.milestones.push(milestone);
-    this.milestones$.next([...this.milestones]);
-  }
+    this.http.post<Milestone>(environment.baseUrl + 'milestone', milestone) };
+
   public updateMilestone(id: number, milestone: Milestone) {
-    const index = this.milestones.findIndex(char => char.id === id);
-    this.milestones[index] = milestone;
-    this.milestones$.next([...this.milestones]);
-  }
+    this.http.put<Milestone>(environment.baseUrl + `milestone/${id}`, milestone) };
+
   public deleteMilestone(id: number) {
-    this.milestones.splice(this.milestones.findIndex(u=> u.id === id), 1);
-    return this.milestones$.next([...this.milestones]);
-  } 
+    this.http.delete<Milestone>(environment.baseUrl + `user/${id}`) }; 
 }

@@ -84,8 +84,8 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
-    this.subscriptions$.push(this.userService.users$.subscribe(users => {
-      this.dataSource = new MatTableDataSource(users);
+      this.subscriptions$.push(this.userService.users$.subscribe(users => {
+        this.dataSource = new MatTableDataSource(users);
     }));
   }
 

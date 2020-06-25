@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User, Role } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  constructor(private http: HttpClient  ) { }
 
   public users: User[] = [{
     id: 1,
@@ -34,26 +36,21 @@ export class UserService {
       { projectName: 'Project0', costToClientPerHour: 150},
       { projectName: 'Project Zero Dawn', costToClientPerHour: 200}]
   }]
-  users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
+  users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users);
 
-  public fetchUsers(): User[] {
-    return this.users;
+  public fetchUsers(): Observable<User[]> {
+    return this.http.get<User[]>(environment.baseUrl + 'user');
   }
   public fetchUser(id: number) {
-    return { ...this.users.find(user => user.id === id) };
-  }
+    return this.http.get<User>(environment.baseUrl + `user/${id}`) };
+
   public addUser(user: User) {
-    user.id = this.users.length + 1;
-    this.users.push(user);
-    this.users$.next([...this.users]);
-  }
+    return this.http.post<User>(environment.baseUrl + 'user', user) };
+
   public updateUser(id: number, user: User) {
-    const index = this.users.findIndex(u => u.id === id);
-    this.users[index] = user;
-    this.users$.next([...this.users])
+    return this.http.put<User>(environment.baseUrl + `user/${id}`, user)
   }
   public deleteUser(id: number) {
-    this.users.splice(this.users.findIndex(u=> u.id === id), 1);
-    return this.users$.next([...this.users]);
+    return this.http.delete<User>(environment.baseUrl + `user/${id}`)
   }
 }

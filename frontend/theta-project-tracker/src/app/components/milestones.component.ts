@@ -12,7 +12,7 @@ import { DeleteMilestoneComponent } from '../modals/delete-milestone.component';
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewMilestone()" mat-raised-button>+ Add New Milestone</button>
-        <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+        <mat-table class="mat-elevation-z8" [dataSource]="milestoneArrays">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">{{ milestone.name }}</mat-cell>
@@ -59,7 +59,6 @@ mat-icon:hover {
 `]
 })
 export class MilestonesComponent implements OnInit, OnDestroy {
-  dataSource: Milestone[] = [];
   milestoneArrays: any[] = [];
   subscriptions$: Subscription[] = [];
   displayedColumns= ['name', 'project', 'description', 'action']
@@ -71,9 +70,9 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions$.push(this.milestoneService.milestones$.subscribe(milestones => {
-      this.dataSource = milestones;
-    }))
+    this.milestoneService.fetchMilestones().subscribe((milestones) => {
+      this.milestoneArrays = milestones;
+    })
   }
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
@@ -82,12 +81,12 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(() => {
       this.milestoneService.fetchMilestones().subscribe(data => {
-        this.dataSource = data;
+        this.milestoneArrays = data;
       })
     });
   }
   onOpenDeleteModal(milestone) {
-    const nameToPass = this.dataSource.find(u => u.id === milestone.id).name;
+    const nameToPass = this.milestoneArrays.find(u => u.id === milestone.id).name;
     const dialogRef = this.dialog.open(DeleteMilestoneComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -107,7 +106,9 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result)
+        this.milestoneService.fetchMilestones().subscribe(milestones => {
+          this.milestoneArrays = milestones;
+        })
       }
     });
   }
