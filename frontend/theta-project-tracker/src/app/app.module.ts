@@ -111,7 +111,7 @@ export function httpTranslateLoader(http: HttpClient) {
         useFactory: httpTranslateLoader,
         deps: [HttpClient],
       }
-    }),
+    })
   ],
   providers: [  {
     provide: HTTP_INTERCEPTORS,
