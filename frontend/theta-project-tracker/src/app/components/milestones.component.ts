@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MilestoneService } from '../services/milestone.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Milestone } from '../models/milestone.model';
 import { Subscription } from 'rxjs';
-import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.component'
+import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.component';
+import { DeleteMilestoneComponent } from '../modals/delete-milestone.component';
 
 @Component({
   selector: 'app-milestones',
@@ -11,7 +12,7 @@ import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.compon
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewMilestone()" mat-raised-button>+ Add New Milestone</button>
-        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">{{ milestone.name }}</mat-cell>
@@ -33,9 +34,9 @@ import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.compon
             </ng-container>
             <ng-container matColumnDef="action" class="action">
             <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-            <mat-cell *matCellDef="let project">
-                <mat-icon>edit</mat-icon>
-                <mat-icon>clear</mat-icon>
+            <mat-cell *matCellDef="let milestone">
+                <mat-icon (click)="onOpenEditModal(milestone)">edit</mat-icon>
+                <mat-icon (click)="onOpenDeleteModal(milestone)">clear</mat-icon>
             </mat-cell>
         </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -57,13 +58,17 @@ mat-icon:hover {
 }
 `]
 })
-export class MilestonesComponent implements OnInit {
+export class MilestonesComponent implements OnInit, OnDestroy {
   dataSource: Milestone[] = [];
   milestoneArrays: any[] = [];
   subscriptions$: Subscription[] = [];
   displayedColumns= ['name', 'project', 'description', 'action']
 
   constructor(private milestoneService: MilestoneService, private dialog: MatDialog) { }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
 
   ngOnInit(): void {
     this.subscriptions$.push(this.milestoneService.milestones$.subscribe(milestones => {
@@ -79,6 +84,31 @@ export class MilestonesComponent implements OnInit {
       this.milestoneService.fetchMilestones().subscribe(data => {
         this.dataSource = data;
       })
+    });
+  }
+  onOpenDeleteModal(milestone) {
+    const nameToPass = this.dataSource.find(u => u.id === milestone.id).name;
+    const dialogRef = this.dialog.open(DeleteMilestoneComponent, {
+      data: { name: nameToPass },
+      width: '25%',
+      height: '25%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.milestoneService.deleteMilestone(milestone.id);
+      }
+    });
+  } 
+  onOpenEditModal(milestone) {
+    const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
+      width: '60%',
+      height: '80%',
+      data: { milestoneToEdit: milestone }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result)
+      }
     });
   }
 }

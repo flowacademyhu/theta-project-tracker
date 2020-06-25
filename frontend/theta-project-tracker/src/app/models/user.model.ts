@@ -6,7 +6,7 @@ export interface User {
   email: string;
   password?: string;
   costToCompanyPerHour: number;
-  projectAssigned: ProjectAssigned[]
+  projectAssigned: ProjectAssigned[];
 }
 export interface ProjectAssigned {
   projectId?: number;

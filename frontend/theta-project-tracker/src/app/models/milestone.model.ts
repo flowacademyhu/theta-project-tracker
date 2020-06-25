@@ -1,5 +1,5 @@
 export interface Milestone {
-  id: number;
+  id?: number;
   name: string;
   project: string;
   description: string  
