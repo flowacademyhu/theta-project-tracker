@@ -73,7 +73,6 @@
         "tags": [
           "admin"
         ],
-
         "parameters": [
           {
             "in": "header",
@@ -141,6 +140,33 @@
             }
           }
         }
+      },
+      "put": {
+        "summary": "Update logged in user",
+        "description": "Update password and/or email. Current password is required.",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/UserProfileUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
       }
     },
     "/user/{id}": {
@@ -174,7 +200,6 @@
       "put": {
         "summary": "Update user by id",
         "tags": [
-          "user",
           "admin"
         ],
         "parameters": [
@@ -569,7 +594,6 @@
         "tags": [
           "admin"
         ],
-
         "parameters": [
           {
             "in": "header",
@@ -711,7 +735,9 @@
       },
       "put": {
         "summary": "Update milestone by id",
-        "tags": ["admin"],
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -740,7 +766,9 @@
       },
       "delete": {
         "summary": "Delete milestone by id",
-        "tags": ["admin"],
+        "tags": [
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -834,6 +862,23 @@
       "required": [
         "user",
         "projects"
+      ]
+    },
+    "UserProfileUpdate": {
+      "type": "object",
+      "properties": {
+        "newEmail": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "password"
       ]
     },
     "UserResponse": {
@@ -995,8 +1040,8 @@
           "costToClientPerHour": {
             "type": "number"
           }
-      }
-    },
+        }
+      },
       "required": [
         "costToClientPerHour"
       ]

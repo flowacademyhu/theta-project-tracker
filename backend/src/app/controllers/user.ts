@@ -69,17 +69,11 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    let id: number;
-    if (res.locals.user.role !== Roles.admin) {
-      id = res.locals.user.id;
-    } else {
-      id = +req.params.id;
-    }
-    const user: User = await database(TableNames.users).select().where({id}).first();
+    const user: User = await database(TableNames.users).select().where({id: +req.params.id}).first();
     if (user) {
       const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
       const newUser = createUser(req.body.user, encryptedPassword);
-      await database(TableNames.users).update(newUser).where({id});
+      await database(TableNames.users).update(newUser).where({id: +req.params.id});
       res.sendStatus(200);
     } else {
       res.sendStatus(404);
