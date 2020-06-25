@@ -18,7 +18,9 @@ export class UserService {
     email: 'asd@asd.com',
     password: 'asdasd',
     costToCompanyPerHour: 50,
-    projectAssigned: [{projectName: 'xy', userCostPerHour: 50}]
+    projectAssigned: [
+      {projectName: 'xy', userCostPerHour: 50},
+      { projectName: 'Project23', userCostPerHour: 50}]
   },
   {
     id: 2,
@@ -28,7 +30,10 @@ export class UserService {
     email: 'asdasd@asd.com',
     password: 'asdasdasd',
     costToCompanyPerHour: 70,
-    projectAssigned: [{projectName: 'xyz', userCostPerHour: 70}]
+    projectAssigned: [
+      {projectName: 'xyz', userCostPerHour: 70},
+      { projectName: 'Project0', userCostPerHour: 150},
+      { projectName: 'Project Zero Dawn', userCostPerHour: 200}]
   }]
   users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
 

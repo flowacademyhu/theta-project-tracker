@@ -1,5 +1,6 @@
 import { Role } from './models/user.model';
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -16,4 +17,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'theta-project-tracker';
+  constructor(translate: TranslateService) {
+    translate.setDefaultLang('en');
+    translate.use('en');
+}
 }

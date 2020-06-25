@@ -9,76 +9,75 @@ import { UserService } from '../services/user.service';
   selector: 'app-new-user',
   template: `
   <form [formGroup]="newUser">
-    <label for="name">First Name</label>
-    <div>
-        <mat-form-field class="full-width">
-            <input matInput type="text" formControlName="firstName">
-        </mat-form-field>
-    </div>
-    <label for="name">Last Name</label>
-    <div>
-        <mat-form-field class="full-width">
-            <input matInput type="text" formControlName="lastName">
-        </mat-form-field>
-    </div>
-    <label for="email">E-mail</label>
-    <div>
-        <mat-form-field class="full-width">
-            <input matInput type="text" formControlName="email">
-        </mat-form-field>
-    </div>
-    <label for="cost">Cost (£/h)</label>
-    <div>
-        <mat-form-field class="cost">
-            <input matInput type="number" formControlName="cost">
-        </mat-form-field>
-    </div>
-    <label for="role">Role</label>
-    <div>
-        <mat-form-field>
-            <mat-select formControlName="role">
-                <mat-option value="user">User</mat-option>
-                <mat-option value="admin">Admin</mat-option>
+  <label for="name">{{ 'Firstname' | translate}}</label>
+  <div>
+    <mat-form-field class="full-width">
+      <input matInput type="text" formControlName="firstName">
+    </mat-form-field>
+  </div>
+  <label for="name">{{'Lastname' | translate}}</label>
+  <div>
+    <mat-form-field class="full-width">
+      <input matInput type="text" formControlName="lastName">
+    </mat-form-field>
+  </div>
+  <label for="email">{{'Email' | translate}}</label>
+  <div>
+    <mat-form-field class="full-width">
+      <input matInput type="text" formControlName="email">
+    </mat-form-field>
+  </div>
+  <label for="cost">{{'Cost' | translate}}</label>
+  <div>
+    <mat-form-field class="cost">
+      <input matInput type="number" formControlName="cost">
+    </mat-form-field>
+  </div>
+  <label for="role">{{'Role' | translate}}</label>
+  <div>
+    <mat-form-field>
+      <mat-select formControlName="role">
+        <mat-option value="user">{{'User' | translate}}</mat-option>
+        <mat-option value="admin">{{'Admin' | translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <label>{{'ProjectsAssigned' | translate}}</label>
+  <div>
+    <table>
+      <tr>
+        <th>{{"ProjectName" | translate}}</th>
+        <th>{{"CostToClient" | translate}}</th>
+        <th>{{"Unassign" | translate}}</th>
+      </tr>
+      <tr *ngFor="let project of assignedProjects; let i = index">
+        <td>{{project.projectName}}</td>
+        <td>{{project.userCostPerHour}}</td>
+        <td>
+          <mat-icon (click)="onDeleteProject(project)">clear</mat-icon>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <mat-select formControlName="project">
+              <mat-option *ngFor="let project of availableProjects" value="{{ project }}">{{ project }}</mat-option>
             </mat-select>
-        </mat-form-field>
-    </div>
-    <label>Project(s) Assigned</label>
-    <div>
-        <table>
-            <tr>
-                <th>Project name</th>
-                <th>Cost to Client (£/h)</th>
-                <th>Unassign</th>
-            </tr>
-            <tr *ngFor="let project of assignedProjects; let i = index">
-                <td> {{project.projectName}}</td>
-                <td>{{project.userCostPerHour}}</td>
-                <td>
-                    <mat-icon (click)="onDeleteProject(project)">clear</mat-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <mat-form-field>
-                        <mat-select formControlName="project">
-                            <mat-option *ngFor="let project of availableProjects" value="{{ project }}">{{ project }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </td>
-                <td>
-                    <mat-form-field>
-                        <input type="number" matInput formControlName="costToClient">
-                    </mat-form-field>
-                </td>
-            </tr>
-        </table>
-        <button mat-raised-button (click)="onAddNewProject()">Add New</button>
-    </div>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <input type="number" matInput formControlName="costToClient">
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <button mat-raised-button (click)="onAddNewProject()">{{"Add" | translate}}</button>
+  </div>
 </form>
 <div class="actions">
-    <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
-    <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">Save</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{"Cancel" | translate}}</button>
+  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">{{"Save" | translate}}</button>
 </div>
   `,
   styles: [

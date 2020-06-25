@@ -5,7 +5,7 @@ import { User } from '../models/user.model';
 @Component({
   selector: 'app-new-user-modal',
   template: `
-  <h2 mat-dialog-title><strong>{{ message }}</strong></h2>
+  <h2 mat-dialog-title><strong>{{'Add user' | translate}}</strong></h2>
   <mat-dialog-content class="mat-typography">
     <app-new-user [userToEdit]="userToEdit"></app-new-user>
   </mat-dialog-content>

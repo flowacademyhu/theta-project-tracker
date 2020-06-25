@@ -1,4 +1,3 @@
-import { AppComponent } from './app.component';
 import { ReportsComponent } from './components/reports.component';
 import { UsersComponent } from './components/users.component';
 import { NgModule } from '@angular/core';
