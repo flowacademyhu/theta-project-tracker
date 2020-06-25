@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login.component';
 import { TimesheetComponent } from './components/timesheet.component';
 import { CalendarComponent } from './components/calendar.component';
+import { ProfileComponent } from './components/profile.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'clients',
     component: CalendarComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
   },
   {
     path: '**',

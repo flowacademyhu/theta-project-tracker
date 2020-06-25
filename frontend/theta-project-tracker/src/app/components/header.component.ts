@@ -26,7 +26,7 @@ import { AuthService } from '../services/auth.service';
           <button mat-raised-button color="primary" routerLink='/clients' routerLinkActive='router-link-active' appHighlight>Clients</button>
         </span>
         <span id="spanTwo">
-          <p>Loged in as:</p>
+          <p>Loged in as:</p><p routerLink="/profile">&emsp;User.name</p>
           <button mat-raised-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighlight>Logout</button>
         </span>
       </mat-toolbar-row>
