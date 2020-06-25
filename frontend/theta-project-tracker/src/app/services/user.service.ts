@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User, Role } from '../models/user.model'
+import { User, Role } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() {}
+  constructor() { }
 
   public users: User[] = [{
     id: 1,

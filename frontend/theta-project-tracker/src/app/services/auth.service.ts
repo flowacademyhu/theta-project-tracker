@@ -5,11 +5,12 @@ import { Role, User } from '../models/user.model';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private users: User[] = [
-    { id: 1,
+    {
+      id: 1,
       firstName: 'Admin Test',
       lastName: 'Admin',
       role: Role.ADMIN,
-      email: 'admin',
+      email: 'admin@admin',
       password: 'asd',
       costToCompanyPerHour: 2,
       projectAssigned: [{ projectName: 'Voodoo', costToClientPerHour: 2 }] },
@@ -24,14 +25,14 @@ export class AuthService {
   ];
   public loggedInUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
-  public login(email: string): Promise<boolean> {
+  public login(email: string, password: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-        const user = this.users.find(u => u.email === email);
-        if (user) {
-          this.loggedInUser.next(user);
-          resolve(true);
-        }
-        reject(false);
+      const user = this.users.find(u => u.email === email && u.password === password);
+      if (user) {
+        this.loggedInUser.next(user);
+        resolve(true);
+      }
+      reject(false);
     });
   }
 
