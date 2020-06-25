@@ -8,43 +8,54 @@ import { CalendarComponent } from './components/calendar.component';
 import { ClientsComponent } from './components/clients.component';
 import { ProjectsComponent } from './components/projects.component';
 import { MilestonesComponent } from './components/milestones.component';
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+import { Role } from './models/user.model';
 
 const routes: Routes = [
-/*   {
-    path: '',
-    component: LoginComponent
-  }, */
   {
     path: 'login',
     component: LoginComponent
   },
   {
     path: 'users',
-    component:  UsersComponent
+    component:  UsersComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.ADMIN] }
   },
   {
     path: 'timesheet',
     component: TimesheetComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'reports',
     component: ReportsComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.ADMIN] }
   },
   {
     path: 'calendar',
     component: CalendarComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'projects',
-    component: ProjectsComponent,
+    component: CalendarComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.ADMIN] }
   },
   {
     path: 'milestones',
-    component: MilestonesComponent,
+    component: CalendarComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.ADMIN] }
   },
   {
     path: 'clients',
-    component: ClientsComponent
+    component: CalendarComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.ADMIN] }
   },
   {
     path: '**',

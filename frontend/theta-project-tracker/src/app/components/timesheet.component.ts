@@ -68,7 +68,7 @@ export class TimesheetComponent implements OnInit {
   days: {name:string, total: number, overTime: number}[] = [];
   constructor(private authService: AuthService) { }
   ngOnInit(): void {
-    this.projects = this.authService.getAdmin().projectAssigned;
+    this.projects = this.authService.authenticate().projectAssigned;
   }
   recordDailyHours(event: any) {
    if (this.projectsArrived.length === 0) {
