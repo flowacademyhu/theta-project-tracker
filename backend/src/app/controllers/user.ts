@@ -34,14 +34,6 @@ export const show = async (req: Request, res: Response) => {
   }
 }
 
-export const profile = (req: Request, res: Response) => {
-  if (res.locals.user) {
-    res.status(200).json(userSerializer.show(res.locals.user));
-  } else {
-    res.sendStatus(401);
-  }
-}
-
 const createProjects = async (req: Request) => {
   const projects: Array<ProjectUser> = req.body.projects;
   let projectsToSave: Array<ProjectUser> = [];
