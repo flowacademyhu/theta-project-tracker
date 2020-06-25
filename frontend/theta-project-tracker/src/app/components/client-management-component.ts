@@ -53,15 +53,15 @@ export class ClientManagementComponent implements OnInit {
   constructor(private clientService: ClientService) { }
   ngOnInit(): void {
     if (this.clientToEdit) {
-      this.newClientForm.patchValue(this.clientToEdit)
+      this.newClientForm.patchValue(this.clientToEdit);
     }
   }
   onCloseDialog() {
     if (this.clientToEdit) {
-      this.createdClient = this.newClientForm.getRawValue();
-      this.createdClient.id = this.clientToEdit.id;
-      this.clientService.updateClient(this.clientToEdit.id, this.createdClient);
+      console.log(this.createdClient);
+      this.clientService.updateClient(this.clientToEdit.id, this.newClientForm.getRawValue());
     } else {
+      console.log(this.createdClient);
       this.createdClient = this.newClientForm.getRawValue();
       this.clientService.addClient(this.createdClient);
     }

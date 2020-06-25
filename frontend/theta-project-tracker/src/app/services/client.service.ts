@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Client } from '../models/client.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   clients: Client[] = [
     {
@@ -35,23 +37,20 @@ export class ClientService {
   ];
   clients$: BehaviorSubject<Client[]> = new BehaviorSubject<Client[]>([...this.clients]);
 
-  getClients(): BehaviorSubject<Client[]> {
-    return this.clients$;
+  getClients(): Observable<Client[]> {
+    return this.http.get<Client[]>(environment.baseUrl + 'client');
   }
-  getClientByID(id: number):Client {
-    return this.clients.find(c => c.id === id);
+  getClientByID(id: number){
+    return this.http.get<Client>(environment.baseUrl + `client/${id}`);
   }
   addClient(client: Client) {
-    this.clients.push(client);
-    return this.clients$.next([...this.clients]);
+    console.log(client);
+    return this.http.post<Client>(environment.baseUrl + 'client', client);
   }
   updateClient(id: number, client: Client) {
-   const index = this.clients.findIndex(c => c.id === id);
-   this.clients[index] = client;
-    return this.clients$.next([...this.clients]);
+    return this.http.put<Client>(environment.baseUrl + `client/${id}`, client);
   }
   deleteClient(id: number) {
-    this.clients.splice(this.clients.findIndex(c => c.id === id), 1);
-    return this.clients$.next([...this.clients]);
+    return this.http.delete<Client>(environment.baseUrl + `client/${id}`);
   }
 }

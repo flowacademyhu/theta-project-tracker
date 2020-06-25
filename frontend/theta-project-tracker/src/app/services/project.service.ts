@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Project } from '../models/project.model'
-import { BehaviorSubject} from 'rxjs';
+import { BehaviorSubject, Observable} from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   public projects: Project[] = [{
     id: 1,
@@ -22,27 +24,22 @@ export class ProjectService {
     client: 'asdasd',
     description: 'project description',
     budget: 800
-  }]
+  }];
   projects$: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(this.projects)
 
-  public fetchProjects() {
-    return this.projects$
+  public fetchProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(environment.baseUrl + 'project');
   }
   public fetchProject(id: number) {
-    return {...this.projects.find(project => project.id === id)}
+    return this.http.get<Project>(environment.baseUrl + `project/${id}`);
   }
   public addProject( project: Project) {
-    project.id = this.projects.length + 1;
-    this.projects.push(project);
-    this.projects$.next([...this.projects]);
+    return this.http.post<Project>(environment.baseUrl + 'project', project);
   }
   public updateProject(id: number, project: Project) {
-    const index = this.projects.findIndex(char => char.id === id);
-    this.projects[index] = project;
-    this.projects$.next([...this.projects]);
+    return this.http.put<Project>(environment.baseUrl + `project/${id}`, project);
   }
   public deleteProject(id: number) {
-    this.projects.splice(this.projects.findIndex(u=> u.id === id), 1);
-    return this.projects$.next([...this.projects]);
+    return this.http.delete<Project>(environment.baseUrl + `project/${id}`);
   }
 }

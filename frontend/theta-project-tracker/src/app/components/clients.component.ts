@@ -54,11 +54,11 @@ export class ClientsComponent implements OnInit, OnDestroy {
   constructor(private clientService: ClientService, private dialog: MatDialog) { }
   subscriptions$: Subscription[] = [];
   clients: Client[] = [];
-  displayedColumns = ['name', 'description', 'actions']
+  displayedColumns = ['name', 'description', 'actions'];
   ngOnInit(): void {
-    this.subscriptions$.push(this.clientService.clients$.subscribe(c => {
-      this.clients = c;
-    }))
+    this.clientService.getClients().subscribe((clients) => {
+      this.clients = clients;
+    });
   }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
@@ -71,6 +71,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.clientService.getClients().subscribe(clients => {
+          this.clients = clients;
+        });
       }
     });
   }

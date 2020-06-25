@@ -53,7 +53,7 @@ const routes: Routes = [
   },
   {
     path: 'clients',
-    component: CalendarComponent,
+    component: ClientsComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [Role.ADMIN] }
   },

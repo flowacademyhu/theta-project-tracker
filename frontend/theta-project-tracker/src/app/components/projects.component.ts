@@ -65,7 +65,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   dataSource: Project[] = [];
   subscriptions$: Subscription[] = [];
-  displayedColumns= ['name', 'client', 'description', 'budget', 'action']
+  displayedColumns = ['name', 'client', 'description', 'budget', 'action'];
 
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
