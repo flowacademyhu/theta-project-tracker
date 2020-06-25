@@ -95,7 +95,7 @@ import { AuthService } from '../services/auth.service';
 
 export class HeaderComponent implements OnInit {
 
-  @Output() public sidenavTriggerd: EventEmitter< any > = new EventEmitter< any >();
+  @Output() public sidenavTriggerd: EventEmitter< void > = new EventEmitter< void >();
 
   public onTrigger() {
     this.sidenavTriggerd.emit();

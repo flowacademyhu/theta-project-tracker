@@ -118,5 +118,6 @@ import { RecordOneWeekComponent } from '../app/components/record-one-week.compon
     MatButtonModule
   ],
   providers: [],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
