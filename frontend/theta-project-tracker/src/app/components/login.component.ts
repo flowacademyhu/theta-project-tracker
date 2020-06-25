@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
           <mat-form-field class="full-width-input">
               <label for="password">Password</label>
               <input matInput
-                type="text"
+                type="password"
                 class="form-control"
                 id="password"
                 formControlName="password"
@@ -39,6 +40,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
             </button>
           </div>
         </form>
+        <div class="alert alert-danger" *ngIf="errors">
+        <p *ngFor="let error of errors">{{ error }}</p>
+      </div>
       </mat-card-content>
     </mat-card>
   `,
@@ -57,6 +61,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   user: User;
+  errors: string[];
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -71,15 +76,13 @@ export class LoginComponent implements OnInit {
   }
 
   public onLogin() {
-    console.log(this.user);
-    console.log(this.loginForm.get('email').value);
-    this.authService
-      .login(this.loginForm.get('email').value, this.loginForm.get('password').value)
-      .then(() => {
+    this.authService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(
+      () => {
         this.router.navigate(['timesheet']);
-      })
-      .catch(() => {
-        console.log('wrong email or password');
-      });
+      },
+      (error: HttpErrorResponse) => {
+        this.errors = error.error.message;
+      }
+    );
   }
 }

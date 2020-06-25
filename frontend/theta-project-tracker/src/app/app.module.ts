@@ -4,7 +4,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { SidenavContainerComponent } from './components/sidenav-container.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -46,13 +46,15 @@ import { ClientManagementComponent } from '../app/components/client-management-c
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
 import { DeleteMilestoneComponent } from './modals/delete-milestone.component';
-export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { AuthInterceptor } from './auth.interceptor';
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -110,12 +112,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         deps: [HttpClient],
       }
     }),
-    MatDialogModule,
-    MatInputModule,
-    MatButtonModule,
-    MatPaginatorModule
   ],
-  providers: [],
+  providers: [  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },],
   bootstrap: [AppComponent],
   entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent,
   DeleteProjectModalComponent,]

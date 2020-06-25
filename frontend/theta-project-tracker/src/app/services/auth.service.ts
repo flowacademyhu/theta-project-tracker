@@ -1,6 +1,11 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Role, User } from '../models/user.model';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { switchMap, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { AuthResponse } from '../models/auth-response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -24,20 +29,28 @@ export class AuthService {
       projectAssigned: [{ projectName: 'Voodoo', costToClientPerHour: 2 }, { projectName: 'mindegy', costToClientPerHour: 4 }] },
   ];
   public loggedInUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  constructor(private http: HttpClient, private router: Router) {}
 
-  public login(email: string, password: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      const user = this.users.find(u => u.email === email && u.password === password);
-      if (user) {
-        this.loggedInUser.next(user);
-        resolve(true);
-      }
-      reject(false);
-    });
+  public login(email: string, password: string): Observable<User> {
+    return this.http
+      .post<AuthResponse>(environment.baseUrl + 'login', { email, password })
+      .pipe(
+        switchMap((resp) => {
+          localStorage.setItem('token', resp.token);
+          return this.http.get<User>(environment.baseUrl + 'user/' + resp.user.id ).pipe(
+            tap((user) => {
+              this.loggedInUser.next(user);
+              return user;
+            })
+          );
+        })
+      );
   }
 
   public logout() {
     this.loggedInUser = null;
+    localStorage.removeItem('token');
+    this.router.navigate(['login']);
   }
 
   public authenticate(): User {
