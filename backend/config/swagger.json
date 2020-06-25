@@ -54,15 +54,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Token and user",
+            "description": "Token",
             "schema": {
               "type": "object",
               "properties": {
                 "token": {
                   "type": "string"
-                },
-                "user": {
-                  "$ref": "#definitions/UserResponse"
                 }
               }
             }
@@ -122,11 +119,34 @@
         }
       }
     },
+    "/user/profile": {
+      "get": {
+        "summary": "Get logged in user's data",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#definitions/UserResponse"
+            }
+          }
+        }
+      }
+    },
     "/user/{id}": {
       "get": {
         "summary": "Get user by id",
         "tags": [
-          "user",
           "admin"
         ],
         "parameters": [

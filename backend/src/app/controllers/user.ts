@@ -22,12 +22,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    let user: User;
-    if (res.locals.user.role !== Roles.admin) {
-      user = res.locals.user;
-    } else {
-      user = await database(TableNames.users).select().where({id: req.params.id}).whereNull('deletedAt').first();
-    }
+     const user = await database(TableNames.users).select().where({id: req.params.id}).whereNull('deletedAt').first();
     if (user) {
       res.status(200).json(userSerializer.show(user));
     } else {
@@ -36,6 +31,14 @@ export const show = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
+  }
+}
+
+export const profile = (req: Request, res: Response) => {
+  if (res.locals.user) {
+    res.status(200).json(userSerializer.show(res.locals.user));
+  } else {
+    res.sendStatus(401);
   }
 }
 
