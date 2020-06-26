@@ -53,7 +53,7 @@ export const update = async (req: Request, res: Response) => {
         description: req.body.description
       }
       await database(TableNames.clients).update(newClient).where({id: req.params.id});
-      res.sendStatus(200);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }

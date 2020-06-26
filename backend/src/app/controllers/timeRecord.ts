@@ -63,7 +63,7 @@ export const update = async (req: Request, res: Response) => {
         date: req.body.date
       }
       await database(TableNames.timeRecords).update(newTimeRecord).where({id: req.params.id});
-      res.sendStatus(200);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }

@@ -4,7 +4,7 @@ import {Request, Response} from "express";
 import * as userSerializer from '../serializers/user';
 import * as bcrypt from 'bcrypt';
 import {QueryBuilder} from "knex";
-import {Roles, TableNames} from "../../lib/enums";
+import {TableNames} from "../../lib/enums";
 import {ProjectUser} from "../models/projectUser";
 import {createUser} from "../serializers/userCreate";
 
@@ -74,7 +74,7 @@ export const update = async (req: Request, res: Response) => {
       const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
       const newUser = createUser(req.body.user, encryptedPassword);
       await database(TableNames.users).update(newUser).where({id: +req.params.id});
-      res.sendStatus(200);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }

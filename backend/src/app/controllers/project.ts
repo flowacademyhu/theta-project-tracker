@@ -57,7 +57,7 @@ export const update = async (req: Request, res: Response) => {
         budget: req.body.budget
       }
       await database(TableNames.projects).update(newProject).where({id: req.params.id});
-      res.sendStatus(200);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }
