@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Milestone } from '../models/milestone.model';
 import { Subscription } from 'rxjs';
 import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.component';
-import { DeleteMilestoneComponent } from '../modals/delete-milestone.component';
+import { DeleteModalComponent } from '../modals/delete-modal.component';
 
 @Component({
   selector: 'app-milestones',
@@ -65,38 +65,39 @@ export class MilestonesComponent implements OnInit, OnDestroy {
 
   constructor(private milestoneService: MilestoneService, private dialog: MatDialog) { }
 
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-
   ngOnInit(): void {
     this.milestoneService.fetchMilestones().subscribe((milestones) => {
       this.milestoneArrays = milestones;
     });
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
+  
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '60%',
       height: '80%'
     });
-    dialogRef.afterClosed().subscribe(() => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.milestoneService.fetchMilestones().subscribe(data => {
         this.milestoneArrays = data;
       });
-    });
+    }));
   }
   onOpenDeleteModal(milestone) {
     const nameToPass = this.milestoneArrays.find(u => u.id === milestone.id).name;
-    const dialogRef = this.dialog.open(DeleteMilestoneComponent, {
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
       height: '25%'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.milestoneService.deleteMilestone(milestone.id).subscribe();
       }
-    });
+    }));
   }
   onOpenEditModal(milestone) {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
@@ -104,12 +105,12 @@ export class MilestonesComponent implements OnInit, OnDestroy {
       height: '80%',
       data: { milestoneToEdit: milestone }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.milestoneService.fetchMilestones().subscribe(milestones => {
           this.milestoneArrays = milestones;
         });
       }
-    });
+    }));
   }
 }

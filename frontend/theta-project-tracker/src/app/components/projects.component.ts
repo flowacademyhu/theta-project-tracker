@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project.model';
 import { NewProjectModalComponent } from '../modals/new-project-modal.component';
-import { DeleteProjectModalComponent } from '../modals/delete-project-modal.component';
+import { DeleteModalComponent } from '../modals/delete-modal.component';
 
 @Component({
   selector: 'app-projects',
@@ -82,25 +82,25 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       width: '60%',
       height: '80%'
     });
-    dialogRef.afterClosed().subscribe(() => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.projectService.fetchProjects().subscribe(projects => {
         this.projects = projects;
       });
-    });
+    }));
   }
 
   onOpenDeleteModal(project) {
     const nameToPass = this.projects.find(u => u.id === project.id).name;
-    const dialogRef = this.dialog.open(DeleteProjectModalComponent, {
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
       height: '25%'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.projectService.deleteProject(project.id).subscribe();
       }
-    });
+    }));
   }
 
   onOpenEditModal(project) {
@@ -109,12 +109,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       height: '80%',
       data: { projectToEdit: project }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.projectService.fetchProjects().subscribe(projects => {
-          this.projects = project;
+          this.projects = projects;
         });
       }
-    });
+    }));
   }
 }

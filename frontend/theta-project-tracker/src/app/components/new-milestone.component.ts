@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Milestone } from '../models/milestone.model';
 import { MilestoneService } from '../services/milestone.service';
-import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-new-milestone',
@@ -43,7 +42,6 @@ export class NewMilestoneComponent implements OnInit {
     description: new FormControl(null, [Validators.required]),
   })
   createdMilestone: Milestone;
-  emitter: EventEmitter<Milestone> = new EventEmitter<Milestone>();
   @Input() milestoneToEdit: Milestone;
   ngOnInit(): void {
     if (this.milestoneToEdit) {
@@ -52,22 +50,10 @@ export class NewMilestoneComponent implements OnInit {
   }
 
   onAddNewMilestone() {
-    this.createdMilestone = {
-      name: this.newMilestone.getRawValue().name,
-      project: this.newMilestone.getRawValue().project,
-      description: this.newMilestone.getRawValue().description,
-    };
-    this.emitter.emit(this.createdMilestone);
-    this.milestoneService.addMilestone(this.createdMilestone);
+    this.milestoneService.addMilestone(this.newMilestone.getRawValue());
   }
   editMilestone() {
-    console.log(this.milestoneToEdit);
-    this.milestoneToEdit = {
-      id: this.milestoneToEdit.id,
-      name: this.newMilestone.getRawValue().name,
-      project: this.newMilestone.getRawValue().project,
-      description: this.newMilestone.getRawValue().description
-    };
+    this.milestoneToEdit = this.newMilestone.getRawValue()
     this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.milestoneToEdit).subscribe();
   }
   onCloseDialog() {
@@ -75,7 +61,6 @@ export class NewMilestoneComponent implements OnInit {
       this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.newMilestone.getRawValue());
     } else {
       this.createdMilestone = this.newMilestone.getRawValue();
-      console.log(this.newMilestone.getRawValue())
       this.milestoneService.addMilestone(this.createdMilestone).subscribe();
     }
   }
