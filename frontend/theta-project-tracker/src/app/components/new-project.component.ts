@@ -41,7 +41,6 @@ styles: [`
 })
 export class NewProjectComponent implements OnInit, OnDestroy {
 
-  constructor(private projectService: ProjectService) { }
   newProject = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
     client: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
@@ -51,6 +50,8 @@ export class NewProjectComponent implements OnInit, OnDestroy {
   createdProject: Project;
   subscriptions$: Subscription[] = [];
   @Input() projectToEdit: Project;
+
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit(): void {
     if (this.projectToEdit) {
