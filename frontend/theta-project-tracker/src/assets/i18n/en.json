@@ -31,6 +31,15 @@
   "add-project": "+ Add New Project",
   "name": "Name",
   "description": "Description",
-  "budget": "Budget"
+  "budget": "Budget",
+  "add-milestone": "+ Add New Milestone",
+  "login": "Login",
+  "password": "Password",
+  "email-required": "Email is required.",
+  "password-required": "Password is required.",
+  "logged-in-as": "Logged in as:",
+  "logout": "Logout",
+  "add-client": "+ Add New Client",
+  "clients-name": "Client's Name"
 }
 

@@ -26,8 +26,8 @@ import { AuthService } from '../services/auth.service';
           </a>
         </span>
         <span id="spanTwo">
-          <p>Logged in as:</p>
-          <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>Logout</button>
+          <p>{{'logged-in-as' | translate}}</p>
+          <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>{{'logout' | translate}}</button>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>`,

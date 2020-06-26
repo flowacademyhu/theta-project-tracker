@@ -7,13 +7,13 @@ import { ClientService } from 'src/app/services/client.service';
   selector: 'app-new-client',
   template: `
   <form [formGroup]="newClientForm">
-  <label>Name</label>
+  <label>{{'name' | translate}}</label>
   <div>
       <mat-form-field class="full-width">
           <input matInput type="text" formControlName="name">
       </mat-form-field>
   </div>
-  <label>Description</label>
+  <label>{{'description' | translate}}</label>
   <div>
       <mat-form-field class="full-width">
           <textarea matInput formControlName="description"></textarea>
