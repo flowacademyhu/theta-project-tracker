@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   <button mat-raised-button>{{'report-by-project-money' | translate}}</button>
   <button mat-raised-button>{{'report-by-contractor-hours' | translate}}</button>
   <button mat-raised-button>{{'report-by-contractor-money' | translate}}</button>
-  <button mat-raised-button>{{'project.budget-report' | translate}}</button>
+  <button mat-raised-button>{{'project-budget-report' | translate}}</button>
 </div>
 <app-reports-table></app-reports-table>
   `,

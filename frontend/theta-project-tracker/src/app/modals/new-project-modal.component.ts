@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-new-project-modal',
   template:`
-  <h2 mat-dialog-title><strong>Add New Project</strong></h2>
+  <h2 mat-dialog-title><strong>{{message}}</strong></h2>
   <mat-dialog-content class="mat-typography">
     <app-new-project [projectToEdit]="projectToEdit"></app-new-project>
   </mat-dialog-content>

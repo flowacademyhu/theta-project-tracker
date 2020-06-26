@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-delete-modal',
   template: `
-    <h2 mat-dialog-title>Confirm deleting {{ name }}?</h2>
+    <h2 mat-dialog-title>{{'confirm-delete' | translate}} {{ name }}?</h2>
     <mat-dialog-content class="mat-typography">
     </mat-dialog-content>
     <mat-dialog-actions class="actions">
