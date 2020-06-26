@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login.component';
 import { TimesheetComponent } from './components/timesheet.component';
 import { CalendarComponent } from './components/calendar.component';
+import {TableComponent} from './table/table.component'
 
 const routes: Routes = [
   {
@@ -26,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: 'reports',
-    component: ReportsComponent,
+    component: TableComponent,
   },
   {
     path: 'calendar',

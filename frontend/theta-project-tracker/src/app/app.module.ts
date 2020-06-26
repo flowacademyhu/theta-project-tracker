@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    HttpClientModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
