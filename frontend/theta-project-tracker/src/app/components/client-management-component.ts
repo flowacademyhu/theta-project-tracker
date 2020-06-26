@@ -22,9 +22,9 @@ import { Subscription } from 'rxjs';
   </div>
 </form>
 <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
   <button class="second" (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="true" color="warn"
-      [disabled]="newClientForm.invalid">Save</button>
+      [disabled]="newClientForm.invalid">{{'save' | translate}}</button>
 </div>
   `,
   styles: [`
