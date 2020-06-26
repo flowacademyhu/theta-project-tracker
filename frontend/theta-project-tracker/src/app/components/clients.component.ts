@@ -12,18 +12,18 @@ import { Subscription } from 'rxjs';
   <div>
   <mat-card class="table-container">
     <div>
-      <button (click)="onAddNewClient()" mat-raised-button>+ Add New Client</button>
+      <button (click)="onAddNewClient()" mat-raised-button>{{'add-client' | translate}}</button>
       <mat-table [dataSource]="clients" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef>Client's Name</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>{{'clients-name' | translate}}</mat-header-cell>
           <mat-cell *matCellDef="let client">{{ client.name }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="description">
-          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>{{'description' | translate}}</mat-header-cell>
           <mat-cell *matCellDef="let client">{{ client.description }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="actions" class="actions">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
           <mat-cell *matCellDef="let client">
             <mat-icon (click)="onOpenEditModal(client)">edit</mat-icon>
             <mat-icon (click)="onOpenDeleteModal(client)">clear</mat-icon>

@@ -12,7 +12,7 @@ import { ProjectAssigned } from '../models/user.model';
     <mat-divider></mat-divider>
   </ng-container>
   <div class="footer">
-    Total
+    {{'total' | translate}}
     <mat-grid-list cols="7" rowHeight="30px">
       <mat-grid-tile *ngFor="let day of days" [colspan]="1">
         <p>{{ day.total }}&emsp;</p>

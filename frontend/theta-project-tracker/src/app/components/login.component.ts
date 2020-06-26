@@ -11,10 +11,10 @@ import { HttpErrorResponse } from '@angular/common/http';
     <mat-card>
       <mat-card-content>
         <form [formGroup]="loginForm">
-          <h2>Login</h2>
+          <h2>{{'login' | translate}}</h2>
           <div class="panel panel-default">
           <mat-form-field class="full-width-input">
-              <label for="email">Email</label>
+              <label for="email">{{'email' | translate}}</label>
               <input matInput
                 type="text"
                 id="email"
@@ -23,9 +23,9 @@ import { HttpErrorResponse } from '@angular/common/http';
                 required
               />
           </mat-form-field>
-          <span class="help-block" *ngIf="loginForm.get('email').invalid && loginForm.get('email').touched">Email is required.</span>
+          <span class="help-block" *ngIf="loginForm.get('email').invalid && loginForm.get('email').touched">{{'email-required' | translate}}</span>
           <mat-form-field class="full-width-input">
-              <label for="password">Password</label>
+              <label for="password">{{'password' | translate}}</label>
               <input matInput
                 type="password"
                 class="form-control"
@@ -34,9 +34,9 @@ import { HttpErrorResponse } from '@angular/common/http';
                 required
               />
               </mat-form-field>
-              <span class="help-block" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">Password is required.</span>
+              <span class="help-block" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">{{'password-required' | translate}}</span>
             <button mat-raised-button type="submit" (click)="onLogin()" [disabled]="loginForm.invalid">
-              Login
+              {{'login' | translate}}
             </button>
           </div>
         </form>

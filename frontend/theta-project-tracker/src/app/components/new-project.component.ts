@@ -7,31 +7,31 @@ import { ProjectService } from '../services/project.service';
   selector: 'app-new-project',
   template: `
   <form [formGroup]="newProject">
-  <label for="name">Name</label>
+  <label for="name">{{'name' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="name">
     </mat-form-field>
   </div>
-  <label for="name">Client</label>
+  <label for="name">{{'clients' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="client">
     </mat-form-field>
   </div>
-  <label for="email">Description</label>
+  <label for="email">{{'description' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="description">
     </mat-form-field>
   </div>
-  <label for="cost">Budget</label>
+  <label for="cost">{{'budget' | translate}}</label>
   <div>
     <mat-form-field class="cost">
       <input matInput type="number" formControlName="budget">
     </mat-form-field>
     <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">Save</button>
 </div>
 `,
