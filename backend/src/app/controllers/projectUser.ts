@@ -7,17 +7,23 @@ import {User} from "../models/user";
 import * as userSerializer from '../serializers/user'
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.users)
-    .join(TableNames.projectUsers, 'users.id', '=', 'projectUsers.userId')
-    .where({projectId: req.params.projectId}).whereNull('deletedAt').select();
-  if (req.query.limit) {
-    query = query.limit(req.query.limit);
+  try {
+    let query: QueryBuilder = database(TableNames.users)
+      .join(TableNames.projectUsers, 'users.id', '=', 'projectUsers.userId')
+      .where({projectId: req.params.projectId}).whereNull('projectUsers.deletedAt').select();
+    if (req.query.limit) {
+      query = query.limit(req.query.limit);
+    }
+    if (req.query.offset) {
+      query = query.offset(req.query.offset);
+    }
+    const users: Array<User> = await query;
+    res.status(200).json(userSerializer.index(users));
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
   }
-  if (req.query.offset) {
-    query = query.offset(req.query.offset);
-  }
-  const users: Array<User> = await query;
-  res.status(200).json(userSerializer.index(users));
+
 };
 
 export const create = async (req: Request, res: Response) => {
