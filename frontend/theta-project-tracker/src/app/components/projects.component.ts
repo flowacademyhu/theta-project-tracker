@@ -67,10 +67,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   displayedColumns = ['name', 'client', 'description', 'budget', 'action'];
 
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-
   ngOnInit(): void {
     this.projectService.fetchProjects().subscribe((projects) => {
       this.projects = projects;
@@ -118,5 +114,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         });
       }
     }));
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

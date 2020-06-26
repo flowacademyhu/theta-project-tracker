@@ -50,11 +50,6 @@ export class NewMilestoneComponent implements OnInit, OnDestroy {
       this.newMilestone.patchValue(this.milestoneToEdit);
     }
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-
   onAddNewMilestone() {
     this.milestoneService.addMilestone(this.newMilestone.getRawValue()).subscribe();
   }
@@ -69,5 +64,8 @@ export class NewMilestoneComponent implements OnInit, OnDestroy {
       this.createdMilestone = this.newMilestone.getRawValue();
       this.milestoneService.addMilestone(this.createdMilestone).subscribe();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

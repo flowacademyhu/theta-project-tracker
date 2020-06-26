@@ -57,11 +57,6 @@ export class NewProjectComponent implements OnInit, OnDestroy {
       this.newProject.patchValue(this.projectToEdit);
     }
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-
   onAddNewProject() {
     this.createdProject = this.newProject.getRawValue();
     this.projectService.addProject(this.createdProject).subscribe();
@@ -84,5 +79,8 @@ export class NewProjectComponent implements OnInit, OnDestroy {
       this.createdProject = this.newProject.getRawValue();
       this.projectService.addProject(this.createdProject).subscribe();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

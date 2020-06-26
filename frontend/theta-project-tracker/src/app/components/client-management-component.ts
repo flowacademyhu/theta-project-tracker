@@ -58,11 +58,6 @@ export class ClientManagementComponent implements OnInit, OnDestroy {
       this.newClientForm.patchValue(this.clientToEdit);
     }
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-
   onCloseDialog() {
     if (this.clientToEdit) {
       this.clientService.updateClient(this.clientToEdit.id, this.newClientForm.getRawValue()).subscribe();
@@ -70,5 +65,8 @@ export class ClientManagementComponent implements OnInit, OnDestroy {
       this.createdClient = this.newClientForm.getRawValue();
       this.clientService.addClient(this.createdClient).subscribe();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

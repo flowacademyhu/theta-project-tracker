@@ -131,11 +131,6 @@ export class NewUserComponent implements OnInit, OnDestroy {
       this.newUser.patchValue(this.userToEdit);
     }
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-  
   onAddNewUser() {
     this.assignProjectsToUser();
     this.createdUser = this.newUser.getRawValue();
@@ -165,5 +160,8 @@ export class NewUserComponent implements OnInit, OnDestroy {
     } else {
       this.onAddNewUser();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

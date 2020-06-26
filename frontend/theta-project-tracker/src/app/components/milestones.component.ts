@@ -70,11 +70,6 @@ export class MilestonesComponent implements OnInit, OnDestroy {
       this.milestoneArrays = milestones;
     });
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-  
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '60%',
@@ -114,5 +109,8 @@ export class MilestonesComponent implements OnInit, OnDestroy {
         });
       }
     }));
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }
