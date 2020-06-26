@@ -58,7 +58,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
   constructor(private clientService: ClientService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.clientService.getClients().subscribe((clients) => {
+    this.clientService.fetchClients().subscribe((clients) => {
       this.clients = clients;
     });
   }
@@ -73,7 +73,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.getClients().subscribe(clients => {
+        this.clientService.fetchClients().subscribe(clients => {
           this.clients = clients;
         });
       }

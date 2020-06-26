@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.loggedInUser.subscribe(u => {
+    this.authService.user.subscribe(u => {
       this.user = u;
     });
     this.loginForm = new FormGroup({
