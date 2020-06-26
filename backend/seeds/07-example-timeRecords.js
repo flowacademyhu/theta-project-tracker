@@ -10,7 +10,6 @@ exports.seed = (knex) => {
             date: new Date().toISOString().slice(0, 10).replace('T', ' ')
         },
         {
-
             userId: 1,
             milestoneId: 2,
             actionLabelId: 1,

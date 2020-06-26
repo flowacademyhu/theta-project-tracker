@@ -4,13 +4,11 @@ exports.seed = (knex) => {
           name: 'milestoneOne',
           projectId: 1,
           description: 'milestone 1'
-          
       },
       {
           name: 'milestoneTwo',
           projectId: 1,
           description: 'milestone 2'
-
       },
     {
       name: 'pagination',

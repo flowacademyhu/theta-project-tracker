@@ -1,10 +1,10 @@
 exports.seed = (knex) => {
-  return knex('actionLabels').insert([
-      {
-          name: 'development',
-      },
-      {
-          name: 'training',
-      }
+    return knex('actionLabels').insert([
+        {
+            name: 'development',
+        },
+        {
+            name: 'training',
+        }
     ])
 }
