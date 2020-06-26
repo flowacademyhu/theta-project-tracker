@@ -76,7 +76,7 @@ export class NewMilestoneComponent implements OnInit {
     } else {
       this.createdMilestone = this.newMilestone.getRawValue();
       console.log(this.newMilestone.getRawValue())
-      this.milestoneService.addMilestone(this.createdMilestone);
+      this.milestoneService.addMilestone(this.createdMilestone).subscribe();
     }
   }
 }

@@ -31,11 +31,11 @@ export class MilestoneService {
     return this.http.get<Milestone>(environment.baseUrl + +`milestone/${id}`) };
 
   public addMilestone(milestone: Milestone) {
-    this.http.post<Milestone>(environment.baseUrl + 'milestone', milestone) };
+    return this.http.post<Milestone>(environment.baseUrl + 'milestone', milestone) };
 
   public updateMilestone(id: number, milestone: Milestone) {
-    this.http.put<Milestone>(environment.baseUrl + `milestone/${id}`, milestone) };
+    return this.http.put<Milestone>(environment.baseUrl + `milestone/${id}`, milestone) };
 
   public deleteMilestone(id: number) {
-    this.http.delete<Milestone>(environment.baseUrl + `user/${id}`) }; 
+    return this.http.delete<Milestone>(environment.baseUrl + `user/${id}`) }; 
 }
