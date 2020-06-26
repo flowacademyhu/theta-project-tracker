@@ -7,7 +7,7 @@ exports.seed = (knex) => {
           
       },
       {
-          name: 'milestoneOne',
+          name: 'milestoneTwo',
           projectId: 1,
           description: 'milestone 2'
 
