@@ -1,45 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Project } from '../models/project.model'
-import { BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
+  private apiUrl: string = environment.baseUrl;
+
   constructor(private http: HttpClient) { }
 
-  public projects: Project[] = [{
-    id: 1,
-    name: 'x',
-    client: 'asd',
-    description: 'project description',
-    budget: 1000
-  },
-  {
-    id: 2,
-    name: 'y',
-    client: 'asdasd',
-    description: 'project description',
-    budget: 800
-  }];
-  projects$: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(this.projects)
-
   public fetchProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(environment.baseUrl + 'project');
+    return this.http.get<Project[]>(this.apiUrl + 'project');
   }
-  public fetchProject(id: number) {
-    return this.http.get<Project>(environment.baseUrl + `project/${id}`);
+  public fetchProject(id: number): Observable<Project> {
+    return this.http.get<Project>(this.apiUrl + `project/${id}`);
   }
-  public addProject( project: Project) {
-    return this.http.post<Project>(environment.baseUrl + 'project', project);
+  public addProject(project: Project): Observable<Project> {
+    return this.http.post<Project>(this.apiUrl + 'project', project);
   }
-  public updateProject(id: number, project: Project) {
-    return this.http.put<Project>(environment.baseUrl + `project/${id}`, project);
+  public updateProject(id: number, project: Project): Observable<Project> {
+    return this.http.put<Project>(this.apiUrl + `project/${id}`, project);
   }
-  public deleteProject(id: number) {
-    return this.http.delete<Project>(environment.baseUrl + `project/${id}`);
+  public deleteProject(id: number): Observable<Project> {
+    return this.http.delete<Project>(this.apiUrl + `project/${id}`).pipe(tap(() => this.fetchProjects()));
   }
 }

@@ -56,7 +56,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
   clients: Client[] = [];
   displayedColumns = ['name', 'description', 'actions'];
   ngOnInit(): void {
-    this.clientService.getClients().subscribe((clients) => {
+    this.clientService.fetchClients().subscribe((clients) => {
       this.clients = clients;
     });
   }
@@ -71,7 +71,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.getClients().subscribe(clients => {
+        this.clientService.fetchClients().subscribe(clients => {
           this.clients = clients;
         });
       }
