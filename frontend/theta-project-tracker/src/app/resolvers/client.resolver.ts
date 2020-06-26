@@ -9,6 +9,6 @@ export class ClientsResolver implements Resolve<Client[]> {
 
   constructor(private clientService: ClientService) { }
   resolve(route: ActivatedRouteSnapshot): Observable<Client[]> | Promise<Client[]> | Client[] {
-    return this.clientService.getClients();
+    return this.clientService.fetchClients();
   }
 }
