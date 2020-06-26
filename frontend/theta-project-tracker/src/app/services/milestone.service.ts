@@ -27,6 +27,6 @@ export class MilestoneService {
     return this.http.put<Milestone>(this.apiUrl + `milestone/${id}`, milestone);
   }
   public deleteMilestone(id: number): Observable<Milestone> {
-    return this.http.delete<Milestone>(this.apiUrl + `user/${id}`).pipe(tap(() => this.fetchMilestones()));
+    return this.http.delete<Milestone>(this.apiUrl + `milestone/${id}`).pipe(tap(() => this.fetchMilestones()));
   }
 }
