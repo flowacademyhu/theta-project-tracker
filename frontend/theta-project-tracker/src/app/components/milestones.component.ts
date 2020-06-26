@@ -11,22 +11,22 @@ import { DeleteMilestoneComponent } from '../modals/delete-milestone.component';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewMilestone()" mat-raised-button>+ Add New Milestone</button>
+    <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
         <mat-table class="mat-elevation-z8" [dataSource]="milestoneArrays">
             <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'name' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">{{ milestone.name }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="project">
-            <mat-header-cell *matHeaderCellDef>Project</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let milestone">{{ milestone.project }}</mat-cell>
         </ng-container>
             <ng-container matColumnDef="description">
-                <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'description' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">{{ milestone.description }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions" class="actions">
-                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">
                 <mat-icon>edit</mat-icon>
                     <mat-icon >clear</mat-icon>

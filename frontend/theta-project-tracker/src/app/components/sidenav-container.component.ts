@@ -8,12 +8,12 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '
       <mat-sidenav #sidenav class="sidenav" mode="push" (mouseleave)="sidenav.close()" (mouseenter)="sidenav.toggle()">
         <mat-nav-list>
           <span>
-            <button mat-stroked-button routerLink='/users' routerLinkActive='router-link-active' appHighLight>User</button>
-            <button mat-stroked-button routerLink='/reports' routerLinkActive='router-link-active' appHighLight>Reports</button>
-            <button mat-stroked-button routerLink='/calendar' routerLinkActive='router-link-active' appHighLight>Calendar</button>
-            <button mat-stroked-button routerLink='/projects' routerLinkActive='router-link-active' appHighLight>Projects</button>
-            <button mat-stroked-button routerLink='/milestones' routerLinkActive='router-link-active' appHighLight>Milestones</button>
-            <button mat-stroked-button routerLink='/clients' routerLinkActive='router-link-active' appHighLight>Clients</button>
+            <button mat-stroked-button routerLink='/users' routerLinkActive='router-link-active' appHighLight>{{'user' | translate}}</button>
+            <button mat-stroked-button routerLink='/reports' routerLinkActive='router-link-active' appHighLight>{{'reports' | translate}}</button>
+            <button mat-stroked-button routerLink='/calendar' routerLinkActive='router-link-active' appHighLight>{{'calendar' | translate}}</button>
+            <button mat-stroked-button routerLink='/projects' routerLinkActive='router-link-active' appHighLight>{{'projects' | translate}}</button>
+            <button mat-stroked-button routerLink='/milestones' routerLinkActive='router-link-active' appHighLight>{{'milestones' | translate}}</button>
+            <button mat-stroked-button routerLink='/clients' routerLinkActive='router-link-active' appHighLight>{{'clients' | translate}}</button>
           </span>
         </mat-nav-list>
     </mat-sidenav>

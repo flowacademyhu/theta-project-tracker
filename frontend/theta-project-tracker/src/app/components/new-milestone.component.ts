@@ -8,26 +8,26 @@ import { EventEmitter } from '@angular/core';
   selector: 'app-new-milestone',
   template:`
   <form [formGroup]="newMilestone">
-  <label for="name">Name</label>
+  <label for="name">{{'name' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="name">
     </mat-form-field>
   </div>
-  <label for="project">Project</label>
+  <label for="project">{{'projects' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="project">
     </mat-form-field>
   </div>
-  <label for="description">Description</label>
+  <label for="description">{{'description' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="description">
     </mat-form-field>
   </div>
     <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'canel' | translate}}</button>
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">Save</button>
 </div>
 

@@ -7,46 +7,46 @@ import { UserService } from '../services/user.service';
   selector: 'app-new-user',
   template: `
   <form [formGroup]="newUser">
-  <label for="name">{{ 'Firstname' | translate}}</label>
+  <label for="name">{{ 'firstname' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="firstName">
     </mat-form-field>
   </div>
-  <label for="name">{{'Lastname' | translate}}</label>
+  <label for="name">{{'lastname' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="lastName">
     </mat-form-field>
   </div>
-  <label for="email">{{'Email' | translate}}</label>
+  <label for="email">{{'email' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="email">
     </mat-form-field>
   </div>
-  <label for="cost">{{'Cost' | translate}}</label>
+  <label for="cost">{{'cost' | translate}}</label>
   <div>
     <mat-form-field class="cost">
       <input matInput type="number" formControlName="cost">
     </mat-form-field>
   </div>
-  <label for="role">{{'Role' | translate}}</label>
+  <label for="role">{{'role' | translate}}</label>
   <div>
     <mat-form-field>
       <mat-select formControlName="role">
-        <mat-option value="user">{{'User' | translate}}</mat-option>
-        <mat-option value="admin">{{'Admin' | translate}}</mat-option>
+        <mat-option value="user">{{'user' | translate}}</mat-option>
+        <mat-option value="admin">{{'admin' | translate}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  <label>{{'ProjectsAssigned' | translate}}</label>
+  <label>{{'projects-assigned' | translate}}</label>
   <div>
     <table>
       <tr>
-        <th>{{"ProjectName" | translate}}</th>
-        <th>{{"CostToClient" | translate}}</th>
-        <th>{{"Unassign" | translate}}</th>
+        <th>{{"project-name" | translate}}</th>
+        <th>{{"cost-to-client" | translate}}</th>
+        <th>{{"unassign" | translate}}</th>
       </tr>
       <tr *ngFor="let project of assignedProjects; let i = index">
         <td>{{project.projectName}}</td>
