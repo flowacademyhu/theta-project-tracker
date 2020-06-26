@@ -58,7 +58,7 @@ export class ClientManagementComponent implements OnInit {
   }
   onCloseDialog() {
     if (this.clientToEdit) {
-      this.clientService.updateClient(this.clientToEdit.id, this.newClientForm.getRawValue());
+      this.clientService.updateClient(this.clientToEdit.id, this.newClientForm.getRawValue()).subscribe();
     } else {
       this.createdClient = this.newClientForm.getRawValue();
       this.clientService.addClient(this.createdClient).subscribe();

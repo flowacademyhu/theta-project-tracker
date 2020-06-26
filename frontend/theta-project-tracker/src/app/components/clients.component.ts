@@ -99,6 +99,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.clientService.fetchClients().subscribe(clients => {
+          this.clients = clients;
+        });
       }
     }));
   }

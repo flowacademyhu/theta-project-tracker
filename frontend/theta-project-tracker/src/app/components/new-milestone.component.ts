@@ -50,10 +50,10 @@ export class NewMilestoneComponent implements OnInit {
   }
 
   onAddNewMilestone() {
-    this.milestoneService.addMilestone(this.newMilestone.getRawValue());
+    this.milestoneService.addMilestone(this.newMilestone.getRawValue()).subscribe();
   }
   editMilestone() {
-    this.milestoneToEdit = this.newMilestone.getRawValue()
+    this.milestoneToEdit = this.newMilestone.getRawValue();
     this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.milestoneToEdit).subscribe();
   }
   onCloseDialog() {
