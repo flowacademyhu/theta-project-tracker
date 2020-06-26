@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Client } from 'src/app/models/client.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ClientService } from 'src/app/services/client.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-client',
@@ -43,9 +44,10 @@ import { ClientService } from 'src/app/services/client.service';
   }
   `]
 })
-export class ClientManagementComponent implements OnInit {
+export class ClientManagementComponent implements OnInit, OnDestroy {
   @Input() clientToEdit: Client;
   createdClient: Client;
+  subscriptions$: Subscription[] = [];
   newClientForm = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
     description: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')])
@@ -56,6 +58,11 @@ export class ClientManagementComponent implements OnInit {
       this.newClientForm.patchValue(this.clientToEdit);
     }
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
+
   onCloseDialog() {
     if (this.clientToEdit) {
       this.clientService.updateClient(this.clientToEdit.id, this.newClientForm.getRawValue()).subscribe();

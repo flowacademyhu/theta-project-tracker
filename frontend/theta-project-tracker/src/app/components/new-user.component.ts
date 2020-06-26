@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-user',
@@ -104,7 +105,7 @@ import { UserService } from '../services/user.service';
     `
   ]
 })
-export class NewUserComponent implements OnInit {
+export class NewUserComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService) { }
 
@@ -120,6 +121,8 @@ export class NewUserComponent implements OnInit {
   availableProjects = ['Project0', 'Project1', 'Project2', 'Project3'];
   assignedProjects: ProjectAssigned[] = [];
   createdUser: User;
+  subscriptions$: Subscription[] = [];
+
   @Input() userToEdit: User;
 
   ngOnInit(): void {
@@ -128,6 +131,11 @@ export class NewUserComponent implements OnInit {
       this.newUser.patchValue(this.userToEdit);
     }
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
+  
   onAddNewUser() {
     this.assignProjectsToUser();
     this.createdUser = this.newUser.getRawValue();

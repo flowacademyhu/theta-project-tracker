@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Milestone } from '../models/milestone.model';
 import { MilestoneService } from '../services/milestone.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-milestone',
@@ -32,7 +33,7 @@ import { MilestoneService } from '../services/milestone.service';
 
   `,
 })
-export class NewMilestoneComponent implements OnInit {
+export class NewMilestoneComponent implements OnInit, OnDestroy {
 
   constructor(private milestoneService: MilestoneService) { }
 
@@ -42,11 +43,16 @@ export class NewMilestoneComponent implements OnInit {
     description: new FormControl(null, [Validators.required]),
   })
   createdMilestone: Milestone;
+  subscriptions$: Subscription[] = [];
   @Input() milestoneToEdit: Milestone;
   ngOnInit(): void {
     if (this.milestoneToEdit) {
       this.newMilestone.patchValue(this.milestoneToEdit);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 
   onAddNewMilestone() {
