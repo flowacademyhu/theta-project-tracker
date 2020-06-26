@@ -13,30 +13,30 @@ import { MatTableDataSource } from '@angular/material/table';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewUser()" mat-raised-button>{{'Add user' | translate}}</button>
+    <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
         <mat-table [dataSource]="users" class="mat-elevation-z8">
             <ng-container matColumnDef="firstName">
-                <mat-header-cell *matHeaderCellDef>{{ 'Firstname' | translate}}</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{ 'firstname' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="lastName">
-            <mat-header-cell *matHeaderCellDef>{{'Lastname' | translate}}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>{{'lastname' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
         </ng-container>
             <ng-container matColumnDef="role">
-                <mat-header-cell *matHeaderCellDef>{{'Role' | translate}}</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'role' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.role }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="cost">
-                <mat-header-cell *matHeaderCellDef>Cost (£/h)</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'cost' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.costToCompanyPerHour }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="projects" >
-                <mat-header-cell *matHeaderCellDef>{{'Projects' | translate}}</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user" > <p *ngFor="let project of user.projectAssigned">{{ project.projectName }}</p></mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions" class="actions">
-                <mat-header-cell *matHeaderCellDef>{{'Actions' | translate}}</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">
                     <mat-icon (click)="onOpenEditModal(user)">edit</mat-icon>
                     <mat-icon (click)="onOpenDeleteModal(user)">clear</mat-icon>
@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
-   }
+  }
 
   onOpenDeleteModal(user) {
     const nameToPass = this.users.find(u => u.id === user.id).firstName + ' ' +
@@ -101,12 +101,17 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '25%',
       height: '25%'
     });
-   this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.deleteUser(user.id);
+        this.userService.deleteUser(user.id).subscribe();
+        this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+        }
+        );
       }
     }));
-  }
+  };
+
 
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
@@ -115,6 +120,9 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+        });
       }
     }));
   }
@@ -126,6 +134,9 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+        });
       }
     }));
   }

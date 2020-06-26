@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-reports',
   template: `
 <div class="reports">
-  <button mat-raised-button>Report by Project - Hours</button>
-  <button mat-raised-button>Report by Project - £</button>
-  <button mat-raised-button>Report by Contractor - Hours</button>
-  <button mat-raised-button>Report by Contractor - £</button>
-  <button mat-raised-button>Project Budget Report</button>
+  <button mat-raised-button>{{'report-by-project-hours' | translate}}</button>
+  <button mat-raised-button>{{'report-by-project-money' | translate}}</button>
+  <button mat-raised-button>{{'report-by-contractor-hours' | translate}}</button>
+  <button mat-raised-button>{{'report-by-contractor-money' | translate}}</button>
+  <button mat-raised-button>{{'project.budget-report' | translate}}</button>
 </div>
 <app-reports-table></app-reports-table>
   `,
