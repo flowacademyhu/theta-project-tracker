@@ -44,9 +44,9 @@ import { UserService } from '../services/user.service';
   <div>
     <table>
       <tr>
-        <th>{{"project-name" | translate}}</th>
-        <th>{{"cost-to-client" | translate}}</th>
-        <th>{{"unassign" | translate}}</th>
+        <th>{{'project-name' | translate}}</th>
+        <th>{{'cost-to-client' | translate}}</th>
+        <th>{{'unassign' | translate}}</th>
       </tr>
       <tr *ngFor="let project of assignedProjects; let i = index">
         <td>{{project.projectName}}</td>
@@ -70,12 +70,12 @@ import { UserService } from '../services/user.service';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">{{"Add" | translate}}</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
   </div>
 </form>
 <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">{{"Cancel" | translate}}</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">{{"Save" | translate}}</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
+  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">{{'save' | translate}}</button>
 </div>
   `,
   styles: [
