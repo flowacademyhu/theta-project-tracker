@@ -1,11 +1,11 @@
 export const transformReportForFrontend = (report: Array<object>, columnName: string, rowName: string, data: string): object => {
-    let columnNames = getUniqueRowNames(report, rowName);
+    let rowNames = getUniqueRowNames(report, rowName);
     let finalObject = {};
-    columnNames.forEach(column => finalObject[column] = (new Object()));
+    rowNames.forEach(row => finalObject[row] = (new Object()));
     Object.keys(finalObject).forEach(key => {
-        report.forEach(element => {
-            if (element[rowName] === key) {
-                finalObject[element[rowName]][element[columnName]] = element[data];
+        report.forEach(individualResult => {
+            if (individualResult[rowName] === key) {
+                finalObject[individualResult[rowName]][individualResult[columnName]] = individualResult[data];
             }
         });
     })
@@ -15,16 +15,18 @@ export const transformReportForFrontend = (report: Array<object>, columnName: st
 
 const getUniqueRowNames = (report, rowName): Array<any> => {
     let uniqueRowNames = new Set();
-    report.forEach(x => uniqueRowNames.add(x[rowName]));
+    report.forEach(individualResult => {
+        uniqueRowNames.add(individualResult[rowName])
+    });
     return Array.from(uniqueRowNames);
 }
 
 export const calculateAndAddTotal = (finalObject: object) => {
-    Object.keys(finalObject).forEach(element => {
+    Object.keys(finalObject).forEach(row => {
         let sum = 0;
-        Object.values(finalObject[element]).forEach(element2 => {
-            sum += +element2;
+        Object.values(finalObject[row]).forEach(numberToAdd => {
+            sum += +numberToAdd;
         })
-        finalObject[element]['total'] = sum;
+        finalObject[row]['total'] = sum;
     });
 }
