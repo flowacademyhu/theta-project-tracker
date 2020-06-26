@@ -63,6 +63,9 @@
                 }
               }
             }
+          },
+          "404":{
+            "description": "Email or password is incorrect"
           }
         }
       }
@@ -134,7 +137,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Logged in user's data",
             "schema": {
               "$ref": "#definitions/UserResponse"
             }
@@ -163,8 +166,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Updated"
+          },
+          "400": {
+            "description": "Confirmation password is invalid"
           }
         }
       }
@@ -194,6 +200,9 @@
             "schema": {
               "$ref": "#definitions/UserResponse"
             }
+          },
+          "404": {
+            "description": "User with given id does not exist or has been deleted"
           }
         }
       },
@@ -223,8 +232,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Updated"
+          },
+          "404": {
+            "description": "User with given id does not exist or has been deleted"
           }
         }
       },
@@ -249,6 +261,9 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          },
+          "404": {
+            "description": "User with given id does not exist or has been deleted"
           }
         }
       }
@@ -362,6 +377,9 @@
             "schema": {
               "$ref": "#definitions/ClientResponse"
             }
+          },
+          "404": {
+            "description": "Client with given id does not exist or has been deleted"
           }
         }
       },
@@ -391,8 +409,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Updated"
+          },
+          "404": {
+            "description": "Client with given id does not exist or has been deleted"
           }
         }
       },
@@ -417,6 +438,9 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          },
+          "404": {
+            "description": "Client with given id does not exist or has been deleted"
           }
         }
       }
@@ -497,6 +521,9 @@
             "schema": {
               "$ref": "#definitions/ProjectResponse"
             }
+          },
+          "404": {
+            "description": "Project with given id does not exist or has been deleted"
           }
         }
       },
@@ -526,8 +553,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Updated"
+          },
+          "404": {
+            "description": "Project with given id does not exist or has been deleted"
           }
         }
       },
@@ -552,6 +582,9 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          },
+          "404": {
+            "description": "Project with given id does not exist or has been deleted"
           }
         }
       }
@@ -730,6 +763,9 @@
             "schema": {
               "$ref": "#definitions/MilestoneResponse"
             }
+          },
+          "404": {
+            "description": "Milestone with given id does not exist or has been deleted"
           }
         }
       },
@@ -759,8 +795,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Updated"
+          },
+          "404": {
+            "description": "Milestone with given id does not exist or has been deleted"
           }
         }
       },
@@ -785,6 +824,9 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          },
+          "404": {
+            "description": "Milestone with given id does not exist or has been deleted"
           }
         }
       }
@@ -867,6 +909,9 @@
             "schema": {
               "$ref": "#definitions/ActionLabelResponse"
             }
+          },
+          "404": {
+            "description": "ActionLabel with given id does not exist or has been deleted"
           }
         }
       },
@@ -896,8 +941,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Updated"
+          },
+          "404": {
+            "description": "ActionLabel with given id does not exist or has been deleted"
           }
         }
       },
@@ -922,6 +970,9 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          },
+          "404": {
+            "description": "ActionLabel with given id does not exist or has been deleted"
           }
         }
       }
