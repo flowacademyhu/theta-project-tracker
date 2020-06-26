@@ -86,7 +86,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.deleteClient(client.id);
+        this.clientService.deleteClient(client.id).subscribe();
       }
     });
   }

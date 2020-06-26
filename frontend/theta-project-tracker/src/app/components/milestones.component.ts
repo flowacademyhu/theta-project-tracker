@@ -59,9 +59,9 @@ mat-icon:hover {
 `]
 })
 export class MilestonesComponent implements OnInit, OnDestroy {
-  milestoneArrays: any[] = [];
+  milestoneArrays: Milestone[] = [];
   subscriptions$: Subscription[] = [];
-  displayedColumns= ['name', 'project', 'description', 'action']
+  displayedColumns = ['name', 'project', 'description', 'action'];
 
   constructor(private milestoneService: MilestoneService, private dialog: MatDialog) { }
 
@@ -72,7 +72,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.milestoneService.fetchMilestones().subscribe((milestones) => {
       this.milestoneArrays = milestones;
-    })
+    });
   }
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
@@ -82,7 +82,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => {
       this.milestoneService.fetchMilestones().subscribe(data => {
         this.milestoneArrays = data;
-      })
+      });
     });
   }
   onOpenDeleteModal(milestone) {
@@ -94,10 +94,10 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.milestoneService.deleteMilestone(milestone.id);
+        this.milestoneService.deleteMilestone(milestone.id).subscribe();
       }
     });
-  } 
+  }
   onOpenEditModal(milestone) {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '60%',
@@ -108,7 +108,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
       if (result) {
         this.milestoneService.fetchMilestones().subscribe(milestones => {
           this.milestoneArrays = milestones;
-        })
+        });
       }
     });
   }

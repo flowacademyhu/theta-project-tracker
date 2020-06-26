@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewUser()" mat-raised-button>{{'Add user' | translate}}</button>
-        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <mat-table [dataSource]="users" class="mat-elevation-z8">
             <ng-container matColumnDef="firstName">
                 <mat-header-cell *matHeaderCellDef>{{ 'Firstname' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
@@ -72,7 +72,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   subscriptions$: Subscription[] = [];
   projectArrays: any[] = [];
   displayedColumns = ['firstName', 'lastName', 'role', 'cost', 'projects', 'actions'];
-  user: User[] = [];
+  users: User[] = [];
   dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -84,9 +84,9 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
-      this.subscriptions$.push(this.userService.users$.subscribe(users => {
-        this.dataSource = new MatTableDataSource(users);
-    }));
+    this.userService.fetchUsers().subscribe((users) => {
+      this.users = users;
+    });
   }
 
   public ngAfterViewInit(): void {
@@ -94,8 +94,8 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
    }
 
   onOpenDeleteModal(user) {
-    const nameToPass = this.user.find(u => u.id === user.id).firstName + ' ' +
-      this.user.find(u => u.id === user.id).lastName;
+    const nameToPass = this.users.find(u => u.id === user.id).firstName + ' ' +
+      this.users.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',

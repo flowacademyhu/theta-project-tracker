@@ -61,7 +61,7 @@ export class ClientManagementComponent implements OnInit {
       this.clientService.updateClient(this.clientToEdit.id, this.newClientForm.getRawValue());
     } else {
       this.createdClient = this.newClientForm.getRawValue();
-      this.clientService.addClient(this.createdClient);
+      this.clientService.addClient(this.createdClient).subscribe();
     }
   }
 }

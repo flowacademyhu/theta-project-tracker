@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 
-
 @Component({
   selector: 'app-new-user',
   template: `
@@ -117,7 +116,7 @@ export class NewUserComponent implements OnInit {
     role: new FormControl(null, Validators.required),
     project: new FormControl(null, Validators.required),
     costToClient: new FormControl(null, Validators.required),
-  })
+  });
   availableProjects = ['Project0', 'Project1', 'Project2', 'Project3'];
   assignedProjects: ProjectAssigned[] = [];
   createdUser: User;
@@ -126,7 +125,7 @@ export class NewUserComponent implements OnInit {
   ngOnInit(): void {
     if (this.userToEdit) {
       this.assignedProjects = this.userToEdit.projectAssigned;
-      this.newUser.patchValue(this.userToEdit)
+      this.newUser.patchValue(this.userToEdit);
     }
   }
   onAddNewUser() {
@@ -156,7 +155,7 @@ export class NewUserComponent implements OnInit {
     if (this.userToEdit) {
       this.editUser();
     } else {
-      this.onAddNewUser()
+      this.onAddNewUser();
     }
   }
 }

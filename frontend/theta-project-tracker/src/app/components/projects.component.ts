@@ -12,7 +12,7 @@ import { DeleteProjectModalComponent } from '../modals/delete-project-modal.comp
   <mat-card class="table-container">
     <div>
      <button (click)="onAddNewProject()" mat-raised-button>+ Add New Project</button>
-     <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+     <mat-table class="mat-elevation-z8" [dataSource]="projects">
     <ng-container matColumnDef="actions" class="actions">
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
@@ -63,7 +63,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   constructor(private projectService: ProjectService, private dialog: MatDialog) { }
 
-  dataSource: Project[] = [];
+  projects: Project[] = [];
   subscriptions$: Subscription[] = [];
   displayedColumns = ['name', 'client', 'description', 'budget', 'action'];
 
@@ -72,9 +72,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions$.push(this.projectService.projects$.subscribe(projects => {
-      this.dataSource = projects;
-    }))
+    this.projectService.fetchProjects().subscribe((projects) => {
+      this.projects = projects;
+    });
   }
 
   onAddNewProject() {
@@ -83,14 +83,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       height: '80%'
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.projectService.fetchProjects().subscribe(data => {
-        this.dataSource = data;
-      })
+      this.projectService.fetchProjects().subscribe(projects => {
+        this.projects = projects;
+      });
     });
   }
- 
-   onOpenDeleteModal(project) {
-    const nameToPass = this.dataSource.find(u => u.id === project.id).name;
+
+  onOpenDeleteModal(project) {
+    const nameToPass = this.projects.find(u => u.id === project.id).name;
     const dialogRef = this.dialog.open(DeleteProjectModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -98,10 +98,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.projectService.deleteProject(project.id);
+        this.projectService.deleteProject(project.id).subscribe();
       }
     });
-  } 
+  }
 
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
@@ -111,7 +111,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result)
+        this.projectService.fetchProjects().subscribe(projects => {
+          this.projects = project;
+        });
       }
     });
-  }}
+  }
+}

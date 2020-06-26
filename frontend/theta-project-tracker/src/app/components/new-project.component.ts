@@ -54,7 +54,7 @@ export class NewProjectComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.projectToEdit) {
-      this.newProject.patchValue(this.projectToEdit)
+      this.newProject.patchValue(this.projectToEdit);
     }
   }
 
@@ -66,11 +66,11 @@ export class NewProjectComponent implements OnInit {
       budget: this.newProject.getRawValue().budget,
     };
     this.emitter.emit(this.createdProject);
-    this.projectService.addProject(this.createdProject);
+    this.projectService.addProject(this.createdProject).subscribe();
   }
 
   editProject() {
-    console.log(this.projectToEdit)
+    console.log(this.projectToEdit);
     this.projectToEdit = {
       id: this.projectToEdit.id,
       name: this.newProject.getRawValue().name,
@@ -78,13 +78,14 @@ export class NewProjectComponent implements OnInit {
       description: this.newProject.getRawValue().description, 
       budget: this.newProject.getRawValue().budget,
     };
-    this.projectService.updateProject(this.projectToEdit.id, this.projectToEdit);
+    this.projectService.updateProject(this.projectToEdit.id, this.projectToEdit).subscribe();
   }
    onCloseDialog() {
     if (this.projectToEdit) {
-      this.editProject();
+      this.projectService.updateProject(this.projectToEdit.id, this.newProject.getRawValue());
     } else {
-      this.onAddNewProject()
+      this.createdProject = this.newProject.getRawValue();
+      this.projectService.addProject(this.createdProject).subscribe();
     }
   }
 }

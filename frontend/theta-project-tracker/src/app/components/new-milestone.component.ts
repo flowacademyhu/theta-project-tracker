@@ -30,7 +30,7 @@ import { EventEmitter } from '@angular/core';
   <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">Save</button>
 </div>
-  
+
   `,
 })
 export class NewMilestoneComponent implements OnInit {
@@ -47,7 +47,7 @@ export class NewMilestoneComponent implements OnInit {
   @Input() milestoneToEdit: Milestone;
   ngOnInit(): void {
     if (this.milestoneToEdit) {
-      this.newMilestone.patchValue(this.milestoneToEdit)
+      this.newMilestone.patchValue(this.milestoneToEdit);
     }
   }
 
@@ -61,22 +61,21 @@ export class NewMilestoneComponent implements OnInit {
     this.milestoneService.addMilestone(this.createdMilestone);
   }
   editMilestone() {
-    console.log(this.milestoneToEdit)
+    console.log(this.milestoneToEdit);
     this.milestoneToEdit = {
       id: this.milestoneToEdit.id,
       name: this.newMilestone.getRawValue().name,
       project: this.newMilestone.getRawValue().project,
-      description: this.newMilestone.getRawValue().description, 
+      description: this.newMilestone.getRawValue().description
     };
-    this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.milestoneToEdit);
+    this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.milestoneToEdit).subscribe();
   }
   onCloseDialog() {
     if (this.milestoneToEdit) {
       this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.newMilestone.getRawValue());
     } else {
       this.createdMilestone = this.newMilestone.getRawValue();
-      console.log(this.newMilestone.getRawValue())
-      this.milestoneService.addMilestone(this.createdMilestone);
+      this.milestoneService.addMilestone(this.createdMilestone).subscribe();
     }
   }
 }
