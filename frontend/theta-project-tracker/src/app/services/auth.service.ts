@@ -11,7 +11,7 @@ import { AuthResponse } from '../models/auth-response';
 export class AuthService {
 
   private apiUrl: string = environment.baseUrl;
-  public loggedInUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  private loggedInUser$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -23,29 +23,29 @@ export class AuthService {
           localStorage.setItem('token', resp.token);
           return this.http.get<User>(this.apiUrl + 'user/' + resp.user.id ).pipe(
             tap((user) => {
-              this.loggedInUser.next(user);
+              this.loggedInUser$.next(user);
               return user;
             })
           );
         })
       );
   }
-
   public logout() {
-    this.loggedInUser = null;
+    this.loggedInUser$ = null;
     localStorage.removeItem('token');
     this.router.navigate(['login']);
   }
-
   public authenticate(): User {
-    return this.loggedInUser.getValue();
+    return this.loggedInUser$.getValue();
   }
-
   public authenticateAsync(): Promise<User> {
     return new Promise<User>((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.loggedInUser.getValue());
+        resolve(this.loggedInUser$.getValue());
       }, 100);
     });
+  }
+  get user(): Observable<User> {
+    return this.loggedInUser$;
   }
 }
