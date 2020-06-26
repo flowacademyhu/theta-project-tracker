@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project } from '../models/project.model';
 import { ProjectService } from '../services/project.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-project',
@@ -38,7 +39,7 @@ import { ProjectService } from '../services/project.service';
 styles: [`
 `]
 })
-export class NewProjectComponent implements OnInit {
+export class NewProjectComponent implements OnInit, OnDestroy {
 
   constructor(private projectService: ProjectService) { }
   newProject = new FormGroup({
@@ -48,12 +49,17 @@ export class NewProjectComponent implements OnInit {
     budget: new FormControl(null, [Validators.required, Validators.min(0)]),
   })
   createdProject: Project;
+  subscriptions$: Subscription[] = [];
   @Input() projectToEdit: Project;
 
   ngOnInit(): void {
     if (this.projectToEdit) {
       this.newProject.patchValue(this.projectToEdit);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 
   onAddNewProject() {

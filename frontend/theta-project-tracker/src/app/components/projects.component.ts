@@ -99,6 +99,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.projectService.deleteProject(project.id).subscribe();
+        this.projectService.fetchProjects().subscribe(projects =>
+          this.projects = this.projects);
       }
     }));
   }

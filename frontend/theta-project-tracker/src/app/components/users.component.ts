@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
-   }
+  }
 
   onOpenDeleteModal(user) {
     const nameToPass = this.users.find(u => u.id === user.id).firstName + ' ' +
@@ -101,12 +101,17 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '25%',
       height: '25%'
     });
-   this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.deleteUser(user.id);
+        this.userService.deleteUser(user.id).subscribe();
+        this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+        }
+        );
       }
     }));
-  }
+  };
+
 
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
@@ -115,6 +120,9 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+        });
       }
     }));
   }
@@ -126,6 +134,9 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+        });
       }
     }));
   }

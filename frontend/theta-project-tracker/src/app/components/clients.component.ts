@@ -89,6 +89,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.clientService.deleteClient(client.id).subscribe();
+        this.clientService.fetchClients().subscribe(clients =>
+          this.clients = clients);
       }
     }));
   }
@@ -99,9 +101,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.fetchClients().subscribe(c => {
-          this.clients = c;
-        })
+        this.clientService.fetchClients().subscribe(clients => {
+          this.clients = clients;
+        });
       }
     }));
   }

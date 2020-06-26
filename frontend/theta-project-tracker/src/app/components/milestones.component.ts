@@ -96,6 +96,8 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.milestoneService.deleteMilestone(milestone.id).subscribe();
+        this.milestoneService.fetchMilestones().subscribe(milestone =>
+          this.milestoneArrays = milestone);
       }
     }));
   }
