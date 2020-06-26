@@ -17,7 +17,7 @@ export class NewUserModalComponent implements OnInit {
   message = "Add New User";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    if (data !== null) {
+    if (data) {
       this.userToEdit = data.userToEdit;
     }
   }

@@ -51,10 +51,12 @@ import { Subscription } from 'rxjs';
 })
 export class ClientsComponent implements OnInit, OnDestroy {
 
-  constructor(private clientService: ClientService, private dialog: MatDialog) { }
   subscriptions$: Subscription[] = [];
   clients: Client[] = [];
   displayedColumns = ['name', 'description', 'actions'];
+
+  constructor(private clientService: ClientService, private dialog: MatDialog) { }
+
   ngOnInit(): void {
     this.clientService.getClients().subscribe((clients) => {
       this.clients = clients;
@@ -69,13 +71,13 @@ export class ClientsComponent implements OnInit, OnDestroy {
       height: '50%',
       data: { clientToEdit: client }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.clientService.getClients().subscribe(clients => {
           this.clients = clients;
         });
       }
-    });
+    }));
   }
   onOpenDeleteModal(client) {
     const nameToPass = this.clients.find(c => c.id === client.id).name;
@@ -84,20 +86,20 @@ export class ClientsComponent implements OnInit, OnDestroy {
       width: '25%',
       height: '25%'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.clientService.deleteClient(client.id).subscribe();
       }
-    });
+    }));
   }
   onAddNewClient() {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
       width: '50%',
       height: '50%'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
       }
-    });
+    }));
   }
 }

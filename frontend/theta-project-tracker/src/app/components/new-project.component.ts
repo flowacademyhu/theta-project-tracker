@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project } from '../models/project.model';
-import { EventEmitter } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 
 @Component({
@@ -49,7 +48,6 @@ export class NewProjectComponent implements OnInit {
     budget: new FormControl(null, [Validators.required, Validators.min(0)]),
   })
   createdProject: Project;
-  emitter: EventEmitter<Project> = new EventEmitter<Project>();
   @Input() projectToEdit: Project;
 
   ngOnInit(): void {
@@ -59,18 +57,11 @@ export class NewProjectComponent implements OnInit {
   }
 
   onAddNewProject() {
-    this.createdProject = {
-      name: this.newProject.getRawValue().name,
-      client: this.newProject.getRawValue().client,
-      description: this.newProject.getRawValue().description,
-      budget: this.newProject.getRawValue().budget,
-    };
-    this.emitter.emit(this.createdProject);
+    this.createdProject = this.newProject.getRawValue();
     this.projectService.addProject(this.createdProject).subscribe();
   }
 
   editProject() {
-    console.log(this.projectToEdit);
     this.projectToEdit = {
       id: this.projectToEdit.id,
       name: this.newProject.getRawValue().name,

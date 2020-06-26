@@ -19,7 +19,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProjectsComponent } from './components/projects.component';
 import { NewProjectModalComponent } from './modals/new-project-modal.component';
 import { NewProjectComponent } from './components/new-project.component';
-import { DeleteProjectModalComponent } from './modals/delete-project-modal.component';
 import { ReportsComponent } from './components/reports.component';
 import { LoginComponent } from './components/login.component';
 import { HeaderComponent } from './components/header.component';
@@ -46,7 +45,6 @@ import { ReportsTableComponent } from '../app/components/reports-table.component
 
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
-import { DeleteMilestoneComponent } from './modals/delete-milestone.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
@@ -78,10 +76,8 @@ export function httpTranslateLoader(http: HttpClient) {
     NewProjectComponent,
     NewProjectModalComponent,
     ProjectsComponent,
-    DeleteProjectModalComponent,
     NewMilestoneComponent,
     NewMilestoneModalComponent,
-    DeleteMilestoneComponent,
     ReportsTableComponent
   ],
   imports: [
@@ -121,7 +117,6 @@ export function httpTranslateLoader(http: HttpClient) {
     multi: true,
   },],
   bootstrap: [AppComponent],
-  entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent,
-  DeleteProjectModalComponent,]
+  entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent]
 })
 export class AppModule { }  

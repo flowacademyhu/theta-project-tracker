@@ -18,7 +18,7 @@ export class NewMilestoneModalComponent implements OnInit {
   message = "Add New Milestone";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { 
-    if (data !== null) {
+    if (data) {
       this.milestoneToEdit = data.milestoneToEdit;
     }
   }

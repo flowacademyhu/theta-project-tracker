@@ -101,11 +101,11 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '25%',
       height: '25%'
     });
-    dialogRef.afterClosed().subscribe(result => {
+   this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userService.deleteUser(user.id);
       }
-    });
+    }));
   }
 
   onAddNewUser() {
@@ -113,10 +113,10 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '60%',
       height: '80%'
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
       }
-    });
+    }));
   }
   onOpenEditModal(user) {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
@@ -124,9 +124,9 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       height: '80%',
       data: { userToEdit: user }
     });
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
       }
-    });
+    }));
   }
 }

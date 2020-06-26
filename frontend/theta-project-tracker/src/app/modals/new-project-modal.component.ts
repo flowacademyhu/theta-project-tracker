@@ -17,7 +17,7 @@ export class NewProjectModalComponent implements OnInit {
   message = "Add New Project";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { 
-    if (data !== null) {
+    if (data) {
       this.projectToEdit = data.projectToEdit;
     }
   }

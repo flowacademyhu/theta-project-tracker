@@ -16,7 +16,7 @@ export class NewClientModalComponent implements OnInit {
   message = "Add New Client"
   clientToEdit: Client;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    if (data !== null) {
+    if (data) {
       this.clientToEdit = data.clientToEdit;
     }
   }
