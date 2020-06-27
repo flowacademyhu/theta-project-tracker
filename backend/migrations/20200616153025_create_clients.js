@@ -5,8 +5,8 @@ exports.up = function (knex) {
         table.string('description');
         table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
         table.timestamp('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-        table.integer('deletedAtUnix').defaultTo(0);
-        table.unique(['name', 'deletedAtUnix']);
+        table.integer('deletedAt').defaultTo(0);
+        table.unique(['name', 'deletedAt']);
     });
 };
 

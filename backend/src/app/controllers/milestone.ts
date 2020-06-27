@@ -6,7 +6,7 @@ import {TableNames} from "../../lib/enums";
 import * as milestoneSerializer from "../serializers/milestone";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.milestones).select().where({deletedAtUnix: 0});
+  let query: QueryBuilder = database(TableNames.milestones).select().where({deletedAt: 0});
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -19,7 +19,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
+    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (milestone) {
       res.status(200).json(milestone);
     } else {
@@ -48,7 +48,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
+    const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (milestone) {
       const newMilestone: Milestone = {
         name: req.body.name,

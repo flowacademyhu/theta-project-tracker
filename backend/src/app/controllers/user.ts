@@ -8,7 +8,7 @@ import {Roles, TableNames} from "../../lib/enums";
 import {ProjectUser} from "../models/projectUser";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.users).select().where({deletedAtUnix: 0});
+  let query: QueryBuilder = database(TableNames.users).select().where({deletedAt: 0});
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -21,7 +21,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-     const user = await database(TableNames.users).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
+     const user = await database(TableNames.users).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (user) {
       res.status(200).json(userSerializer.show(user));
     } else {

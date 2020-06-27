@@ -32,7 +32,7 @@ export const index = (users: Array<User>): Array<UserSerializer> => {
 export const destroy = (user) => {
   return {
     email: user.email + ' ' + '(deleted)',
-    deletedAtUnix: database.raw('UNIX_TIMESTAMP()')
+    deletedAt: database.raw('UNIX_TIMESTAMP()')
   }
 }
 
