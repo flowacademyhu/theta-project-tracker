@@ -3,6 +3,7 @@ import {database} from "../../lib/database";
 import {Request, Response} from "express";
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
+import * as milestoneSerializer from "../serializers/milestone";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.milestones).select().whereNull('deletedAt');
@@ -69,7 +70,7 @@ export const destroy = async (req: Request, res: Response) => {
   try {
     const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).first();
     if (milestone) {
-      await database(TableNames.milestones).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({id: req.params.id});
+      await database(TableNames.milestones).update(milestoneSerializer.destroy(milestone)).where({id: req.params.id});
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

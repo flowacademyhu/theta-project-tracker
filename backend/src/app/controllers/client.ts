@@ -3,6 +3,7 @@ import {database} from "../../lib/database";
 import {Request, Response} from "express";
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
+import * as clientSerializer from "../serializers/client";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.clients).select().whereNull('deletedAt');
@@ -67,7 +68,7 @@ export const destroy = async (req: Request, res: Response) => {
   try {
     const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).first();
     if (client) {
-      await database(TableNames.clients).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({id: req.params.id});
+      await database(TableNames.clients).update(clientSerializer.destroy(client)).where({id: req.params.id});
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

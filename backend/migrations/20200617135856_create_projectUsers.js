@@ -6,7 +6,6 @@ exports.up = function (knex) {
         table.integer('costToClientPerHour').notNullable();
         table.timestamp('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
-        table.timestamp('deletedAt').nullable();
     });
 };
 

@@ -6,7 +6,6 @@ import * as bcrypt from 'bcrypt';
 import {QueryBuilder} from "knex";
 import {Roles, TableNames} from "../../lib/enums";
 import {ProjectUser} from "../models/projectUser";
-import {createUser} from "../serializers/userCreate";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.users).select().whereNull('deletedAt');
@@ -57,7 +56,7 @@ const createProjects = async (req: Request) => {
 export const create = async (req: Request, res: Response) => {
   try {
     const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
-    const user = createUser(req.body.user, encryptedPassword);
+    const user = userSerializer.createUser(req.body.user, encryptedPassword);
     await database(TableNames.users).insert(user);
     await createProjects(req);
     res.sendStatus(201);
@@ -72,7 +71,7 @@ export const update = async (req: Request, res: Response) => {
     const user: User = await database(TableNames.users).select().where({id: +req.params.id}).first();
     if (user) {
       const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
-      const newUser = createUser(req.body.user, encryptedPassword);
+      const newUser = userSerializer.createUser(req.body.user, encryptedPassword);
       await database(TableNames.users).update(newUser).where({id: +req.params.id});
       res.sendStatus(200);
     } else {
@@ -89,7 +88,7 @@ export const destroy = async (req: Request, res: Response) => {
     const user: User = await database(TableNames.users).select().where({id: req.params.id}).first();
     if (user) {
       await database(TableNames.projectUsers).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({userId: req.params.id});
-      await database(TableNames.users).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where({id: req.params.id});
+      await database(TableNames.users).update(userSerializer.destroy(user)).where({id: req.params.id});
       res.sendStatus(204);
     } else {
       res.sendStatus(404);
