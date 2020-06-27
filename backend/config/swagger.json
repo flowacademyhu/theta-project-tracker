@@ -297,6 +297,9 @@
                 "$ref": "#definitions/UserProjectResponse"
               }
             }
+          },
+          "404": {
+            "description": "User with given id does not exist or has been deleted"
           }
         }
       }
