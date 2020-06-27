@@ -6,7 +6,7 @@ import {TableNames} from "../../lib/enums";
 import * as clientSerializer from "../serializers/client";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.clients).select().whereNull('deletedAt');
+  let query: QueryBuilder = database(TableNames.clients).select().where({deletedAtUnix: 0});
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -19,7 +19,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
     if (client) {
       res.status(200).json(client);
     } else {
@@ -47,7 +47,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
     if (client) {
       const newClient: Client = {
         name: req.body.name,

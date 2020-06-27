@@ -6,7 +6,7 @@ import {TableNames} from "../../lib/enums";
 import * as projectSerializer from "../serializers/project";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.projects).select().whereNull('deletedAt');
+  let query: QueryBuilder = database(TableNames.projects).select().where({deletedAtUnix: 0});
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -19,7 +19,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
     if (project) {
       res.status(200).json(project);
     } else {
@@ -49,7 +49,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
     if (project) {
       const newProject: Project = {
         name: req.body.name,
@@ -70,7 +70,7 @@ export const update = async (req: Request, res: Response) => {
 
 export const destroy = async (req: Request, res: Response) => {
   try {
-    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).whereNull('deletedAt').first();
+    const project: Project = await database(TableNames.projects).select().where({id: req.params.id}).where({deletedAtUnix: 0}).first();
     if (project) {
       await database(TableNames.projects).update(projectSerializer.destroy(project)).where({id: req.params.id});
       res.sendStatus(204);

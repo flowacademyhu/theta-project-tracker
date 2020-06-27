@@ -9,7 +9,6 @@ exports.up = (knex) => {
       table.integer('costToCompanyPerHour').notNullable();
       table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
       table.timestamp('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-      table.timestamp('deletedAt').nullable();
       table.integer('deletedAtUnix').defaultTo(0);
       table.unique(['email', 'deletedAtUnix']);
     });
