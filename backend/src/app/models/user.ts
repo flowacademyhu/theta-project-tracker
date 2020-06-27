@@ -10,6 +10,4 @@ export interface User {
   costToCompanyPerHour: number;
   createdAt?: string;
   updatedAt?: string;
-  deletedAt?: string;
-  deletedAtUnix?: number;
 }
