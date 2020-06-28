@@ -15,7 +15,7 @@ export const index = async (req: Request, res: Response) => {
   if(user) {
     let query: QueryBuilder = database(TableNames.projects)
       .join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId')
-      .where({userId: userId}).whereNull('projects.deletedAt').select();
+      .where({userId: userId}).where({deletedAt: 0}).select();
     if (req.query.limit) {
       query = query.limit(req.query.limit);
     }

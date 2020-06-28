@@ -8,6 +8,8 @@ import {router as projectUserRouter} from './projectUser';
 import {router as userProjectRouter} from './userProject';
 import {router as timeRecordRouter} from './timeRecord';
 import {router as actionLabelRouter} from './actionLabel';
+import {router as reportRouter} from './report';
+
 import {router as userProfileRouter} from './userProfile';
 
 export const router: Router = Router({mergeParams: true});
@@ -21,3 +23,4 @@ router.use('/project/user', projectUserRouter);
 router.use('/user/:userId/project', userProjectRouter);
 router.use('/timeRecord', timeRecordRouter);
 router.use('/actionLabel', actionLabelRouter);
+router.use('/report', reportRouter);
