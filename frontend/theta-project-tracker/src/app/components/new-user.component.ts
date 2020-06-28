@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { User, ProjectAssigned } from '../models/user.model';
+import { User, ProjectAssigned, UserCreate, UserCreateProjects } from '../models/user.model';
 import { UserService } from '../services/user.service';
+import { Project } from '../models/project.model';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-new-user',
@@ -25,10 +27,16 @@ import { UserService } from '../services/user.service';
       <input matInput type="text" formControlName="email">
     </mat-form-field>
   </div>
+  <label for="password">{{'password' | translate}}</label>
+  <div>
+    <mat-form-field class="full-width">
+      <input matInput type="text" formControlName="password">
+    </mat-form-field>
+  </div>
   <label for="cost">{{'cost' | translate}}</label>
   <div>
     <mat-form-field class="cost">
-      <input matInput type="number" formControlName="cost">
+      <input matInput type="number" formControlName="costToCompanyPerHour">
     </mat-form-field>
   </div>
   <label for="role">{{'role' | translate}}</label>
@@ -50,7 +58,7 @@ import { UserService } from '../services/user.service';
       </tr>
       <tr *ngFor="let project of assignedProjects; let i = index">
         <td>{{project.projectName}}</td>
-        <td>{{project.userCostPerHour}}</td>
+        <td>{{project.costToClientPerHour}}</td>
         <td>
           <mat-icon (click)="onDeleteProject(project)">clear</mat-icon>
         </td>
@@ -58,8 +66,8 @@ import { UserService } from '../services/user.service';
       <tr>
         <td>
           <mat-form-field>
-            <mat-select formControlName="project">
-              <mat-option *ngFor="let project of availableProjects" value="{{ project }}">{{ project }}</mat-option>
+            <mat-select formControlName="projectId">
+              <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
             </mat-select>
           </mat-form-field>
         </td>
@@ -106,31 +114,37 @@ import { UserService } from '../services/user.service';
 })
 export class NewUserComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
-
   newUser = new FormGroup({
     firstName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
     lastName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
     email: new FormControl(null, [Validators.required, Validators.email]),
-    cost: new FormControl(null, [Validators.required, Validators.min(0)]),
+    password: new FormControl(null, Validators.required),
+    costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),
     role: new FormControl(null, Validators.required),
-    project: new FormControl(null, Validators.required),
+    projectId: new FormControl(null, Validators.required),
     costToClient: new FormControl(null, Validators.required),
   });
-  availableProjects = ['Project0', 'Project1', 'Project2', 'Project3'];
-  assignedProjects: ProjectAssigned[] = [];
-  createdUser: User;
+  availableProjects: Project[] = [];
+  assignedProjects: UserCreateProjects[] = [];
+  createdUser: UserCreate;
   @Input() userToEdit: User;
-
+  constructor(private userService: UserService, private projectService: ProjectService) { }
   ngOnInit(): void {
     if (this.userToEdit) {
-      this.assignedProjects = this.userToEdit.projectAssigned;
+      console.log(this.userToEdit)
+      this.newUser.get('password').disable()
+      this.assignedProjects = this.userToEdit.projects;
       this.newUser.patchValue(this.userToEdit);
     }
+    this.projectService.fetchProjects().subscribe(projects => {
+      this.availableProjects = projects;
+    })
   }
   onAddNewUser() {
     this.assignProjectsToUser();
     this.createdUser = this.newUser.getRawValue();
+    /* this.createdUser.projects = this.assignedProjects */
+    console.log(this.createdUser)
     this.userService.addUser(this.createdUser).subscribe();
   }
   onDeleteProject(project) {
@@ -138,7 +152,7 @@ export class NewUserComponent implements OnInit {
   }
   onAddNewProject() {
     this.assignProjectsToUser();
-    this.newUser.get('project').patchValue(null);
+    this.newUser.get('projectId').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
   }
   editUser() {
@@ -146,8 +160,10 @@ export class NewUserComponent implements OnInit {
     this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe();
   }
   assignProjectsToUser() {
+    console.log(this.newUser.getRawValue())
     this.assignedProjects.push({
-      projectName: this.newUser.get('project').value,
+      projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
+      projectId: this.newUser.get('projectId').value,
       costToClientPerHour: this.newUser.get('costToClient').value
     });
   }
@@ -155,6 +171,8 @@ export class NewUserComponent implements OnInit {
     if (this.userToEdit) {
       this.editUser();
     } else {
+      console.log('cica')
+      console.log(this.newUser.getRawValue())
       this.onAddNewUser();
     }
   }

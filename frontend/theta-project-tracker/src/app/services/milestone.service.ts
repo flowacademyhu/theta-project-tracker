@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Milestone } from '../models/milestone.model';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 
@@ -21,12 +21,12 @@ export class MilestoneService {
     return this.http.get<Milestone>(this.apiUrl + +`milestone/${id}`);
   }
   public addMilestone(milestone: Milestone): Observable<Milestone> {
-    return this.http.post<Milestone>(this.apiUrl + 'milestone', milestone);
+    return this.http.post<Milestone>(this.apiUrl + 'milestone', milestone, {responseType: 'text'});
   }
-  public updateMilestone(id: number, milestone: Milestone): Observable<Milestone> {
-    return this.http.put<Milestone>(this.apiUrl + `milestone/${id}`, milestone);
+  public updateMilestone(id: number, milestone: Milestone) {
+    return this.http.put(this.apiUrl + `milestone/${id}`, milestone, { responseType: 'text'});
   }
   public deleteMilestone(id: number): Observable<Milestone> {
-    return this.http.delete<Milestone>(this.apiUrl + `user/${id}`).pipe(tap(() => this.fetchMilestones()));
+    return this.http.delete<Milestone>(this.apiUrl + `milestone/${id}`).pipe(tap(() => this.fetchMilestones()));
   }
 }

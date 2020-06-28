@@ -73,9 +73,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.fetchClients().subscribe(clients => {
-          this.clients = clients;
-        });
+        this.updateDataSource()
       }
     }));
   }
@@ -88,9 +86,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.deleteClient(client.id).subscribe();
-        this.clientService.fetchClients().subscribe(clients =>
-          this.clients = clients);
+        this.clientService.deleteClient(client.id).subscribe(() => {
+          this.updateDataSource();
+        })
       }
     }));
   }
@@ -101,10 +99,13 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientService.fetchClients().subscribe(clients => {
-          this.clients = clients;
-        });
+        this.updateDataSource()
       }
     }));
+  }
+  updateDataSource() {
+    this.clientService.fetchClients().subscribe(clients => {
+      this.clients = clients;
+    });
   }
 }

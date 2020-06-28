@@ -1,6 +1,7 @@
 export interface Milestone {
   id?: number;
   name: string;
-  project: string;
+  projectId: number;
+  projectName?: string;
   description: string  
 }

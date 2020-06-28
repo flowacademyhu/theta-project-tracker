@@ -5,6 +5,8 @@ import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project.model';
 import { NewProjectModalComponent } from '../modals/new-project-modal.component';
 import { DeleteModalComponent } from '../modals/delete-modal.component';
+import { ClientService } from '../services/client.service';
+import { Client } from '../models/client.model';
 
 @Component({
   selector: 'app-projects',
@@ -20,7 +22,7 @@ import { DeleteModalComponent } from '../modals/delete-modal.component';
       </ng-container>
      <ng-container matColumnDef="client">
       <mat-header-cell *matHeaderCellDef>{{'clients' | translate}}</mat-header-cell>
-      <mat-cell *matCellDef="let project">{{ project.client }}</mat-cell>
+      <mat-cell *matCellDef="let project">{{ project.clientName }}</mat-cell>
      </ng-container>
      <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef>{{'description' | translate}}</mat-header-cell>
@@ -61,9 +63,10 @@ import { DeleteModalComponent } from '../modals/delete-modal.component';
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
 
-  constructor(private projectService: ProjectService, private dialog: MatDialog) { }
+  constructor(private projectService: ProjectService, private dialog: MatDialog, private clientService: ClientService) { }
 
   projects: Project[] = [];
+  clients: Client[];
   subscriptions$: Subscription[] = [];
   displayedColumns = ['name', 'client', 'description', 'budget', 'action'];
 
@@ -75,6 +78,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.projectService.fetchProjects().subscribe((projects) => {
       this.projects = projects;
     });
+    this.clientService.fetchClients().subscribe(clients => {
+      this.clients = clients;
+      this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name)
+    })
   }
 
   onAddNewProject() {
@@ -83,9 +90,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       height: '80%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
-      this.projectService.fetchProjects().subscribe(projects => {
-        this.projects = projects;
-      });
+      this.updateDataSource();
     }));
   }
 
@@ -98,9 +103,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.projectService.deleteProject(project.id).subscribe();
-        this.projectService.fetchProjects().subscribe(projects =>
-          this.projects = this.projects);
+        this.projectService.deleteProject(project.id).subscribe(() => {
+          this.updateDataSource();
+        });
+
       }
     }));
   }
@@ -112,11 +118,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       data: { projectToEdit: project }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.projectService.fetchProjects().subscribe(projects => {
-          this.projects = projects;
-        });
-      }
+      this.updateDataSource()
     }));
+  }
+  updateDataSource() {
+    this.projectService.fetchProjects().subscribe(projects => {
+      this.projects = projects;
+      this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name)
+    })
   }
 }

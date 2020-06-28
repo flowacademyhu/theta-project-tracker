@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project } from '../models/project.model';
 import { ProjectService } from '../services/project.service';
+import { ClientService } from '../services/client.service';
+import { Client } from '../models/client.model';
 
 @Component({
   selector: 'app-new-project',
@@ -16,7 +18,9 @@ import { ProjectService } from '../services/project.service';
   <label for="name">{{'clients' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="client">
+    <mat-select formControlName="clientId">
+      <mat-option *ngFor="let client of clients" [value]="client.id">{{ client.name }}</mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
   <label for="email">{{'description' | translate}}</label>
@@ -35,22 +39,25 @@ import { ProjectService } from '../services/project.service';
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">Save</button>
 </div>
 `,
-styles: [`
+  styles: [`
 `]
 })
 export class NewProjectComponent implements OnInit {
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, private clientService: ClientService) { }
   newProject = new FormGroup({
-    name: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
-    client: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
+    name: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    clientId: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     budget: new FormControl(null, [Validators.required, Validators.min(0)]),
   })
   createdProject: Project;
   @Input() projectToEdit: Project;
-
+  clients: Client[] = [];
   ngOnInit(): void {
+    this.clientService.fetchClients().subscribe(clients => {
+      this.clients = clients;
+    })
     if (this.projectToEdit) {
       this.newProject.patchValue(this.projectToEdit);
     }
@@ -62,18 +69,20 @@ export class NewProjectComponent implements OnInit {
   }
 
   editProject() {
+    console.log(this.newProject.getRawValue())
     this.projectToEdit = {
       id: this.projectToEdit.id,
       name: this.newProject.getRawValue().name,
-      client: this.newProject.getRawValue().client,
-      description: this.newProject.getRawValue().description, 
+      clientId: this.newProject.get('client').value,
+      description: this.newProject.getRawValue().description,
       budget: this.newProject.getRawValue().budget,
     };
     this.projectService.updateProject(this.projectToEdit.id, this.projectToEdit).subscribe();
   }
-   onCloseDialog() {
+  onCloseDialog() {
     if (this.projectToEdit) {
-      this.projectService.updateProject(this.projectToEdit.id, this.newProject.getRawValue());
+      console.log(this.newProject.getRawValue())
+      this.projectService.updateProject(this.projectToEdit.id, this.newProject.getRawValue()).subscribe();
     } else {
       this.createdProject = this.newProject.getRawValue();
       this.projectService.addProject(this.createdProject).subscribe();

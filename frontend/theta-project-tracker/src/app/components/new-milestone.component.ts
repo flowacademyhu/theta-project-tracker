@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Milestone } from '../models/milestone.model';
 import { MilestoneService } from '../services/milestone.service';
+import { Project } from '../models/project.model';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-new-milestone',
@@ -16,7 +18,9 @@ import { MilestoneService } from '../services/milestone.service';
   <label for="project">{{'projects' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="project">
+      <mat-select formControlName="projectId">
+      <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
   <label for="description">{{'description' | translate}}</label>
@@ -26,7 +30,7 @@ import { MilestoneService } from '../services/milestone.service';
     </mat-form-field>
   </div>
     <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">{{'canel' | translate}}</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">Save</button>
 </div>
 
@@ -34,19 +38,23 @@ import { MilestoneService } from '../services/milestone.service';
 })
 export class NewMilestoneComponent implements OnInit {
 
-  constructor(private milestoneService: MilestoneService) { }
+  constructor(private milestoneService: MilestoneService, private projectService: ProjectService) { }
 
   newMilestone = new FormGroup({
-    name: new FormControl(null, Validators.required),
-    project: new FormControl(null, Validators.required),
+    name: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    projectId: new FormControl(null, Validators.required),
     description: new FormControl(null, [Validators.required]),
   })
   createdMilestone: Milestone;
+  projects: Project[] = [];
   @Input() milestoneToEdit: Milestone;
   ngOnInit(): void {
     if (this.milestoneToEdit) {
       this.newMilestone.patchValue(this.milestoneToEdit);
     }
+    this.projectService.fetchProjects().subscribe(projects => {
+      this.projects = projects;
+    })
   }
 
   onAddNewMilestone() {
@@ -58,7 +66,7 @@ export class NewMilestoneComponent implements OnInit {
   }
   onCloseDialog() {
     if (this.milestoneToEdit) {
-      this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.newMilestone.getRawValue());
+      this.milestoneService.updateMilestone(this.milestoneToEdit.id, this.newMilestone.getRawValue()).subscribe();
     } else {
       this.createdMilestone = this.newMilestone.getRawValue();
       this.milestoneService.addMilestone(this.createdMilestone).subscribe();

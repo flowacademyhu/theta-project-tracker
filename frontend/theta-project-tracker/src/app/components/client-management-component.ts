@@ -47,8 +47,8 @@ export class ClientManagementComponent implements OnInit {
   @Input() clientToEdit: Client;
   createdClient: Client;
   newClientForm = new FormGroup({
-    name: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
-    description: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')])
+    name: new FormControl(null, Validators.required),
+    description: new FormControl(null, Validators.required)
   });
   constructor(private clientService: ClientService) { }
   ngOnInit(): void {

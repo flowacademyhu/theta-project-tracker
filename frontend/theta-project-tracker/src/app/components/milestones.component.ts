@@ -5,6 +5,8 @@ import { Milestone } from '../models/milestone.model';
 import { Subscription } from 'rxjs';
 import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.component';
 import { DeleteModalComponent } from '../modals/delete-modal.component';
+import { ProjectService } from '../services/project.service';
+import { Project } from '../models/project.model';
 
 @Component({
   selector: 'app-milestones',
@@ -19,7 +21,7 @@ import { DeleteModalComponent } from '../modals/delete-modal.component';
             </ng-container>
             <ng-container matColumnDef="project">
             <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
-            <mat-cell *matCellDef="let milestone">{{ milestone.project }}</mat-cell>
+            <mat-cell *matCellDef="let milestone">{{ milestone.projectName }}</mat-cell>
         </ng-container>
             <ng-container matColumnDef="description">
                 <mat-header-cell *matHeaderCellDef>{{'description' | translate}}</mat-header-cell>
@@ -60,30 +62,36 @@ mat-icon:hover {
 })
 export class MilestonesComponent implements OnInit, OnDestroy {
   milestoneArrays: Milestone[] = [];
+  projects: Project[] = [];
   subscriptions$: Subscription[] = [];
   displayedColumns = ['name', 'project', 'description', 'action'];
 
-  constructor(private milestoneService: MilestoneService, private dialog: MatDialog) { }
+  constructor(private milestoneService: MilestoneService, private dialog: MatDialog,
+    private projectService: ProjectService) { }
 
   ngOnInit(): void {
+    console.log('macskaaaa')
     this.milestoneService.fetchMilestones().subscribe((milestones) => {
       this.milestoneArrays = milestones;
+      console.log(this.milestoneArrays)
     });
+    this.projectService.fetchProjects().subscribe(projects => {
+      this.projects = projects;
+      this.milestoneArrays.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name)
+    })
   }
 
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
-  
+
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '60%',
       height: '80%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
-      this.milestoneService.fetchMilestones().subscribe(data => {
-        this.milestoneArrays = data;
-      });
+      this.updateDataSource();
     }));
   }
   onOpenDeleteModal(milestone) {
@@ -95,9 +103,9 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.milestoneService.deleteMilestone(milestone.id).subscribe();
-        this.milestoneService.fetchMilestones().subscribe(milestone =>
-          this.milestoneArrays = milestone);
+        this.milestoneService.deleteMilestone(milestone.id).subscribe(() => {
+          this.updateDataSource();
+        });
       }
     }));
   }
@@ -107,12 +115,14 @@ export class MilestonesComponent implements OnInit, OnDestroy {
       height: '80%',
       data: { milestoneToEdit: milestone }
     });
-    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.milestoneService.fetchMilestones().subscribe(milestones => {
-          this.milestoneArrays = milestones;
-        });
-      }
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+      this.updateDataSource();
     }));
+  }
+  updateDataSource() {
+    this.milestoneService.fetchMilestones().subscribe(milestones => {
+      this.milestoneArrays = milestones;
+      this.milestoneArrays.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name)
+    })
   }
 }
