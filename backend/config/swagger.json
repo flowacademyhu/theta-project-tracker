@@ -93,6 +93,9 @@
         "responses": {
           "201": {
             "description": "User created"
+          },
+          "400": {
+            "description": "E-mail is assigned to an active user"
           }
         }
       },
@@ -327,6 +330,9 @@
         "responses": {
           "201": {
             "description": "Client created"
+          },
+          "400": {
+            "description": "Name is assigned to an active client"
           }
         }
       },
@@ -471,6 +477,9 @@
         "responses": {
           "201": {
             "description": "Project created"
+          },
+          "400": {
+            "description": "Name is assigned to an active project"
           }
         }
       },
@@ -711,6 +720,9 @@
         "responses": {
           "201": {
             "description": "Milestone created"
+          },
+          "400": {
+            "description": "Milestone is already assigned to this project"
           }
         }
       },
