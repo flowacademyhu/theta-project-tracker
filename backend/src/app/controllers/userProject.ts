@@ -11,7 +11,7 @@ export const index = async (req: Request, res: Response) => {
   } else {
     userId = +req.params.userId;
   }
-  const user= await database(TableNames.users).select().where({id: userId}).whereNull('deletedAt');
+  const user= await database(TableNames.users).select().where({id: userId, deletedAt: 0});
   if(user) {
     let query: QueryBuilder = database(TableNames.projects)
       .join(TableNames.projectUsers, 'projects.id', '=', 'projectUsers.projectId')
