@@ -78,10 +78,6 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private userService: UserService, private dialog: MatDialog) { }
 
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
-
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.userService.fetchUsers().subscribe((users) => {
@@ -139,5 +135,8 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }
     }));
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

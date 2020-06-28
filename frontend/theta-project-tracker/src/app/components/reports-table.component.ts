@@ -34,6 +34,7 @@ import { ReportsService } from '../services/reports.service';
 export class ReportsTableComponent implements OnInit {
   displayedColumns = [];
   firstColumnName = 'projects';
+  lastColumnName = 'total';
   items;
   constructor(private reportsService: ReportsService) { }
 
@@ -50,11 +51,11 @@ export class ReportsTableComponent implements OnInit {
       columnNames = columnNames.concat(Object.keys(x));
     });
     let uniqueColumnNames = new Set(columnNames);
-    uniqueColumnNames.delete('total');
+    uniqueColumnNames.delete(this.lastColumnName);
     uniqueColumnNames.forEach(element => {
       this.displayedColumns.push(element);
     });
-    this.displayedColumns.push('total');
+    this.displayedColumns.push(this.lastColumnName);
     this.displayedColumns.unshift(this.firstColumnName);
   }
 }

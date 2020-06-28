@@ -62,9 +62,6 @@ export class ClientsComponent implements OnInit, OnDestroy {
       this.clients = clients;
     })
   }
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
-  }
   onOpenEditModal(client) {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
       width: '50%',
@@ -107,5 +104,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
     this.clientService.fetchClients().subscribe(clients => {
       this.clients = clients;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

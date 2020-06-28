@@ -21,7 +21,7 @@ export class AuthService {
       .pipe(
         switchMap((resp) => {
           localStorage.setItem('token', resp.token);
-          return this.http.get<User>(this.apiUrl + 'user/' + resp.user.id ).pipe(
+          return this.http.get<User>(this.apiUrl + 'user/profile').pipe(
             tap((user) => {
               this.loggedInUser$.next(user);
               return user;

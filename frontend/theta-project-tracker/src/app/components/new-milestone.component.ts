@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Milestone } from '../models/milestone.model';
 import { MilestoneService } from '../services/milestone.service';
 import { Project } from '../models/project.model';
 import { ProjectService } from '../services/project.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-milestone',
@@ -31,12 +32,12 @@ import { ProjectService } from '../services/project.service';
   </div>
     <div class="actions">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">Save</button>
+  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">{{'save' | translate}}</button>
 </div>
 
   `,
 })
-export class NewMilestoneComponent implements OnInit {
+export class NewMilestoneComponent implements OnInit, OnDestroy {
 
   constructor(private milestoneService: MilestoneService, private projectService: ProjectService) { }
 
@@ -47,6 +48,7 @@ export class NewMilestoneComponent implements OnInit {
   })
   createdMilestone: Milestone;
   projects: Project[] = [];
+  subscriptions$: Subscription[] = [];
   @Input() milestoneToEdit: Milestone;
   ngOnInit(): void {
     if (this.milestoneToEdit) {
@@ -56,7 +58,6 @@ export class NewMilestoneComponent implements OnInit {
       this.projects = projects;
     })
   }
-
   onAddNewMilestone() {
     this.milestoneService.addMilestone(this.newMilestone.getRawValue()).subscribe();
   }
@@ -71,5 +72,8 @@ export class NewMilestoneComponent implements OnInit {
       this.createdMilestone = this.newMilestone.getRawValue();
       this.milestoneService.addMilestone(this.createdMilestone).subscribe();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project } from '../models/project.model';
 import { ProjectService } from '../services/project.service';
 import { ClientService } from '../services/client.service';
 import { Client } from '../models/client.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-project',
@@ -36,13 +37,13 @@ import { Client } from '../models/client.model';
     </mat-form-field>
     <div class="actions">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">Save</button>
+  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">{{"save"| translate}} </button>
 </div>
 `,
   styles: [`
 `]
 })
-export class NewProjectComponent implements OnInit {
+export class NewProjectComponent implements OnInit, OnDestroy {
 
   constructor(private projectService: ProjectService, private clientService: ClientService) { }
   newProject = new FormGroup({
@@ -52,6 +53,7 @@ export class NewProjectComponent implements OnInit {
     budget: new FormControl(null, [Validators.required, Validators.min(0)]),
   })
   createdProject: Project;
+  subscriptions$: Subscription[] = [];
   @Input() projectToEdit: Project;
   clients: Client[] = [];
   ngOnInit(): void {
@@ -62,22 +64,13 @@ export class NewProjectComponent implements OnInit {
       this.newProject.patchValue(this.projectToEdit);
     }
   }
-
   onAddNewProject() {
     this.createdProject = this.newProject.getRawValue();
     this.projectService.addProject(this.createdProject).subscribe();
   }
 
   editProject() {
-    console.log(this.newProject.getRawValue())
-    this.projectToEdit = {
-      id: this.projectToEdit.id,
-      name: this.newProject.getRawValue().name,
-      clientId: this.newProject.get('client').value,
-      description: this.newProject.getRawValue().description,
-      budget: this.newProject.getRawValue().budget,
-    };
-    this.projectService.updateProject(this.projectToEdit.id, this.projectToEdit).subscribe();
+    this.projectService.updateProject(this.projectToEdit.id, this.newProject.getRawValue()).subscribe();
   }
   onCloseDialog() {
     if (this.projectToEdit) {
@@ -87,5 +80,8 @@ export class NewProjectComponent implements OnInit {
       this.createdProject = this.newProject.getRawValue();
       this.projectService.addProject(this.createdProject).subscribe();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

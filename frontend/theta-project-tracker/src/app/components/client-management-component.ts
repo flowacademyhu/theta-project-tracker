@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Client } from 'src/app/models/client.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ClientService } from 'src/app/services/client.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-client',
@@ -21,9 +22,9 @@ import { ClientService } from 'src/app/services/client.service';
   </div>
 </form>
 <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
   <button class="second" (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="true" color="warn"
-      [disabled]="newClientForm.invalid">Save</button>
+      [disabled]="newClientForm.invalid">{{'save' | translate}}</button>
 </div>
   `,
   styles: [`
@@ -43,9 +44,10 @@ import { ClientService } from 'src/app/services/client.service';
   }
   `]
 })
-export class ClientManagementComponent implements OnInit {
+export class ClientManagementComponent implements OnInit, OnDestroy {
   @Input() clientToEdit: Client;
   createdClient: Client;
+  subscriptions$: Subscription[] = [];
   newClientForm = new FormGroup({
     name: new FormControl(null, Validators.required),
     description: new FormControl(null, Validators.required)
@@ -63,5 +65,8 @@ export class ClientManagementComponent implements OnInit {
       this.createdClient = this.newClientForm.getRawValue();
       this.clientService.addClient(this.createdClient).subscribe();
     }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

@@ -9,6 +9,18 @@ export class ReportsService {
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
   getReportsByProjectHour() {
-    return this.http.get(this.apiUrl + 'report');
+    return this.http.get(this.apiUrl + 'report/project/hours');
+  }
+  getReportsByProjectCost() {
+    return this.http.get(this.apiUrl + 'report/project/cost');
+  }
+  getReportsByUsertHour() {
+    return this.http.get(this.apiUrl + 'report/user/hours');
+  }
+  getReportsByUserCost() {
+    return this.http.get(this.apiUrl + 'report/user/cost');
+  }
+  getReportsBudget() {
+    return this.http.get(this.apiUrl + 'report/budget');
   }
 }
