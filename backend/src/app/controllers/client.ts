@@ -4,7 +4,6 @@ import {Request, Response} from "express";
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
 import * as clientSerializer from "../serializers/client";
-import Table = WebAssembly.Table;
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.clients).select().where({deletedAt: 0});
@@ -38,10 +37,7 @@ export const create = async (req: Request, res: Response) => {
     if (duplicate) {
       res.sendStatus(400);
     } else {
-      const client: Client = {
-        name: req.body.name,
-        description: req.body.description
-      }
+      const client: Client = clientSerializer.create(req);
       await database(TableNames.clients).insert(client);
       res.sendStatus(201);
     }
@@ -55,10 +51,7 @@ export const update = async (req: Request, res: Response) => {
   try {
     const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (client) {
-      const newClient: Client = {
-        name: req.body.name,
-        description: req.body.description
-      }
+      const newClient: Client = clientSerializer.create(req);
       await database(TableNames.clients).update(newClient).where({id: req.params.id});
       res.sendStatus(204);
     } else {
