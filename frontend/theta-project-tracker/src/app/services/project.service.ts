@@ -21,7 +21,7 @@ export class ProjectService {
     return this.http.get<Project>(this.apiUrl + `project/${id}`);
   }
   public addProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(this.apiUrl + 'project', project, { responseType: 'text'});
+    return this.http.post<Project>(this.apiUrl + 'project', project);
   }
   public updateProject(id: number, project: Project): Observable<any> {
     return this.http.put(this.apiUrl + `project/${id}`, project, { responseType: 'text'});
