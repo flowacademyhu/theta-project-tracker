@@ -1,58 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { User, Role } from '../models/user.model'
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User, Role, UserCreate } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { };
+  private apiUrl: string = environment.baseUrl;
 
-  public users: User[] = [{
-    id: 1,
-    firstName: 'Bence',
-    lastName: 'Rácz',
-    role: Role.ADMIN,
-    email: 'asd@asd.com',
-    password: 'asdasd',
-    userCostToCompanyPerHour: 50,
-    projectAssigned: [
-      {projectName: 'xy', userCostPerHour: 50},
-      { projectName: 'Project23', userCostPerHour: 50}]
-  },
-  {
-    id: 2,
-    firstName: 'Máté',
-    lastName: 'Szabó',
-    role: Role.USER,
-    email: 'asdasd@asd.com',
-    password: 'asdasdasd',
-    userCostToCompanyPerHour: 70,
-    projectAssigned: [
-      {projectName: 'xyz', userCostPerHour: 70},
-      { projectName: 'Project0', userCostPerHour: 150},
-      { projectName: 'Project Zero Dawn', userCostPerHour: 200}]
-  }]
-  users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this.users)
+  constructor(private http: HttpClient) { }
 
-  public fetchUsers (): User[] {
-    return this.users
+  public fetchUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl + 'user');
   }
-  public fetchUser(id: number) {
-    return { ...this.users.find(user => user.id === id) };
+  public fetchUser(id: number): Observable<User> {
+    return this.http.get<User>(this.apiUrl + `user/${id}`);
   }
-  public addUser(user: User) {
-    user.id = this.users.length + 1;
-    this.users.push(user);
+  public addUser(user: UserCreate): Observable<User> {
+    return this.http.post<User>(this.apiUrl + 'user', user);
   }
-  public updateUser(id: number, user: User) {
-    const index = this.users.findIndex(u => u.id === id);
-    this.users[index] = user;
+  public updateUser(id: number, user: User): Observable<User> {
+    return this.http.put<User>(this.apiUrl + `user/${id}`, user);
   }
-  public deleteUser(id: number) {
-    this.users.splice(this.users.findIndex(u => u.id === id), 1);
-    this.users$.next(this.users);
+  public deleteUser(id: number): Observable<User> {
+    return this.http.delete<User>(this.apiUrl + `user/${id}`).pipe(tap(() => this.fetchUsers()));
   }
   updatePassword(password, newPassword) {
     let editable = this.users.find(u => u.password === password);
