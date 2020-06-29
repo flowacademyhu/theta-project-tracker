@@ -41,6 +41,8 @@
   "logout": "Logout",
   "add-client": "+ Add New Client",
   "clients-name": "Client's Name",
-  "confirmation": "Are you sure?" 
+  "confirmation": "Are you sure?" ,
+  "no": "No",
+  "yes": "Yes"
 }
 
