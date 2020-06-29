@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -50,9 +50,13 @@ import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthInterceptor } from './auth.interceptor';
+import { AuthService } from './services/auth.service';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+}
+export function appInit(provider: AuthService) {
+  return (): Promise<any> => provider.fetchCurrentUserOnApplication();
 }
 
 @NgModule({
@@ -115,7 +119,14 @@ export function httpTranslateLoader(http: HttpClient) {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  },],
+  },
+  {
+    provide: APP_INITIALIZER,
+      useFactory: appInit,
+      deps: [AuthService],
+      multi: true,
+  }
+],
   bootstrap: [AppComponent],
   entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent]
 })
