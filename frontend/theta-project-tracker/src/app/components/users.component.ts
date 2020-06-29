@@ -7,6 +7,7 @@ import { User } from '../models/user.model';
 import { NewUserModalComponent } from '../modals/new-user-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ProjectUsersService } from '../services/projectUsers.service';
 
 @Component({
   selector: 'app-users',
@@ -33,7 +34,7 @@ import { MatTableDataSource } from '@angular/material/table';
             </ng-container>
             <ng-container matColumnDef="projects" >
                 <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
-                <mat-cell *matCellDef="let user" > <p *ngFor="let project of user.projectAssigned">{{ project.projectName }}</p></mat-cell>
+                <mat-cell *matCellDef="let user"><p *ngFor="let project of user.projects">{{ project.name }}</p></mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions" class="actions">
                 <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
@@ -76,12 +77,18 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private userService: UserService, private dialog: MatDialog) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private projectUserService: ProjectUsersService) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.userService.fetchUsers().subscribe((users) => {
       this.users = users;
+      this.users.map(u => {
+        this.projectUserService.getUsersProjects(u.id).subscribe(array => {
+          u.projects = array
+        })
+      })
+      console.log(this.users)
     });
   }
 
@@ -98,12 +105,12 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       height: '25%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
+      console.log(user.id)
       if (result) {
-        this.userService.deleteUser(user.id).subscribe();
-        this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-        }
-        );
+        this.userService.deleteUser(user.id).subscribe(() => {
+          this.updateDataSource();
+        })
+       
       }
     }));
   };
@@ -116,10 +123,10 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-        });
+        this.updateDataSource()
+
       }
+      this.updateDataSource()
     }));
   }
   onOpenEditModal(user) {
@@ -130,13 +137,16 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-        });
+        this.updateDataSource()
       }
     }));
   }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
+  updateDataSource() {
+    this.userService.fetchUsers().subscribe(users => {
+      this.users = users;
+    });
   }
 }

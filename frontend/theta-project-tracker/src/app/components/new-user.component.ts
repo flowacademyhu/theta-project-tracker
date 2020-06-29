@@ -66,10 +66,13 @@ import { ProjectService } from '../services/project.service';
       <tr>
         <td>
           <mat-form-field>
+          
             <mat-select formControlName="projectId">
               <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
             </mat-select>
+         
           </mat-form-field>
+
         </td>
         <td>
           <mat-form-field>
@@ -133,7 +136,9 @@ export class NewUserComponent implements OnInit {
     if (this.userToEdit) {
       console.log(this.userToEdit)
       this.newUser.get('password').disable()
+      
       this.assignedProjects = this.userToEdit.projects;
+      console.log(this.userToEdit.projects)
       this.newUser.patchValue(this.userToEdit);
     }
     this.projectService.fetchProjects().subscribe(projects => {
@@ -142,9 +147,13 @@ export class NewUserComponent implements OnInit {
   }
   onAddNewUser() {
     this.assignProjectsToUser();
-    this.createdUser = this.newUser.getRawValue();
-    /* this.createdUser.projects = this.assignedProjects */
-    console.log(this.createdUser)
+    this.assignedProjects.map(p => delete p.projectName)
+    this.newUser.removeControl('projectId');
+    this.newUser.removeControl('costToClient')
+    this.createdUser = {
+      user: this.newUser.getRawValue(),
+      projects: this.assignedProjects
+    }
     this.userService.addUser(this.createdUser).subscribe();
   }
   onDeleteProject(project) {
@@ -160,19 +169,16 @@ export class NewUserComponent implements OnInit {
     this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe();
   }
   assignProjectsToUser() {
-    console.log(this.newUser.getRawValue())
     this.assignedProjects.push({
       projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
       projectId: this.newUser.get('projectId').value,
       costToClientPerHour: this.newUser.get('costToClient').value
-    });
+    })
   }
   onCloseDialog() {
     if (this.userToEdit) {
       this.editUser();
     } else {
-      console.log('cica')
-      console.log(this.newUser.getRawValue())
       this.onAddNewUser();
     }
   }
