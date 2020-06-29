@@ -31,7 +31,7 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
         </span>
         <span id="spanTwo">
           <p>{{'logged-in-as' | translate}}</p>
-          <p>{{ (user$ | async).firstName }}</p>
+          <p routerLink="/profile">{{ (user$ | async).firstName }}</p>
           <button mat-stroked-button (click)="onOpenConfirmModal()"  id="logOut" appHighLight>{{'logout' | translate}}</button>
         </span>
       </mat-toolbar-row>
