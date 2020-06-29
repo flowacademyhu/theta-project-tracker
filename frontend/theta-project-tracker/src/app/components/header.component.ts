@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmModalComponent } from '../modals/confirm-modal';
 
 @Component({
   selector: 'app-header',
@@ -30,8 +32,7 @@ import { User } from '../models/user.model';
         <span id="spanTwo">
           <p>{{'logged-in-as' | translate}}</p>
           <p>{{ (user$ | async).firstName }}</p>
-          <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>{{'logout' | translate}}</button>
-          <button mat-stroked-button (click)="onLogout()"  id="logOut" appHighLight>out</button>
+          <button mat-stroked-button (click)="onOpenConfirmModal()"  id="logOut" appHighLight>{{'logout' | translate}}</button>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>`,
@@ -99,19 +100,31 @@ import { User } from '../models/user.model';
 
 export class HeaderComponent implements OnInit {
 
-  @Output() public sidenavTriggerd: EventEmitter< void > = new EventEmitter< void >();
+  @Output() public sidenavTriggerd: EventEmitter<void> = new EventEmitter<void>();
   user$: Observable<User> = this.authService.user;
 
   public onTrigger() {
     this.sidenavTriggerd.emit();
   }
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
   public onLogout() {
     this.authService.logout();
+  }
+
+  onOpenConfirmModal() {
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {
+      width: '25%',
+      height: '25%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.authService.logout();
+      }
+    });
   }
 }
