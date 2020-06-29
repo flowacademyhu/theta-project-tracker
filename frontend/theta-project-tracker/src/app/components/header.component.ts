@@ -112,10 +112,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  public onLogout() {
-    this.authService.logout();
-  }
-
   onOpenConfirmModal() {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       width: '25%',
