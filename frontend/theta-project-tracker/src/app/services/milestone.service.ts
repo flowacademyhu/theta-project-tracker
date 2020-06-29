@@ -21,10 +21,10 @@ export class MilestoneService {
     return this.http.get<Milestone>(this.apiUrl + +`milestone/${id}`);
   }
   public addMilestone(milestone: Milestone): Observable<Milestone> {
-    return this.http.post<Milestone>(this.apiUrl + 'milestone', milestone, {responseType: 'text'});
+    return this.http.post<Milestone>(this.apiUrl + 'milestone', milestone);
   }
   public updateMilestone(id: number, milestone: Milestone) {
-    return this.http.put(this.apiUrl + `milestone/${id}`, milestone, { responseType: 'text'});
+    return this.http.put(this.apiUrl + `milestone/${id}`, milestone);
   }
   public deleteMilestone(id: number): Observable<Milestone> {
     return this.http.delete<Milestone>(this.apiUrl + `milestone/${id}`).pipe(tap(() => this.fetchMilestones()));

@@ -30,6 +30,19 @@ export class AuthService {
         })
       );
   }
+  public fetchCurrentUserOnApplication(): Promise<any> {
+    return new Promise<any>((resolve) => {
+      this.http.get<User>(this.apiUrl + 'user/profile').subscribe(
+        (user) => {
+          this.loggedInUser$.next(user);
+          resolve();
+        },
+        () => {
+          resolve();
+        }
+      );
+    });
+  }
   public logout() {
     this.loggedInUser$ = null;
     localStorage.removeItem('token');
