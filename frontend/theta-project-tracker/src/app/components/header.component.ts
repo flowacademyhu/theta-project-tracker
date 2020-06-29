@@ -26,8 +26,8 @@ import { AuthService } from '../services/auth.service';
           </a>
         </span>
         <span id="spanTwo">
-          <p>Logged in as:</p>
-          <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>Logout</button>
+          <p>{{'logged-in-as' | translate}}</p>
+          <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>{{'logout' | translate}}</button>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>`,
@@ -53,25 +53,19 @@ import { AuthService } from '../services/auth.service';
       font-style: inherit;
       font-weight: normal;
       color: inherit;
+      box-sizing: border-box;
       hyphens: none;
       width: auto;
       height: 2.5rem;
       display: block;
-      float: center;
+      float: left;
       margin: auto;
       margin-right: 1em;
-      position: absolute;
+      position: relative;
       max-width: 250px;
       max-height: 50px;
       margin-bottom: 0.75em;
       opacity: 1;
-    }
-    .mat-icon-button {
-      padding: 1rem;
-      width: 150px;
-      height: 70px;
-      border-radius: 0;
-
     }
     #spanOne {
       display: flex;
@@ -85,33 +79,31 @@ import { AuthService } from '../services/auth.service';
       font-size: 12;
     }
     button {
-      display: flex;
-      font-size: 12;
-      border: none;
-      color:#f0ead6;
-      opacity: 0.9;
-      outline: 0;
+    display: flex;
+    font-size: 12;
+    border: none;
+    color:#f0ead6;
+    opacity: 0.9;
+    outline: 0;
     }
     #logOut {
       align-items: center;
       background: transparent;
       border: none
-    }
 }`],
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent{
 
-  @Output() public sidenavTriggerd: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public sidenavTriggerd: EventEmitter< void > = new EventEmitter< void >();
+  authService: any;
+  router: any;
 
   public onTrigger() {
     this.sidenavTriggerd.emit();
   }
 
-  constructor(private authService: AuthService, private router: Router) { }
-
-  ngOnInit() {
-  }
+  @Output() public sidenavTriggerd: EventEmitter<any> = new EventEmitter<any>();
 
   public onLogout() {
     this.authService.logout();
