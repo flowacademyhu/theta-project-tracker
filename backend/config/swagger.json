@@ -109,6 +109,16 @@
             "in": "header",
             "name": "Authorization",
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
           }
         ],
         "responses": {
@@ -289,6 +299,16 @@
             "name": "userId",
             "type": "number",
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
           }
         ],
         "responses": {
@@ -345,6 +365,16 @@
           {
             "in": "header",
             "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
             "type": "string"
           }
         ],
@@ -493,6 +523,16 @@
             "in": "header",
             "name": "Authorization",
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
           }
         ],
         "responses": {
@@ -618,6 +658,16 @@
             "name": "projectId",
             "type": "number",
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
           }
         ],
         "responses": {
@@ -736,6 +786,16 @@
           {
             "in": "header",
             "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
             "type": "string"
           }
         ],
@@ -882,6 +942,16 @@
           {
             "in": "header",
             "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
             "type": "string"
           }
         ],
