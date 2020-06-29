@@ -53,19 +53,25 @@ import { AuthService } from '../services/auth.service';
       font-style: inherit;
       font-weight: normal;
       color: inherit;
-      box-sizing: border-box;
       hyphens: none;
       width: auto;
       height: 2.5rem;
       display: block;
-      float: left;
+      float: center;
       margin: auto;
       margin-right: 1em;
-      position: relative;
+      position: absolute;
       max-width: 250px;
       max-height: 50px;
       margin-bottom: 0.75em;
       opacity: 1;
+    }
+    .mat-icon-button {
+      padding: 1rem;
+      width: 150px;
+      height: 70px;
+      border-radius: 0;
+
     }
     #spanOne {
       display: flex;
@@ -79,23 +85,24 @@ import { AuthService } from '../services/auth.service';
       font-size: 12;
     }
     button {
-    display: flex;
-    font-size: 12;
-    border: none;
-    color:#f0ead6;
-    opacity: 0.9;
-    outline: 0;
+      display: flex;
+      font-size: 12;
+      border: none;
+      color:#f0ead6;
+      opacity: 0.9;
+      outline: 0;
     }
     #logOut {
       align-items: center;
       background: transparent;
       border: none
+    }
 }`],
 })
 
 export class HeaderComponent implements OnInit {
 
-  @Output() public sidenavTriggerd: EventEmitter< any > = new EventEmitter< any >();
+  @Output() public sidenavTriggerd: EventEmitter<any> = new EventEmitter<any>();
 
   public onTrigger() {
     this.sidenavTriggerd.emit();
