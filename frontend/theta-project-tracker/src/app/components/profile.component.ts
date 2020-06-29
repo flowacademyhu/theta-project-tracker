@@ -10,17 +10,17 @@ import { UserService } from '../services/user.service';
     <mat-expansion-panel [expanded]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Change Email
+          {{ 'email-change' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <form [formGroup]="changeEmail">
-        <label>New Email</label>
+        <label>{{'new-email' | translate }}</label>
         <div>
           <mat-form-field>
-            <input matInput formControlName="email">
+            <input matInput formControlName="newEmail">
           </mat-form-field>
         </div>
-        <label>Password</label>
+        <label>{{ 'password' | translate }}</label>
         <div>
           <mat-form-field>
             <input matInput formControlName="password" type="password">
@@ -28,38 +28,38 @@ import { UserService } from '../services/user.service';
         </div>
         <button mat-raised-button (click)="onSaveNewEmail()" color="warn"
         [disabled]="changeEmail.invalid"
-        >Save</button>
+        >{{ 'save' | translate }}</button>
       </form>
     </mat-expansion-panel>
     <mat-expansion-panel [expanded]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Change Password
+          {{ 'pwd-change' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <form [formGroup]="changePassword">
-        <label>New Password</label>
+        <label>{{ 'new-pwd' | translate }}</label>
         <div>
           <mat-form-field>
-            <input matInput formControlName="password" type="password">
+            <input matInput formControlName="newPassword" type="password">
           </mat-form-field>
         </div>
-        <label>Confirm New Password</label>
+        <label>{{ 'confirm-pwd' | translate }}</label>
         <div>
           <mat-form-field>
             <input matInput formControlName="passwordAgain" type="password">
           </mat-form-field>
         </div>
-        <label>Old Password</label>
+        <label>{{ 'old-pwd' | translate }}</label>
         <div>
           <mat-form-field>
-            <input matInput formControlName="oldPassword" type="password">
+            <input matInput formControlName="password" type="password">
           </mat-form-field>
         </div>
-        <div *ngIf="warn"><p>Passwords don't match!</p></div>
+        <div *ngIf="warn"><p>{{ 'pwd-dont-match' | translate }}</p></div>
         <button mat-raised-button (click)="onSaveNewPassword()" color="warn"
         [disabled]="changePassword.invalid"
-        >Save</button>
+        >{{ 'save' | translate }}</button>
       </form>
     </mat-expansion-panel>
   </mat-accordion>
@@ -69,7 +69,8 @@ import { UserService } from '../services/user.service';
   .wrapper {
     margin: auto;
     width: 30%;
-    height: 30%; 
+    height: 30%;
+    padding: 200px;
   }
   form {
     margin-top: 30px;
@@ -86,12 +87,12 @@ import { UserService } from '../services/user.service';
 export class ProfileComponent implements OnInit {
  
   changePassword = new FormGroup({
-    password: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
+    newPassword: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
     passwordAgain: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
-    oldPassword: new FormControl(null, Validators.required)
+    password: new FormControl(null, Validators.required)
   });
   changeEmail = new FormGroup({
-    email: new FormControl(null, [Validators.required, Validators.email]),
+    newEmail: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, Validators.required)
   });
   warn: boolean;
@@ -99,15 +100,16 @@ export class ProfileComponent implements OnInit {
   constructor(private userSerive: UserService) { }
   ngOnInit() { }
   onSaveNewPassword() {
-    if (this.changePassword.get('password').value === this.changePassword.get('passwordAgain').value) {
-      this.userSerive.updatePassword(this.changePassword.get('oldPassword').value,this.changePassword.get('password').value);
+    if (this.changePassword.get('newPassword').value === this.changePassword.get('passwordAgain').value) {
+      this.changePassword.removeControl('passwordAgain');
+      this.userSerive.updatePassword(this.changePassword.getRawValue()).subscribe();
       this.panelOpenState = false;
     } else {
       this.warn = true;
     }
   }
   onSaveNewEmail() {
-    this.userSerive.updataEmail(this.changeEmail.get('password').value, this.changeEmail.get('email').value)
+    this.userSerive.updateEmail(this.changeEmail.getRawValue()).subscribe();
     this.panelOpenState = false;
   }
 }
