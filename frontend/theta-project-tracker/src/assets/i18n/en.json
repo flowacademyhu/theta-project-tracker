@@ -40,6 +40,9 @@
   "logged-in-as": "Logged in as:",
   "logout": "Logout",
   "add-client": "+ Add New Client",
-  "clients-name": "Client's Name"
+  "clients-name": "Client's Name",
+  "confirmation": "Are you sure?" ,
+  "no": "No",
+  "yes": "Yes"
 }
 
