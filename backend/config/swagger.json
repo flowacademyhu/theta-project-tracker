@@ -788,6 +788,163 @@
           }
         }
       }
+    },
+    "/overtimeMultiplier": {
+      "get": {
+        "summary": "Get all modified dates and their multipliers",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All modified dates",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/OvertimeMultiplierResponse"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new custom multiplier date",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/OvertimeMultiplierCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "New custom multiplier date created"
+          },
+          "400": {
+            "description": "This date is already custom"
+          }
+        }
+      }
+    },
+    "/overtimeMultiplier/{id}": {
+      "get": {
+        "summary": "Get specific date by id",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Custom date by id",
+            "schema": {
+              "$ref": "#definitions/OvertimeMultiplierResponse"
+            }
+          },
+          "404": {
+            "description": "Custom date with given id does not exist"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update custom date with id",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/OvertimeMultiplierCreate"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Updated"
+          },
+          "404": {
+            "description": "Custom date with given id does not exist"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete custom date by id",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Custom date with given id does not exist"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1085,6 +1242,35 @@
         },
         "createdAt": {
           "type": "string"
+        }
+      }
+    },
+    "OvertimeMultiplierCreate": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "multiplier"
+      ]
+    },
+    "OvertimeMultiplierResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "date": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
         }
       }
     }

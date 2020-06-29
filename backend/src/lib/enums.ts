@@ -10,5 +10,6 @@ export enum TableNames {
   milestones = 'milestones',
   projectUsers = 'projectUsers',
   actionLabels = 'actionLabels',
-  timeRecords = 'timeRecords'
+  timeRecords = 'timeRecords',
+  overtimeMultipliers = 'overtimeMultipliers'
 } 
