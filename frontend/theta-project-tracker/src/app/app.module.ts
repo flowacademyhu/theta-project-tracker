@@ -53,6 +53,7 @@ import { ProfileComponent } from '../app/components/profile.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
+import { ConfirmModalComponent } from './modals/confirm-modal.component';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -90,7 +91,8 @@ export function appInit(provider: AuthService) {
     ProjectsComponent,
     NewMilestoneComponent,
     NewMilestoneModalComponent,
-    ReportsTableComponent
+    ReportsTableComponent,
+    ConfirmModalComponent
   ],
   imports: [
     MatSidenavModule,
@@ -120,6 +122,7 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
+    MatDialogModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

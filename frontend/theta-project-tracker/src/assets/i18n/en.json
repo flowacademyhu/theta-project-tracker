@@ -47,6 +47,9 @@
   "new-pwd": "New Password",
   "confirm-pwd": "Confirm New Password",
   "old-pwd": "Old Password",
-  "pwd-dont-match": "Passwords don't match!"
+  "pwd-dont-match": "Passwords don't match!",
+  "confirmation": "Are you sure?" ,
+  "no": "No",
+  "yes": "Yes"
 }
 
