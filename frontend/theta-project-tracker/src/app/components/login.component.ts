@@ -1,9 +1,10 @@
 import { User } from './../models/user.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -57,18 +58,19 @@ import { HttpErrorResponse } from '@angular/common/http';
   }
     `]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   user: User;
   errors: string[];
+  subscriptions$: Subscription[] = [];
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.user.subscribe(u => {
-      this.user = u;
-    });
+    // this.authService.user.subscribe(u => {
+    //   this.user = u;
+    // });
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required])
@@ -79,10 +81,14 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(
       () => {
         this.router.navigate(['timesheet']);
-      },
+       },
       (error: HttpErrorResponse) => {
         this.errors = error.error.message;
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }
