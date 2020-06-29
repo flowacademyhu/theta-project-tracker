@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmModalComponent } from '../modals/confirm-modal';
+import { ConfirmModalComponent } from '../modals/confirm-modal.component';
 
 @Component({
   selector: 'app-header',

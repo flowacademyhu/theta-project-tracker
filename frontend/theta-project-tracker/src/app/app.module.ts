@@ -51,7 +51,7 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
-import { ConfirmModalComponent } from './modals/confirm-modal';
+import { ConfirmModalComponent } from './modals/confirm-modal.component';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
