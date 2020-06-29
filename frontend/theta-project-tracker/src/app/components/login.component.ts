@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(
       () => {
         this.router.navigate(['timesheet']);
-       },
+      },
       (error: HttpErrorResponse) => {
         this.errors = error.error.message;
       }
