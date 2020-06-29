@@ -55,7 +55,7 @@ export const destroy = async (req: Request, res: Response) => {
           projectId: req.body[i].projectId,
           userId: +req.params.userId
         });
-        await database(TableNames.projectUsers).update('deletedAt', database.raw('CURRENT_TIMESTAMP')).where(projectUser[i]);
+        await database(TableNames.projectUsers).delete().where(projectUser[i]);
       }
       res.sendStatus(204);
     }

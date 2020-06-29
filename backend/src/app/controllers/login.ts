@@ -7,7 +7,7 @@ import * as loginSerializer from '../serializers/login'
 import {User} from "../models/user";
 
 const createToken = async (req: Request, res: Response) => {
-    const user: User = await database('users').select().where({email: req.body.email}).whereNull('deletedAt').first();
+    const user: User = await database('users').select().where({email: req.body.email}).where({deletedAt: 0}).first();
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
         const info = {userId: user.id}
         const token = jwt.sign(info, jwtConfig.secret, {expiresIn: '24h'});
