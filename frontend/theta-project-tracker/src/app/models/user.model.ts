@@ -33,3 +33,8 @@ export interface UserCreateProjects {
   projectId: number,
   costToClientPerHour: number
 }
+export interface PasswordEmailChange {
+  newEmail?: string;
+  newPassword?: string;
+  password: string;
+}
