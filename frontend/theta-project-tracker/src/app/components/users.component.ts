@@ -58,7 +58,7 @@ import { ProjectUsersService } from '../services/projectUsers.service';
       height: 100%;
       overflow: auto;
       margin-top: 100px;
-      padding: 3rem
+      padding: 2.5rem
     }
     mat-icon:hover {
       cursor: pointer;
@@ -129,7 +129,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '60%',
       height: '80%'
     });
-    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {  
       this.updateDataSource()
     }));
   }
