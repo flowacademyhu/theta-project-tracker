@@ -32,7 +32,7 @@ import { AuthService } from '../services/auth.service';
       </mat-toolbar-row>
     </mat-toolbar>`,
   styles: [`
-    p, .mat-typhography p {
+       p, .mat-typhography p {
       font-size: 15px;
       margin:0;
       opacity: 0.8;
@@ -94,16 +94,12 @@ import { AuthService } from '../services/auth.service';
 })
 
 export class HeaderComponent{
-
   @Output() public sidenavTriggerd: EventEmitter< void > = new EventEmitter< void >();
   authService: any;
   router: any;
-
   public onTrigger() {
     this.sidenavTriggerd.emit();
   }
-
-  @Output() public sidenavTriggerd: EventEmitter<any> = new EventEmitter<any>();
 
   public onLogout() {
     this.authService.logout();

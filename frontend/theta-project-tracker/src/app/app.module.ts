@@ -115,12 +115,9 @@ export function appInit(provider: AuthService) {
       }
     }),
     MatDialogModule,
-    LayoutModule,
     MatListModule,
-    MatMenuModule,
     MatInputModule,
     MatButtonModule,
-    FullCalendarModule
   ],
   bootstrap: [AppComponent],
   providers: [  {
