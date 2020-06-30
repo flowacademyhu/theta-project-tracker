@@ -12,6 +12,8 @@ import { MilestonesComponent } from './components/milestones.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { Role } from './models/user.model';
+import { NewUserComponent } from './components/new-user.component';
+import { ProjectResolver } from './resolvers/project.resolver';
 
 const routes: Routes = [
   {

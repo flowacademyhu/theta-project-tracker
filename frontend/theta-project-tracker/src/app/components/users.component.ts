@@ -8,6 +8,7 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProjectUsersService } from '../services/projectUsers.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -88,7 +89,6 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
           u.projects = array
         })
       })
-      console.log(this.users)
     });
   }
 
@@ -110,22 +110,16 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userService.deleteUser(user.id).subscribe(() => {
           this.updateDataSource();
         })
-       
       }
     }));
   };
-
 
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',
       height: '80%'
     });
-    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.updateDataSource()
-
-      }
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource()
     }));
   }
@@ -135,10 +129,8 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       height: '80%',
       data: { userToEdit: user }
     });
-    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.updateDataSource()
-      }
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+      this.updateDataSource()
     }));
   }
   ngOnDestroy(): void {
@@ -147,6 +139,11 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   updateDataSource() {
     this.userService.fetchUsers().subscribe(users => {
       this.users = users;
+      this.users.map(u => {
+        this.projectUserService.getUsersProjects(u.id).subscribe(array => {
+          u.projects = array
+        })
+      })
     });
   }
 }
