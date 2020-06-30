@@ -1,58 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { User, ProjectAssigned } from '../models/user.model';
+import { User, UserCreate, UserCreateProjects } from '../models/user.model';
 import { UserService } from '../services/user.service';
-import { EventEmitter } from '@angular/core';
-
+import { Project } from '../models/project.model';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-new-user',
   template: `
   <form [formGroup]="newUser">
-  <label for="name">First Name</label>
+  <label for="name">{{ 'firstname' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="firstName">
     </mat-form-field>
   </div>
-  <label for="name">Last Name</label>
+  <label for="name">{{'lastname' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="lastName">
     </mat-form-field>
   </div>
-  <label for="email">E-mail</label>
+  <label for="email">{{'email' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="email">
     </mat-form-field>
   </div>
-  <label for="cost">Cost (£/h)</label>
+  <label for="password">{{'password' | translate}}</label>
   <div>
-    <mat-form-field class="cost">
-      <input matInput type="number" formControlName="cost">
+    <mat-form-field class="full-width">
+      <input matInput type="text" formControlName="password">
     </mat-form-field>
   </div>
-  <label for="role">Role</label>
+  <label for="cost">{{'cost' | translate}}</label>
+  <div>
+    <mat-form-field class="cost">
+      <input matInput type="number" formControlName="costToCompanyPerHour">
+    </mat-form-field>
+  </div>
+  <label for="role">{{'role' | translate}}</label>
   <div>
     <mat-form-field>
       <mat-select formControlName="role">
-        <mat-option value="user">User</mat-option>
-        <mat-option value="admin">Admin</mat-option>
+        <mat-option value="user">{{'user' | translate}}</mat-option>
+        <mat-option value="admin">{{'admin' | translate}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  <label>Project(s) Assigned</label>
+  <label>{{'projects-assigned' | translate}}</label>
   <div>
     <table>
       <tr>
-        <th>Project name</th>
-        <th>Cost to Client (£/h)</th>
-        <th>Unassign</th>
+        <th>{{'project-name' | translate}}</th>
+        <th>{{'cost-to-client' | translate}}</th>
+        <th>{{'unassign' | translate}}</th>
       </tr>
       <tr *ngFor="let project of assignedProjects; let i = index">
         <td>{{project.projectName}}</td>
-        <td>{{project.userCostPerHour}}</td>
+        <td>{{project.costToClientPerHour}}</td>
         <td>
           <mat-icon (click)="onDeleteProject(project)">clear</mat-icon>
         </td>
@@ -60,8 +66,8 @@ import { EventEmitter } from '@angular/core';
       <tr>
         <td>
           <mat-form-field>
-            <mat-select formControlName="project">
-              <mat-option *ngFor="let project of availableProjects" value="{{ project }}">{{ project }}</mat-option>
+            <mat-select formControlName="projectId">
+              <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
             </mat-select>
           </mat-form-field>
         </td>
@@ -72,12 +78,12 @@ import { EventEmitter } from '@angular/core';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">Add New</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
   </div>
 </form>
 <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">Save</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
+  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">{{'save' | translate}}</button>
 </div>
   `,
   styles: [
@@ -100,60 +106,74 @@ import { EventEmitter } from '@angular/core';
     .cost {
       max-width: 100px
     }
+    mat-icon:hover {
+      cursor: pointer;
+    }
     `
   ]
 })
 export class NewUserComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
-  newUser: FormGroup;
-  availableProjects = ['Project0', 'Project1', 'Project2', 'Project3'];
-  assignedProjects: ProjectAssigned[] = [];
-  createdUser: User;
-  emitter: EventEmitter<User> = new EventEmitter<User>();
-
+  newUser = new FormGroup({
+    firstName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    lastName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    password: new FormControl(null, Validators.required),
+    costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),
+    role: new FormControl(null, Validators.required),
+    projectId: new FormControl(null, Validators.required),
+    costToClient: new FormControl(null, Validators.required),
+  });
+  availableProjects: Project[] = [];
+  assignedProjects: UserCreateProjects[] = [];
+  createdUser: UserCreate;
+  @Input() userToEdit: User;
+  constructor(private userService: UserService, private projectService: ProjectService) { }
   ngOnInit(): void {
-    this.newUser = new FormGroup({
-      firstName: new FormControl(null, [Validators.required]),
-      lastName: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      cost: new FormControl(null, [Validators.required, Validators.min(0)]),
-      role: new FormControl(null, [Validators.required]),
-      project: new FormControl(null),
-      costToClient: new FormControl(null),
+    if (this.userToEdit) {
+      console.log(this.userToEdit)
+      this.newUser.get('password').disable()
+      this.assignedProjects = this.userToEdit.projects;
+      this.newUser.patchValue(this.userToEdit);
+    }
+    this.projectService.fetchProjects().subscribe(projects => {
+      this.availableProjects = projects;
     })
   }
-
   onAddNewUser() {
-    this.assignedProjects.push({projectName: this.newUser.get('project').value, userCostPerHour: this.newUser.get('costToClient').value})
-    this.createdUser = {
-      firstName: this.newUser.getRawValue().firstName,
-      lastName: this.newUser.getRawValue().lastName,
-      email: this.newUser.getRawValue().email,
-      userCostToCompanyPerHour: this.newUser.getRawValue().cost,
-      role: this.newUser.getRawValue().role,
-      projectAssigned: this.assignedProjects
-    };
-    this.emitter.emit(this.createdUser);
+    this.assignProjectsToUser();
+    this.createdUser = this.newUser.getRawValue();
+    /* this.createdUser.projects = this.assignedProjects */
     console.log(this.createdUser)
-    this.userService.addUser(this.createdUser);
+    this.userService.addUser(this.createdUser).subscribe();
   }
   onDeleteProject(project) {
     this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.projectName === project.projectName), 1);
   }
   onAddNewProject() {
-    this.assignedProjects.push({projectName: this.newUser.get('project').value, userCostPerHour: this.newUser.get('costToClient').value})
-    this.newUser.get('project').patchValue(null);
+    this.assignProjectsToUser();
+    this.newUser.get('projectId').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
   }
-
-
-
-
-
-
-
-
-
+  editUser() {
+    this.userToEdit = this.newUser.getRawValue();
+    this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe();
+  }
+  assignProjectsToUser() {
+    console.log(this.newUser.getRawValue())
+    this.assignedProjects.push({
+      projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
+      projectId: this.newUser.get('projectId').value,
+      costToClientPerHour: this.newUser.get('costToClient').value
+    });
+  }
+  onCloseDialog() {
+    if (this.userToEdit) {
+      this.editUser();
+    } else {
+      console.log('cica')
+      console.log(this.newUser.getRawValue())
+      this.onAddNewUser();
+    }
+  }
 }
-

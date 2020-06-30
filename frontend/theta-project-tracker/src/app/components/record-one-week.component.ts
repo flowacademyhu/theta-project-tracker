@@ -2,13 +2,14 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { ProjectAssigned } from 'src/app/models/user.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { Project } from '../models/project.model';
 
 @Component({
   selector: 'app-record-one-week',
   template: `
   <div class="wrapper">
   <mat-grid-list cols="30" rowHeight="100px">
-    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1"><strong>{{ project.projectName }}</strong>
+    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1"><strong>{{ project.name }}</strong>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1">
       project.milestone
@@ -54,7 +55,7 @@ import { EventEmitter } from '@angular/core';
   `]
 })
 export class RecordOneWeekComponent implements OnInit {
-  @Input() project: ProjectAssigned;
+  @Input() project: Project;
   days = [
     { cols: 3, rows: 1, name: 'monday' },
     { cols: 3, rows: 1, name: 'tuesday' },
@@ -88,16 +89,17 @@ export class RecordOneWeekComponent implements OnInit {
   })
   constructor() { }
   ngOnInit(): void {
+    console.log(this.project)
   }
   getDailyHours() {
     let projectTotal = {
-      name: this.project.projectName,
+      name: this.project.name,
       normalHours: this.timeSheet.get('normalHours').value,
       overTime: this.timeSheet.get('overTime').value
     }
     this.projectEmitter.emit(projectTotal);
   }
   onDeleteProject() {
-    this.projectToDelete.emit(this.project.projectName);
+    this.projectToDelete.emit(this.project.name);
   }
 }

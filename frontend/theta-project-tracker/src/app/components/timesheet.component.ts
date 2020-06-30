@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ProjectAssigned } from '../models/user.model';
+import { ProjectUsersService } from '../services/projectUser.service';
 
 @Component({
   selector: 'app-timesheet',
@@ -12,7 +13,7 @@ import { ProjectAssigned } from '../models/user.model';
     <mat-divider></mat-divider>
   </ng-container>
   <div class="footer">
-    Total
+    {{'total' | translate}}
     <mat-grid-list cols="7" rowHeight="30px">
       <mat-grid-tile *ngFor="let day of days" [colspan]="1">
         <p>{{ day.total }}&emsp;</p>
@@ -66,9 +67,12 @@ export class TimesheetComponent implements OnInit {
     }
   }[] = [];
   days: {name:string, total: number, overTime: number}[] = [];
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private projectUserService: ProjectUsersService) { }
   ngOnInit(): void {
-    this.projects = this.authService.getAdmin().projectAssigned;
+    let id  = this.authService.authenticate().id;
+    this.projectUserService.getUsersProjects(id).subscribe(projects => {
+      this.projects = projects;
+    })
   }
   recordDailyHours(event: any) {
    if (this.projectsArrived.length === 0) {
