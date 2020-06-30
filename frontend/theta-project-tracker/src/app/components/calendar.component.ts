@@ -1,37 +1,17 @@
-import { Component } from '@angular/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import { EventInput } from '@fullcalendar/core';
-import timeGrigPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import { Component, OnInit } from '@angular/core';
+import { CalendarOptions } from '@fullcalendar/angular'; // useful for typechecking
 
 
-declare var $: any;
 @Component({
   selector: 'app-calendar',
-  template: `<div class='app-calendar'>
-  <full-calendar
-    #calendar
-    defaultView="dayGridMonth"
-    (dateClick)="handleDateClick($event)"
-    (eventClick)="eventClicked($event)"
-  ></full-calendar>
-</div>
-`,
+  template: `
+  <full-calendar></full-calendar>
+  `,
   styles: [``]
 })
 export class CalendarComponent {
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth'
+  };
 
-  constructor() { }
-  calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin];
-  calendarEvents: EventInput[] = [
-    { title: 'Event Now', start: new Date() }
-  ];
-
-  handleDateClick(calDate) {
-    // console.log(calDate);
-  }
-
-  eventClicked(calDate) {
-    // console.log(calDate);
-  }
-}
+};

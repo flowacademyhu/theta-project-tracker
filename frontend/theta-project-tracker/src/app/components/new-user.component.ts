@@ -160,7 +160,7 @@ export class NewUserComponent implements OnInit {
     this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe();
   }
   assignProjectsToUser() {
-    console.log(this.newUser.getRawValue())
+    console.log(this.newUser.getRawValue());
     this.assignedProjects.push({
       projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
       projectId: this.newUser.get('projectId').value,
@@ -172,7 +172,7 @@ export class NewUserComponent implements OnInit {
       this.editUser();
     } else {
       console.log('cica')
-      console.log(this.newUser.getRawValue())
+      console.log(this.newUser.getRawValue());
       this.onAddNewUser();
     }
   }

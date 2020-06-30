@@ -51,6 +51,15 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
+import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction';
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -118,6 +127,7 @@ export function appInit(provider: AuthService) {
     MatListModule,
     MatInputModule,
     MatButtonModule,
+    FullCalendarModule
   ],
   bootstrap: [AppComponent],
   providers: [  {

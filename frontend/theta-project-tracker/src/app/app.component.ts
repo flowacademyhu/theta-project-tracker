@@ -17,11 +17,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent {
   title = 'theta-project-tracker';
-<<<<<<< HEAD
-=======
   constructor(translate: TranslateService) {
     translate.setDefaultLang('en');
     translate.use('en');
 }
->>>>>>> master
 }

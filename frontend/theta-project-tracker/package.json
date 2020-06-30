@@ -21,14 +21,15 @@
     "@angular/platform-browser": "~9.1.6",
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
-<<<<<<< HEAD
+    "@fullcalendar/angular": "^5.1.0",
+    "@fullcalendar/core": "^5.1.0",
+    "@fullcalendar/daygrid": "^5.1.0",
+    "@fullcalendar/interaction": "^5.1.0",
+    "@fullcalendar/timegrid": "^5.1.0",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
     "jquery": "^3.5.1",
-=======
-    "@ngx-translate/core": "12.1.2",
-    "@ngx-translate/http-loader": "^5.0.0",
->>>>>>> master
+    "moment": "^2.27.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "yarn": "^1.22.4",
