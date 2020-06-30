@@ -18,6 +18,11 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: '',
+    redirectTo: 'timesheet',
+    pathMatch: 'full',
+  },
+  {
     path: 'users',
     component:  UsersComponent,
     canActivate: [AuthGuard, RoleGuard],
@@ -59,7 +64,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: 'timesheet'
   }
 ];
 
