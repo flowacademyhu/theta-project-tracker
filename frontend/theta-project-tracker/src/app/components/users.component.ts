@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
-        <mat-table [dataSource]="users" class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="firstName">
                 <mat-header-cell *matHeaderCellDef>{{ 'firstname' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
@@ -80,9 +80,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
-    this.userService.fetchUsers().subscribe((users) => {
-      this.users = users;
-    });
+    this.userService.fetchUsers().subscribe((users) => this.dataSource.data = users);
   }
 
   public ngAfterViewInit(): void {
@@ -106,9 +104,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
         );
       }
     }));
-  };
-
-
+  }
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',
