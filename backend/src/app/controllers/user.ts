@@ -75,7 +75,7 @@ export const update = async (req: Request, res: Response) => {
   try {
     const user: User = await database(TableNames.users).select().where({id: +req.params.id}).first();
     if (user) {
-      const encryptedPassword = bcrypt.hashSync(req.body.user.password, 10);
+      const encryptedPassword = user.password;
       const newUser = userSerializer.createUser(req.body.user, encryptedPassword);
       await database(TableNames.users).update(newUser).where({id: +req.params.id});
       res.sendStatus(204);

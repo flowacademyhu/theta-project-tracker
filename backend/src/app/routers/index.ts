@@ -15,12 +15,12 @@ import {router as overtimeMultiplierRouter} from './overtimeMultiplier';
 export const router: Router = Router({mergeParams: true});
 router.use('/login', loginRouter);
 router.use('/user/profile', userProfileRouter)
+router.use('/user/:userId/project', userProjectRouter);
 router.use('/user', userRouter);
 router.use('/client', clientRouter);
 router.use('/project', projectRouter);
 router.use('/milestone', milestoneRouter);
 router.use('/project/user', projectUserRouter);
-router.use('/user/:userId/project', userProjectRouter);
 router.use('/timeRecord', timeRecordRouter);
 router.use('/actionLabel', actionLabelRouter);
 router.use('/report', reportRouter);
