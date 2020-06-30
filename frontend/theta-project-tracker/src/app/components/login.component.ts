@@ -1,97 +1,83 @@
-import { User } from './../models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   template: `
-  <!-- <form>
-   <mat-form-field>
-      <input matInput type="password" placeholder="Password" formControlName="password">
-    </mat-form-field>
-    <button [disabled]="!loginForm.valid" mat-raised-button color="primary" mat-button>Sign In</button>
-</form> -->
-<form [formGroup]="loginForm">
-    <div class="panel panel-default">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          class="form-control"
-          formControlName="email"
-        />
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="loginForm">
+          <h2>{{'login' | translate}}</h2>
+          <div class="panel panel-default">
+          <mat-form-field class="full-width-input">
+              <label for="email">{{'email' | translate}}</label>
+              <input matInput
+                type="text"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                required
+              />
+          </mat-form-field>
+          <span class="help-block" *ngIf="loginForm.get('email').invalid && loginForm.get('email').touched">{{'email-required' | translate}}</span>
+          <mat-form-field class="full-width-input">
+              <label for="password">{{'password' | translate}}</label>
+              <input matInput
+                type="password"
+                class="form-control"
+                id="password"
+                formControlName="password"
+                required
+              />
+              </mat-form-field>
+              <span class="help-block" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">{{'password-required' | translate}}</span>
+            <button mat-raised-button type="submit" (click)="onLogin()" [disabled]="loginForm.invalid">
+              {{'login' | translate}}
+            </button>
+          </div>
+        </form>
+        <div class="alert alert-danger" *ngIf="errors">
+        <p *ngFor="let error of errors">{{ error }}</p>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="text"
-          class="form-control"
-          id="password"
-          formControlName="password"
-        />
-      </div>
-      <button class="btn btn-primary" type="submit" (click)="onLogin()">
-        Login
-      </button>
-    </div>
-  </form>
+      </mat-card-content>
+    </mat-card>
   `,
-  styles: [
-    `
-      .panel {
-        padding: 1rem;
-        margin-left: auto;
-        margin-right: auto;
-        width: 40%;
-        margin-top: 10%;
-      }
-      /* h4, p {
-        font-family: Lato;
-      }
-
-      .example-container {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .example-container > * {
-        width: 100%;
-      } */
-    `
-  ]
+  styles: [`
+  mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+  }
+  mat-form-field {
+    display: block;
+  }
+    `]
 })
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  user: User;
+  errors: string[];
 
+  constructor(private authService: AuthService, private router: Router) { }
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
   ngOnInit(): void {
-    this.authService.loggedInUser.subscribe(u => {
-      this.user = u;
-    });
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required])
     });
-
   }
 
   public onLogin() {
-    console.log(this.user);
-    console.log(this.loginForm.get("email").value);
-    this.authService
-      .login(this.loginForm.get('email').value)
-      .then(() => {
+    this.authService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(
+      () => {
         this.router.navigate(['timesheet']);
-      })
-      .catch(() => {
-        console.log('invalid email');
-      });
+      },
+      (error: HttpErrorResponse) => {
+        this.errors = error.error.message;
+      }
+    );
   }
 }

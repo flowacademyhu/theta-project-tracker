@@ -4,15 +4,37 @@ export interface User {
   lastName: string;
   role: Role;
   email: string;
-  password?: string;
-  userCostToCompanyPerHour: number;
-  projectAssigned: ProjectAssigned[];
+  password: string;
+  costToCompanyPerHour: number;
+  projects: UserCreateProjects[];
 }
 export interface ProjectAssigned {
-  projectName: string;
-  userCostPerHour: number;
+  projectId?: number;
+  projectName?: string;
+  costToClientPerHour : number
 }
 export enum Role {
   USER = 'user',
   ADMIN = 'admin'
+}
+export interface UserCreate {
+  user : {
+    firstName: string;
+    lastName: string;
+    role: Role;
+    email: string;
+    password: string;
+    costToCompanyPerHour: number;
+  },
+  projects: UserCreateProjects[]
+}
+export interface UserCreateProjects {
+  projectName?: string,
+  projectId: number,
+  costToClientPerHour: number
+}
+export interface PasswordEmailChange {
+  newEmail?: string;
+  newPassword?: string;
+  password: string;
 }
