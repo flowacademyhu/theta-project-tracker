@@ -51,7 +51,6 @@ import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
-import { ConfirmModalComponent } from './modals/confirm-modal.component';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -83,8 +82,7 @@ export function appInit(provider: AuthService) {
     ProjectsComponent,
     NewMilestoneComponent,
     NewMilestoneModalComponent,
-    ReportsTableComponent,
-    ConfirmModalComponent
+    ReportsTableComponent
   ],
   imports: [
     MatSidenavModule,
@@ -109,15 +107,19 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
-    MatDialogModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: httpTranslateLoader,
         deps: [HttpClient],
       }
-    })
+    }),
+    MatDialogModule,
+    MatListModule,
+    MatInputModule,
+    MatButtonModule,
   ],
+  bootstrap: [AppComponent],
   providers: [  {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
@@ -130,7 +132,6 @@ export function appInit(provider: AuthService) {
       multi: true,
   }
 ],
-  bootstrap: [AppComponent],
   entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent]
 })
-export class AppModule { }  
+export class AppModule { }
