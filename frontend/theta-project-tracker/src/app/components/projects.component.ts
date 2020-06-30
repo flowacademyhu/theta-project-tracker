@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ProjectService } from '../services/project.service';
@@ -7,6 +7,8 @@ import { NewProjectModalComponent } from '../modals/new-project-modal.component'
 import { DeleteModalComponent } from '../modals/delete-modal.component';
 import { ClientService } from '../services/client.service';
 import { Client } from '../models/client.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-projects',
@@ -14,7 +16,7 @@ import { Client } from '../models/client.model';
   <mat-card class="table-container">
     <div>
      <button (click)="onAddNewProject()" mat-raised-button>{{'add-project' | translate}}</button>
-     <mat-table class="mat-elevation-z8" [dataSource]="projects">
+     <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
     <ng-container matColumnDef="actions" class="actions">
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>{{'name' | translate}}</mat-header-cell>
@@ -43,6 +45,11 @@ import { Client } from '../models/client.model';
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons>
+  </mat-paginator>
  </div>
 </mat-card>
   `,
@@ -61,7 +68,7 @@ import { Client } from '../models/client.model';
     `
   ]
 })
-export class ProjectsComponent implements OnInit, OnDestroy {
+export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private projectService: ProjectService, private dialog: MatDialog, private clientService: ClientService) { }
 
@@ -69,17 +76,22 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   clients: Client[];
   subscriptions$: Subscription[] = [];
   displayedColumns = ['name', 'client', 'description', 'budget', 'action'];
+  dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
+    this.dataSource.paginator = this.paginator;
     this.projectService.fetchProjects().subscribe((projects) => {
-      this.projects = projects;
+      this.dataSource.data = projects;
     });
     this.clientService.fetchClients().subscribe(clients => {
       this.clients = clients;
-      this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name)
-    })
+      this.dataSource.data.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name);
+    });
   }
-
+  public ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
   onAddNewProject() {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '60%',
@@ -91,7 +103,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onOpenDeleteModal(project) {
-    const nameToPass = this.projects.find(u => u.id === project.id).name;
+    const nameToPass = this.dataSource.data.find(u => u.id === project.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -114,14 +126,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       data: { projectToEdit: project }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-      this.updateDataSource()
+      this.updateDataSource();
     }));
   }
   updateDataSource() {
     this.projectService.fetchProjects().subscribe(projects => {
-      this.projects = projects;
-      this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name)
-    })
+      this.dataSource.data = projects;
+      this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name);
+    });
   }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());

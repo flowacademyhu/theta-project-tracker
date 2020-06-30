@@ -88,7 +88,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onOpenDeleteModal(user) {
-    const nameToPass = this.users.find(u => u.id === user.id).firstName + ' ' +
+    const nameToPass = this.dataSource.data.find(u => u.id === user.id).firstName + ' ' +
       this.users.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
@@ -98,10 +98,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userService.deleteUser(user.id).subscribe();
-        this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-        }
-        );
+        this.updateDataSource();
       }
     }));
   }
@@ -112,9 +109,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-        });
+        this.updateDataSource();
       }
     }));
   }
@@ -126,11 +121,14 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-        });
+        this.updateDataSource();
       }
     }));
+  }
+  updateDataSource() {
+    this.userService.fetchUsers().subscribe(users => {
+      this.dataSource.data = users;
+    });
   }
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
