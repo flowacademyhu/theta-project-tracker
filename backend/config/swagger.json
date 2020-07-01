@@ -1254,6 +1254,42 @@
           }
         }
       }
+    },
+    "/report/project/hours": {
+      "get": {
+        "summary": "Get hours spent per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dates and multipliers of the queried month",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/CalendarResponse"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
