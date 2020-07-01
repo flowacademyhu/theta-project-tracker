@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CalendarOptions, FullCalendarModule, EventApi, DateSelectArg, EventClickArg } from '@fullcalendar/angular';
 import { INITIAL_EVENTS, createEventId } from '../event-util';
-import { isNumber } from 'util';
 import { isEmpty } from 'rxjs/operators';
 
 
@@ -16,7 +15,7 @@ export class CalendarComponent {
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    headerToolbar: { left: 'today', center: 'title', right: 'prev next' }, // buttons for switching between views
+    headerToolbar: { left: 'today dayGridMonth dayGridWeek', center: 'title', right: 'prev next' }, // buttons for switching between views
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
@@ -32,9 +31,8 @@ export class CalendarComponent {
     const title: any = prompt('Please enter the overtime value');
     const calendarApi = selectInfo.view.calendar;
 
-
     calendarApi.unselect();
-    if (!isNaN(title) && !isEmpty()) {
+    if (!isNaN(title)) {
       calendarApi.addEvent({
         id: createEventId(),
         title,
@@ -43,7 +41,7 @@ export class CalendarComponent {
         allDay: selectInfo.allDay
       });
     } else {
-      title.confirm('Wrong value');
+      alert('Wrong value');
     }
   }
 
@@ -54,6 +52,7 @@ export class CalendarComponent {
   }
 
   handleEvents(events: EventApi[]) {
+
     this.currentEvents = events;
   }
 
