@@ -747,6 +747,49 @@
         }
       }
     },
+    "/project/{projectId}/actionLabel": {
+      "get": {
+        "summary": "Get actionLabels on specific project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ActionLabels on specific project",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ActionLabelResponse"
+              }
+            }
+          }
+        }
+      }
+    },
     "/milestone": {
       "post": {
         "summary": "Create new milestone",
@@ -1581,6 +1624,9 @@
     "ActionLabelCreate": {
       "type": "object",
       "properties": {
+        "projectId": {
+          "type": "number"
+        },
         "name": {
           "type": "string"
         }
@@ -1590,6 +1636,9 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "number"
+        },
+        "projectId": {
           "type": "number"
         },
         "name": {
