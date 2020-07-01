@@ -41,6 +41,13 @@
   "logout": "Logout",
   "add-client": "+ Add New Client",
   "clients-name": "Client's Name",
+  "email-change": "Change Email",
+  "new-email": "New Email",
+  "pwd-change": "Change Password",
+  "new-pwd": "New Password",
+  "confirm-pwd": "Confirm New Password",
+  "old-pwd": "Old Password",
+  "pwd-dont-match": "Passwords don't match!",
   "confirmation": "Are you sure?" ,
   "no": "No",
   "yes": "Yes"

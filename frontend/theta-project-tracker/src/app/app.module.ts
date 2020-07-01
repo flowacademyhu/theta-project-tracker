@@ -49,6 +49,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { RecordOneWeekComponent } from './components/record-one-week.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProfileComponent } from '../app/components/profile.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
 import { ConfirmModalComponent } from './modals/confirm-modal.component';
@@ -75,6 +77,12 @@ export function appInit(provider: AuthService) {
     LoginComponent,
     ReportsComponent,
     MilestonesComponent,
+    ClientsComponent,
+    NewUserComponent,
+    NewUserModalComponent,
+    DeleteModalComponent,
+    RecordOneWeekComponent,
+    ProfileComponent,
     RecordOneWeekComponent,
     SidenavContainerComponent,
     NewClientModalComponent,
@@ -104,6 +112,11 @@ export function appInit(provider: AuthService) {
     MatCardModule,
     MatRadioModule,
     MatTableModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatExpansionModule,
     MatPaginatorModule,
     HttpClientModule,
     MatGridListModule,
