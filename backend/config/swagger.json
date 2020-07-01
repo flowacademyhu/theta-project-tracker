@@ -747,7 +747,7 @@
         }
       }
     },
-    "/project/milestone/{projectId}": {
+    "/project/{projectId}/milestone": {
       "get": {
         "summary": "Get milestones on a project",
         "tags": [

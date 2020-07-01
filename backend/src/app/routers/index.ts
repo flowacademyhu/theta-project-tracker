@@ -20,7 +20,7 @@ router.use('/user/profile', userProfileRouter)
 router.use('/user/:userId/project', userProjectRouter);
 router.use('/user', userRouter);
 router.use('/client', clientRouter);
-router.use('/project/milestone', projectMilestoneRouter);
+router.use('/project/:projectId/milestone', projectMilestoneRouter);
 router.use('/project', projectRouter);
 router.use('/milestone', milestoneRouter);
 router.use('/project/user', projectUserRouter);
