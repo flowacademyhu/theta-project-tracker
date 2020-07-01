@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login.component';
 import { TimesheetComponent } from './components/timesheet.component';
 import { CalendarComponent } from './components/calendar.component';
+import { ProfileComponent } from './components/profile.component';
 import { ClientsComponent } from './components/clients.component';
 import { ProjectsComponent } from './components/projects.component';
 import { MilestonesComponent } from './components/milestones.component';
@@ -16,6 +17,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: '',
+    redirectTo: 'timesheet',
+    pathMatch: 'full',
   },
   {
     path: 'users',
@@ -58,8 +64,13 @@ const routes: Routes = [
     data: { roles: [Role.ADMIN] }
   },
   {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: 'timesheet'
   }
 ];
 

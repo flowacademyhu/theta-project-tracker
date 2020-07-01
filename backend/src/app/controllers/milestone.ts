@@ -33,13 +33,15 @@ export const show = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const milestone: Milestone = {
-      name: req.body.name,
-      projectId: req.body.projectId,
-      description: req.body.description,
+    const duplicate: Milestone = await database(TableNames.milestones).select()
+      .where({name: req.body.name, projectId: req.body.projectId}).first();
+    if (duplicate) {
+      res.sendStatus(400);
+    } else {
+      const milestone: Milestone = milestoneSerializer.create(req);
+      await database(TableNames.milestones).insert(milestone);
+      res.sendStatus(201);
     }
-    await database(TableNames.milestones).insert(milestone);
-    res.sendStatus(201);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -50,13 +52,9 @@ export const update = async (req: Request, res: Response) => {
   try {
     const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (milestone) {
-      const newMilestone: Milestone = {
-        name: req.body.name,
-        projectId: req.body.projectId,
-        description: req.body.description,
-      }
+      const newMilestone: Milestone = milestoneSerializer.create(req);
       await database(TableNames.milestones).update(newMilestone).where({id: req.params.id});
-      res.sendStatus(200);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }
