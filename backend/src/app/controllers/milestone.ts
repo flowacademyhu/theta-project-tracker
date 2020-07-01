@@ -14,14 +14,14 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const milestones: Array<Milestone> = await query;
-  res.status(200).json(milestones);
+  res.status(200).json(milestoneSerializer.index(milestones));
 };
 
 export const show = async (req: Request, res: Response) => {
   try {
     const milestone: Milestone = await database(TableNames.milestones).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (milestone) {
-      res.status(200).json(milestone);
+      res.status(200).json(milestoneSerializer.show(milestone));
     } else {
       res.sendStatus(404);
     }
