@@ -9,7 +9,14 @@ import { User } from '../models/user.model';
   <mat-dialog-content class="mat-typography">
     <app-new-user [userToEdit]="userToEdit"></app-new-user>
   </mat-dialog-content>
-  `
+  `,
+  styles: [`
+  h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  `]
 })
 export class NewUserModalComponent implements OnInit {
 

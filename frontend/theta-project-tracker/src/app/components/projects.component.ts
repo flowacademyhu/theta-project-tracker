@@ -14,6 +14,7 @@ import { User } from '../models/user.model';
 @Component({
   selector: 'app-projects',
   template: `
+  <body>
   <mat-card class="table-container">
     <div>
      <button (click)="onAddNewProject()" mat-raised-button>{{'add-project' | translate}}</button>
@@ -49,12 +50,17 @@ import { User } from '../models/user.model';
   </mat-table>
  </div>
 </mat-card>
+</body>
   `,
   styles: [
     `
+    body {
+      height: 777px
+    }
     .table-container {
       margin: auto;
       max-width: 70%;
+      min-height: auto;
       overflow: auto;
       margin-top: 100px;
       margin-bottom: 100px;
@@ -86,8 +92,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   onAddNewProject() {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
-      width: '60%',
-      height: '80%'
+      width: '35%',
+      height: '60%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource();
@@ -99,7 +105,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
-      height: '25%'
+      height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -113,8 +119,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
-      width: '60%',
-      height: '80%',
+      width: '35%',
+      height: '60%',
       data: { projectToEdit: project }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
@@ -129,8 +135,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
   onAddUserModal() {
     const dialogRef = this.dialog.open(AddUserToProjectModalComponent, {
-      width: '60%',
-      height: '35%'
+      width: '35%',
+      height: '25%'
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

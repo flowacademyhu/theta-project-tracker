@@ -25,6 +25,13 @@ import { UserService } from '../services/user.service';
 </div>
 </form>
   `,
+  styles: [`
+  .full-width {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  `]
  })
 
 export class AddUserToProjectModalComponent implements OnInit { 

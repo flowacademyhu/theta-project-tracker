@@ -36,6 +36,21 @@ import { Subscription } from 'rxjs';
 </div>
 
   `,
+  styles: [
+    `
+    .actions {
+      margin-top: 60px;
+    }
+    .full-width {
+      min-width: 150px;
+      max-width: 500px;
+      width: 100%;
+    }
+    mat-icon:hover {
+      cursor: pointer;
+    }
+    `
+  ]
 })
 export class NewMilestoneComponent implements OnInit, OnDestroy {
 
