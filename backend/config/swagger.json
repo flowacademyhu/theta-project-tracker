@@ -1261,6 +1261,42 @@
           }
         }
       }
+    },
+    "/calendar": {
+      "get": {
+        "summary": "Get days and multipliers for a month",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dates and multipliers of the queried month",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/CalendarResponse"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1632,6 +1668,20 @@
           "type": "number"
         },
         "date": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
+        }
+      }
+    },
+    "CalendarResponse": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "day": {
           "type": "string"
         },
         "multiplier": {

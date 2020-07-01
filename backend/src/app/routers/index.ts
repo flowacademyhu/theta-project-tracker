@@ -12,6 +12,7 @@ import {router as reportRouter} from './report';
 import {router as userProfileRouter} from './userProfile';
 import {router as overtimeMultiplierRouter} from './overtimeMultiplier';
 import {router as projectMilestoneRouter} from "./projectMilestone";
+import {router as calendarRouter} from "./calendar";
 
 export const router: Router = Router({mergeParams: true});
 router.use('/login', loginRouter);
@@ -27,3 +28,4 @@ router.use('/timeRecord', timeRecordRouter);
 router.use('/actionLabel', actionLabelRouter);
 router.use('/report', reportRouter);
 router.use('/overtimeMultiplier', overtimeMultiplierRouter);
+router.use('/calendar', calendarRouter);
