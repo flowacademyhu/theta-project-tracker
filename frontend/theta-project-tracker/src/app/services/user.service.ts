@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User, Role, UserCreate } from '../models/user.model';
+import { User, Role, UserCreate, PasswordEmailChange } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
@@ -28,5 +28,11 @@ export class UserService {
   }
   public deleteUser(id: number): Observable<User> {
     return this.http.delete<User>(this.apiUrl + `user/${id}`).pipe(tap(() => this.fetchUsers()));
+  }
+  updatePassword(passwordChanges: PasswordEmailChange) {
+    return this.http.put(this.apiUrl + 'user/profile', passwordChanges)
+  }
+  updateEmail(emailChanges: PasswordEmailChange) {
+   return this.http.put(this.apiUrl + 'user/profile', emailChanges)
   }
 }

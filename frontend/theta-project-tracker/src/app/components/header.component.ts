@@ -1,11 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmModalComponent } from '../modals/confirm-modal.component';
 
 @Component({
   selector: 'app-header',
   template: `
-    <mat-toolbar color="primary" role="heading">
+    <mat-toolbar color="primary" role="heading" *ngIf="user$ | async">
       <mat-toolbar-row>
         <span id="spanOne">
           <a
@@ -27,7 +31,8 @@ import { AuthService } from '../services/auth.service';
         </span>
         <span id="spanTwo">
           <p>{{'logged-in-as' | translate}}</p>
-          <button mat-stroked-button [routerLink]="['/login']" routerLinkActive="router-link-active" id="logOut" appHighLight>{{'logout' | translate}}</button>
+          <p routerLink="/profile">{{ (user$ | async).firstName }}</p>
+          <button mat-stroked-button (click)="onOpenConfirmModal()"  id="logOut" appHighLight>{{'logout' | translate}}</button>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>`,
@@ -100,16 +105,29 @@ import { AuthService } from '../services/auth.service';
 }`],
 })
 
-export class HeaderComponent{
-  @Output() public sidenavTriggerd: EventEmitter< void > = new EventEmitter< void >();
-  authService: any;
-  router: any;
+export class HeaderComponent implements OnInit {
+
+  @Output() public sidenavTriggerd: EventEmitter<void> = new EventEmitter<void>();
+  user$: Observable<User> = this.authService.user;
+
   public onTrigger() {
     this.sidenavTriggerd.emit();
   }
 
-  public onLogout() {
-    this.authService.logout();
-    this.router.navigate(['login']);
+  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) { }
+
+  ngOnInit() {
+  }
+
+  onOpenConfirmModal() {
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {
+      width: '25%',
+      height: '25%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.authService.logout();
+      }
+    });
   }
 }
