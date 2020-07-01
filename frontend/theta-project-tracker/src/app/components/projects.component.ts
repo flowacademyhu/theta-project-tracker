@@ -7,6 +7,9 @@ import { NewProjectModalComponent } from '../modals/new-project-modal.component'
 import { DeleteModalComponent } from '../modals/delete-modal.component';
 import { ClientService } from '../services/client.service';
 import { Client } from '../models/client.model';
+import { AddUserToProjectModalComponent } from '../modals/add-user-to-project-modal.component';
+import { User } from '../models/user.model';
+
 
 @Component({
   selector: 'app-projects',
@@ -37,6 +40,7 @@ import { Client } from '../models/client.model';
       <mat-cell *matCellDef="let project">
        <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
        <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
+       <mat-icon (click)="onAddUserModal()">add</mat-icon>
       </mat-cell>
      </ng-container>
     </ng-container>
@@ -51,9 +55,9 @@ import { Client } from '../models/client.model';
     .table-container {
       margin: auto;
       max-width: 70%;
-      height: 400px;
       overflow: auto;
-      margin-top: 200px
+      margin-top: 100px;
+      margin-bottom: 100px;
   }
     mat-icon:hover {
       cursor: pointer;
@@ -123,7 +127,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name)
     })
   }
-  ngOnDestroy(): void {
+  onAddUserModal() {
+    const dialogRef = this.dialog.open(AddUserToProjectModalComponent, {
+      width: '60%',
+      height: '35%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+  }
+    ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

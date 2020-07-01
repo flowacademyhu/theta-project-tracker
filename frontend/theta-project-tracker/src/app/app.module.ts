@@ -54,6 +54,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
 import { ConfirmModalComponent } from './modals/confirm-modal.component';
+import { AddUserToProjectModalComponent } from './modals/add-user-to-project-modal.component'
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -92,7 +93,8 @@ export function appInit(provider: AuthService) {
     NewMilestoneComponent,
     NewMilestoneModalComponent,
     ReportsTableComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    AddUserToProjectModalComponent
   ],
   imports: [
     MatSidenavModule,

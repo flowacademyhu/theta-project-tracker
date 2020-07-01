@@ -40,9 +40,9 @@ import { Subscription } from 'rxjs';
   .table-container {
     margin: auto;
     max-width: 70%;
-    height: 400px;
     overflow: auto;
-    margin-top: 200px
+    margin-top: 100px;
+    margin-bottom: 100px;
   }
   mat-icon:hover {
     cursor: pointer;
