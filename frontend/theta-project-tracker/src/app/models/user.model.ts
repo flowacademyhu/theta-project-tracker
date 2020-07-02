@@ -20,14 +20,7 @@ export enum Role {
   ADMIN = 'admin'
 }
 export interface UserCreate {
-  user: {
-    firstName: string;
-    lastName: string;
-    role: Role;
-    email: string;
-    password: string;
-    costToCompanyPerHour: number;
-  },
+  user: User
   projects: ProjectAssigned[]
 }
 export interface PasswordEmailChange {
@@ -36,12 +29,5 @@ export interface PasswordEmailChange {
   password: string;
 }
 export interface UserUpdate {
-  user: {
-    firstName: string;
-    lastName: string;
-    role: Role;
-    email: string;
-    password: string;
-    costToCompanyPerHour: number;
-  }
+  user: User
 }
