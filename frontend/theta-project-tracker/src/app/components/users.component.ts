@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-users',
   template: `
+  <body>
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
@@ -52,19 +53,29 @@ import { MatTableDataSource } from '@angular/material/table';
       </mat-paginator>
     </div>
     </mat-card>
+    </body>
   `,
   styles: [
     `
+    body {
+      height: 777px;
+     /*  position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0; */
+    }
     .table-container {
       margin: auto;
       max-width: 70%;
+      min-height: auto;
       overflow: auto;
       margin-top: 100px;
       margin-bottom: 100px;
-    }
+  }
     mat-icon:hover {
       cursor: pointer;
-    }
+  }
     `]
 })
 export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {

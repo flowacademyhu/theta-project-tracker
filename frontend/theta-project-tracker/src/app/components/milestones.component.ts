@@ -11,6 +11,7 @@ import { Project } from '../models/project.model';
 @Component({
   selector: 'app-milestones',
   template: `
+  <body>
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
@@ -46,19 +47,30 @@ import { Project } from '../models/project.model';
         </mat-table>
     </div>
 </mat-card>
+</body>
   `,
-  styles: [`
-  .table-container {
-    margin: auto;
-    max-width: 70%;
-    overflow: auto;
-    margin-top: 100px;
-    margin-bottom: 100px;
-}
-mat-icon:hover {
-    cursor: pointer;
-}
-`]
+  styles: [
+    `
+    body {
+      height: 777px;
+     /*  position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0; */
+    }
+    .table-container {
+      margin: auto;
+      max-width: 70%;
+      min-height: auto;
+      overflow: auto;
+      margin-top: 100px;
+      margin-bottom: 100px;
+  }
+    mat-icon:hover {
+      cursor: pointer;
+  }
+    `]
 })
 export class MilestonesComponent implements OnInit, OnDestroy {
   milestoneArrays: Milestone[] = [];
