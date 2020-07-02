@@ -1097,8 +1097,8 @@
           }
         }
       },
-      "post": {
-        "summary": "Create new custom multiplier date",
+      "put": {
+        "summary": "Create custom date; if exists update",
         "tags": [
           "admin"
         ],
@@ -1118,47 +1118,15 @@
         ],
         "responses": {
           "201": {
-            "description": "New custom multiplier date created"
+            "description": "Created"
           },
-          "400": {
-            "description": "This date is already custom"
-          }
-        }
-      }
-    },
-    "/overtimeMultiplier/{id}": {
-      "get": {
-        "summary": "Get specific date by id",
-        "tags": [
-          "admin"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Custom date by id",
-            "schema": {
-              "$ref": "#definitions/OvertimeMultiplierResponse"
-            }
-          },
-          "404": {
-            "description": "Custom date with given id does not exist"
+          "204": {
+            "description": "Updated"
           }
         }
       },
-      "put": {
-        "summary": "Update custom date with id",
+      "delete": {
+        "summary": "Delete custom date by date",
         "tags": [
           "admin"
         ],
@@ -1167,12 +1135,6 @@
             "in": "header",
             "name": "Authorization",
             "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
           },
           {
             "in": "body",
@@ -1184,37 +1146,10 @@
         ],
         "responses": {
           "204": {
-            "description": "Updated"
-          },
-          "404": {
-            "description": "Custom date with given id does not exist"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete custom date by id",
-        "tags": [
-          "admin"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
             "description": "Deleted"
           },
           "404": {
-            "description": "Custom date with given id does not exist"
+            "description": "Custom date with given date does not exist"
           }
         }
       }
