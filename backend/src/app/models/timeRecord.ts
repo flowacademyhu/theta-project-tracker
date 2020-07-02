@@ -11,3 +11,11 @@ export interface TimeRecord {
   createdAt?: string;
   updatedAt?: string;
 }
+
+/*
+[
+  [{project: project, milestone: milestone, action: action}], [{date: date, normalHour: normalHour, overtime: overtime}], [{date: date, normalHour: normalHour, overtime: overtime}],
+  [{project: project, milestone: milestone, action: action}], [{date: date, normalHour: normalHour, overtime: overtime}], [{date: date, normalHour: normalHour, overtime: overtime}],
+  [{project: project, milestone: milestone, action: action}], [{date: date, normalHour: normalHour, overtime: overtime}], [{date: date, normalHour: normalHour, overtime: overtime}],
+]
+*/

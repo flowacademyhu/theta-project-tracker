@@ -8,18 +8,6 @@ import * as moment from "moment";
 import {Moment} from "moment";
 
 export const index = async (req: Request, res: Response) => {
-  let query: QueryBuilder = database(TableNames.timeRecords).select();
-  if (req.query.limit) {
-    query = query.limit(req.query.limit);
-  }
-  if (req.query.offset) {
-    query = query.offset(req.query.offset);
-  }
-  const timeRecords: Array<TimeRecord> = await query;
-  res.status(200).json(timeRecords);
-};
-
-export const show = async (req: Request, res: Response) => {
   try {
     let date: Moment;
     let fromDate: string;
@@ -39,8 +27,6 @@ export const show = async (req: Request, res: Response) => {
       .where({userId: res.locals.user.id}).select();
     const timeRecords: Array<TimeRecord> = await query;
     res.status(200).json(timeRecords);
-
-
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -49,6 +35,7 @@ export const show = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
+
     const timeRecord: TimeRecord = timeRecordSerializer.create(req);
     await database(TableNames.timeRecords).insert(timeRecord);
     res.sendStatus(201);
