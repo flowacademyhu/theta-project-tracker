@@ -14,6 +14,7 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '
             <button mat-stroked-button routerLink='/projects' routerLinkActive='router-link-active' appHighLight>{{'projects' | translate}}</button>
             <button mat-stroked-button routerLink='/milestones' routerLinkActive='router-link-active' appHighLight>{{'milestones' | translate}}</button>
             <button mat-stroked-button routerLink='/clients' routerLinkActive='router-link-active' appHighLight>{{'clients' | translate}}</button>
+            <button mat-stroked-button routerLink='/actionlabels' routerLinkActive='router-link-active' appHighLight>Action Label</button>
           </span>
         </mat-nav-list>
     </mat-sidenav>
