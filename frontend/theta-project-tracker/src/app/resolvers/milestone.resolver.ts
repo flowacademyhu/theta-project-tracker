@@ -17,6 +17,6 @@ export class MilestoneResolver implements Resolve<Milestone[]> {
     state: RouterStateSnapshot
   ): Observable<Milestone[]> | Promise<Milestone[]> | Milestone[] {
     const id = +route.params.id;
-    return this.MilestoneService.fetchMilsetones();
+    return this.MilestoneService.fetchMilestones();
   }
 }
