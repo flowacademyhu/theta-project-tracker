@@ -2,7 +2,7 @@ import { QueryBuilder } from "knex";
 import { database } from "../../lib/database";
 import { Request, Response } from "express";
 import { TableNames } from "../../lib/enums";
-import { transformReportForFrontend } from "../../lib/report";
+import { transformReportForFrontend, transformBudgetReportForFrontend } from "../../lib/report";
 
 export const generateReportProjectByHours = async (req: Request, res: Response) => {
     let query: QueryBuilder = database(TableNames.timeRecords)
@@ -53,13 +53,16 @@ export const generateReportUserByCost = async (req: Request, res: Response) => {
     res.json(transformReportForFrontend(report, 'projectName', 'userName', 'cost'));
 }
 
-// export const generateReportBudget = async (req: Request, res: Response) => {
-//     //let subquery: QueryBuilder = database(TableNames.timeRecords).
-//     let query: QueryBuilder = database(TableNames.timeRecords)
-//     .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
-//     .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
-//     .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
-//     .select('projects.budget as budget')
-//     const report = await query;
-//     res.json(transformReportForFrontend(report, 'projectName', 'budget', ''))
-// }
+export const generateReportBudget = async (req: Request, res: Response) => {
+    let subquery: QueryBuilder = database(TableNames.timeRecords)
+    .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
+    .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
+    .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
+    .select('projects.name as Project Name')
+    .select(database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as "Actual costs"'))
+    .select('projects.budget as Budget costs')
+    .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime))) as "(Over)/Under"'))
+    .groupBy('projects.name', 'projects.budget')
+    const subReport = await subquery;
+    res.json(transformBudgetReportForFrontend(subReport));
+}

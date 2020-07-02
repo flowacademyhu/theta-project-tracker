@@ -30,3 +30,19 @@ export const calculateAndAddTotal = (finalObject: object) => {
         finalObject[row]['total'] = sum;
     });
 }
+
+export const transformBudgetReportForFrontend = (report: Array<Object>) => {
+    let rowNames = getUniqueRowNames(report, 'Project Name');
+    let finalObject = {};
+    rowNames.forEach(row => finalObject[row] = (new Object()));
+    Object.keys(finalObject).forEach(key => {
+        report.forEach(individualResult => {
+            if (individualResult["Project Name"] === key) {
+                finalObject[key]['Actual costs'] = individualResult['Actual costs'];
+                finalObject[key]['Budget costs'] = individualResult['Budget costs'];
+                finalObject[key]['(Over)/Under'] = individualResult['(Over)/Under'];
+            }
+        });
+    })
+    return finalObject;
+}
