@@ -53,11 +53,6 @@ import { Project } from '../models/project.model';
     `
     body {
       height: 777px;
-     /*  position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0; */
     }
     .table-container {
       margin: auto;
