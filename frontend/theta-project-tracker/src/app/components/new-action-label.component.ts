@@ -56,11 +56,11 @@ export class NewActionLabelComponent implements OnInit, OnDestroy {
   }
   editActionLabel() {
     this.actionLabelToEdit = this.newActionLabel.getRawValue();
-    this.actionLabelService.updateActionLabel(this.actionLabelToEdit.projectId, this.actionLabelToEdit).subscribe();
+    this.actionLabelService.updateActionLabel(this.actionLabelToEdit.id, this.actionLabelToEdit).subscribe();
   }
   onCloseDialog() {
-    if (this.actionLabelService) {
-      this.actionLabelService.updateActionLabel(this.actionLabelToEdit.projectId, this.newActionLabel.getRawValue()).subscribe();
+    if (this.actionLabelToEdit) {
+      this.actionLabelService.updateActionLabel(this.actionLabelToEdit.id, this.newActionLabel.getRawValue()).subscribe();
     } else {
       this.createdActionLabel = this.newActionLabel.getRawValue();
       this.actionLabelService.addActionLabel(this.createdActionLabel).subscribe();

@@ -21,7 +21,7 @@ import { DeleteModalComponent } from '../modals/delete-modal.component';
           </ng-container>
           <ng-container matColumnDef="project">
           <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
-          <mat-cell *matCellDef="let actionlabel">{{ actionlabel.projecId }}</mat-cell>
+          <mat-cell *matCellDef="let projects">{{ projects.name }}</mat-cell>
       </ng-container>
           <ng-container matColumnDef="actions" class="actions">
               <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
@@ -71,6 +71,11 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
       this.actionLabelArrays = actionlabel;
       console.log(this.actionLabelArrays)
     });
+      this.projectService.fetchProjects().subscribe(projects => {
+        this.projects = projects;
+        console.log(this.projects);
+/*         this.actionLabelArrays.map(a => a.name = this.projects.find(p => p.id === a.projectId).name)
+ */      }) 
   }
 
     ngOnDestroy(): void {
@@ -97,7 +102,7 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
       }));
     }
     onOpenDeleteModal(actionlabel) {
-      const nameToPass = this.actionLabelArrays.find(a => a.projectId === actionlabel.projecId).projectId;
+      const nameToPass = this.actionLabelArrays.find(a => a.projectId === actionlabel.projectId).name;
       const dialogRef = this.dialog.open(DeleteModalComponent, {
         data: { name: nameToPass },
         width: '25%',
@@ -115,7 +120,7 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
     updateDataSource() {
     this.actionLabelService.fetchActionLabels().subscribe(actionlabels  => {
       this.actionLabelArrays = actionlabels;
-      this.actionLabelArrays.map(a => a.name = this.projects.find(p => p.id === a.projectId).name)
+     /*  this.actionLabelArrays.map(a => a.name = this.projects.find(p => p.id === a.projectId).name) */
     })
   }
 }

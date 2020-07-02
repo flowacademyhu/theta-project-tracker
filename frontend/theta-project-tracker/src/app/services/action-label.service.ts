@@ -19,7 +19,7 @@ export class ActionLabelService {
     return this.http.get<ActionLabel[]>(this.apiUrl + 'actionLabel');
   }
   public fetchActionLabel(id: number): Observable<ActionLabel> {
-    return this.http.get<ActionLabel>(this.apiUrl + +`actionLabel/${id}`);
+    return this.http.get<ActionLabel>(this.apiUrl +`actionLabel/${id}`);
   }
   public addActionLabel(actionlabel: ActionLabel): Observable<ActionLabel> {
     return this.http.post<ActionLabel>(this.apiUrl + 'actionLabel', actionlabel);
