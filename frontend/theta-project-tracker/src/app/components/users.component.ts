@@ -57,10 +57,11 @@ import { MatTableDataSource } from '@angular/material/table';
     `
     .table-container {
       margin: auto;
-      max-width: 70%;
-      height: 450px;
-      overflow: auto;
-      margin-top: 200px
+    max-width: 70%;
+    min-height: auto;
+    overflow: auto;
+    margin-top: 100px;
+    margin-bottom: 100px;
     }
     mat-icon:hover {
       cursor: pointer;
