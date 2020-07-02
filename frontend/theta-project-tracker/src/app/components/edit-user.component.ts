@@ -4,6 +4,8 @@ import { Project } from '../models/project.model';
 import { User, ProjectAssigned, UserUpdate } from '../models/user.model';
 import { ProjectService } from '../services/project.service';
 import { UserService } from '../services/user.service';
+import { ProjectUsersService } from '../services/projectUsers.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-user',
@@ -56,7 +58,7 @@ import { UserService } from '../services/user.service';
         <th>{{'cost-to-client' | translate}}</th>
         <th>{{'unassign' | translate}}</th>
       </tr>
-      <tr *ngFor="let project of assignedProjects; let i = index">
+      <tr *ngFor="let project of assignedProjects">
         <td>{{project.name}}</td>
         <td>{{project.costToClientPerHour}}</td>
         <td>
@@ -130,17 +132,20 @@ export class EditUserComponent implements OnInit {
   createdUser: UserUpdate;
   @Input() userToEdit: User;
   id: number;
-  constructor(private userService: UserService, private projectService: ProjectService) { }
+  constructor(private userService: UserService, private projectService: ProjectService,
+    private projectUserService: ProjectUsersService, private router: Router) { }
   ngOnInit(): void {
     this.projectService.fetchProjects().subscribe(projects => {
       this.availableProjects = projects;
     })
     this.id = this.userToEdit.id;
+    this.editUser.get('password').disable()
     this.assignedProjects = this.userToEdit.projects;
-    this.editUser.patchValue(this.userToEdit);
+    this.editUser.patchValue(this.userToEdit)
+    this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
   }
   onDeleteProject(project) {
-    this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.projectName === project.projectName), 1);
+    this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.name === project.name), 1);
   }
   onAddNewProject() {
     this.assignProjectsToUser();
@@ -148,17 +153,21 @@ export class EditUserComponent implements OnInit {
     this.editUser.get('costToClient').patchValue(null);
   }
   updateUser() {
+    this.assignProjectsToUser()
     this.editUser.removeControl('projectId')
     this.editUser.removeControl('costToClient')
     this.createdUser = {
       user: this.editUser.getRawValue()
     }
+    this.assignedProjects.map(p => delete p.name)
+    this.projectUserService.assignProjectToUser(this.id, this.assignedProjects).subscribe()
     this.userService.updateUser(this.id, this.createdUser).subscribe();
+    this.router.navigate(['..', 'users'])
   }
   assignProjectsToUser() {
     if (this.editUser.get('projectId').value) {
       this.assignedProjects.push({
-        projectName: this.availableProjects.find(p => p.id === this.editUser.get('projectId').value).name,
+        name: this.availableProjects.find(p => p.id === this.editUser.get('projectId').value).name,
         projectId: this.editUser.get('projectId').value,
         costToClientPerHour: this.editUser.get('costToClient').value
       })

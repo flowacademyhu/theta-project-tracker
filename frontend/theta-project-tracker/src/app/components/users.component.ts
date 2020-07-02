@@ -8,6 +8,7 @@ import { NewUserModalComponent } from '../modals/new-user-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProjectUsersService } from '../services/projectUsers.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -88,7 +89,8 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private userService: UserService, private dialog: MatDialog, private projectUserService: ProjectUsersService) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private projectUserService: ProjectUsersService, 
+    private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -134,12 +136,17 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     }));
   }
   onOpenEditModal(user) {
+    this.router.navigate(['edit-user'], {
+      relativeTo: this.route,
+      queryParams: { userId: user.id }
+    })
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '60%',
       height: '80%',
       data: { userToEdit: user }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate(['..', 'users'])
       this.updateDataSource()
     }));
   }

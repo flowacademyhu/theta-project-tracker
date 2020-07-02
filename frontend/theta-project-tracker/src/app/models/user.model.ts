@@ -12,6 +12,7 @@ export interface User {
 export interface ProjectAssigned {
   projectId?: number;
   projectName?: string;
+  name?: string;
   costToClientPerHour: number
 }
 export enum Role {

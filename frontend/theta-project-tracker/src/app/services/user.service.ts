@@ -21,10 +21,12 @@ export class UserService {
     return this.http.get<User>(this.apiUrl + `user/${id}`);
   }
   public addUser(user: UserCreate) {
-    return this.http.post(this.apiUrl + 'user', user);
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.post(this.apiUrl + 'user', user, httpOptions);
   }
-  public updateUser(id: number, user: UserUpdate): Observable<UserUpdate> {
-    return this.http.put<UserUpdate>(this.apiUrl + `user/${id}`, user);
+  public updateUser(id: number, user: UserUpdate): Observable<string> {
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.put<string>(this.apiUrl + `user/${id}`, user, httpOptions);
   }
   public deleteUser(id: number) {
     return this.http.delete(this.apiUrl + `user/${id}`).pipe(tap(() => this.fetchUsers()));
