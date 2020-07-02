@@ -13,6 +13,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { Role } from './models/user.model';
 import { ActionLabelComponent } from './components/action-label.component';
+import { NewUserComponent } from './components/new-user.component';
+import { ProjectResolver } from './resolvers/project.resolver';
+import { EditUserComponent } from './components/edit-user.component';
 
 const routes: Routes = [
   {
@@ -28,7 +31,15 @@ const routes: Routes = [
     path: 'users',
     component:  UsersComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { roles: [Role.ADMIN] }
+    data: { roles: [Role.ADMIN] },
+    children: [
+      {
+        path: 'edit-user',
+        component: EditUserComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: [Role.ADMIN] },
+      }
+    ]
   },
   {
     path: 'timesheet',

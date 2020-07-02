@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-container',
@@ -47,5 +47,4 @@ export class SidenavContainerComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

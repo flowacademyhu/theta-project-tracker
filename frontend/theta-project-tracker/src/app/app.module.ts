@@ -57,6 +57,7 @@ import { ConfirmModalComponent } from './modals/confirm-modal.component';
 import { ActionLabelComponent } from './components/action-label.component';
 import { NewActionLabelModalComponent } from './modals/new-action-label-modal.component';
 import { NewActionLabelComponent } from './components/new-action-label.component';
+import { EditUserComponent } from '../app/components/edit-user.component'
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -98,7 +99,8 @@ export function appInit(provider: AuthService) {
     ConfirmModalComponent,
     ActionLabelComponent,
     NewActionLabelModalComponent,
-    NewActionLabelComponent
+    NewActionLabelComponent,
+    EditUserComponent
   ],
   imports: [
     MatSidenavModule,
