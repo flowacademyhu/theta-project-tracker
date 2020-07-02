@@ -21,7 +21,7 @@ import { DeleteModalComponent } from '../modals/delete-modal.component';
           </ng-container>
           <ng-container matColumnDef="project">
           <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
-          <mat-cell *matCellDef="let projects">{{ projects.name }}</mat-cell>
+          <mat-cell *matCellDef="let actionlabel">{{ actionlabel.porjectName }}</mat-cell>
       </ng-container>
           <ng-container matColumnDef="actions" class="actions">
               <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
@@ -74,8 +74,8 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
       this.projectService.fetchProjects().subscribe(projects => {
         this.projects = projects;
         console.log(this.projects);
-/*         this.actionLabelArrays.map(a => a.name = this.projects.find(p => p.id === a.projectId).name)
- */      }) 
+        this.actionLabelArrays.map(a => a.porjectName = this.projects.find(p => p.id === a.projectId).name)
+      }) 
   }
 
     ngOnDestroy(): void {
