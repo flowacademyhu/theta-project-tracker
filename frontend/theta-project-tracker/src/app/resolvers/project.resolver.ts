@@ -9,14 +9,14 @@ import { Project } from '../models/project.model'
 import { ProjectService } from '../services/project.service';
 
 @Injectable({ providedIn: 'root' })
-export class UserResolver implements Resolve<Project[]> {
-  constructor(private UserService: ProjectService) {}
+export class ProjectResolver implements Resolve<Project[]> {
+  constructor(private projectService: ProjectService) {}
 
   public resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Project[]> | Promise<Project[]> | Project[] {
     const id = +route.params.id;
-    return this.UserService.fetchProjects();
+    return this.projectService.fetchProjects();
   }
 }
