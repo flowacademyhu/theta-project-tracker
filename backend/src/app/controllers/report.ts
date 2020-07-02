@@ -54,7 +54,7 @@ export const generateReportUserByCost = async (req: Request, res: Response) => {
 }
 
 export const generateReportBudget = async (req: Request, res: Response) => {
-    let subquery: QueryBuilder = database(TableNames.timeRecords)
+    let query: QueryBuilder = database(TableNames.timeRecords)
     .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
     .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
     .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
@@ -63,6 +63,6 @@ export const generateReportBudget = async (req: Request, res: Response) => {
     .select('projects.budget as Budget costs')
     .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime))) as "(Over)/Under"'))
     .groupBy('projects.name', 'projects.budget')
-    const subReport = await subquery;
-    res.json(transformBudgetReportForFrontend(subReport));
+    const report = await query;
+    res.json(transformBudgetReportForFrontend(report));
 }
