@@ -3,6 +3,9 @@ import {database} from "../../lib/database";
 import {Request, Response} from "express";
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
+import * as timeRecordSerializer from "../serializers/timeRecord";
+import * as moment from "moment";
+import {Moment} from "moment";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.timeRecords).select();
@@ -18,12 +21,26 @@ export const index = async (req: Request, res: Response) => {
 
 export const show = async (req: Request, res: Response) => {
   try {
-    const timeRecord: TimeRecord = await database(TableNames.timeRecords).select().where({id: req.params.id}).first();
-    if (timeRecord) {
-      res.status(200).json(timeRecord);
+    let date: Moment;
+    let fromDate: string;
+    let toDate: string;
+    if (req.query.date) {
+      date = moment(req.query.date);
+      fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
+      toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
     } else {
-      res.sendStatus(404);
+      date = moment();
+      fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
+      toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
     }
+    const query: QueryBuilder = database(TableNames.timeRecords)
+      .where('date', '>=', fromDate)
+      .where('date', '<=', toDate)
+      .where({userId: res.locals.user.id}).select();
+    const timeRecords: Array<TimeRecord> = await query;
+    res.status(200).json(timeRecords);
+
+
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -32,15 +49,7 @@ export const show = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const timeRecord: TimeRecord = {
-      userId: req.body.userId,
-      spentTime: req.body.spentTime,
-      milestoneId: req.body.milestoneId,
-      description: req.body.description,
-      actionLabelId: req.body.actionLabelId,
-      overtime: req.body.overtime,
-      date: req.body.date
-    }
+    const timeRecord: TimeRecord = timeRecordSerializer.create(req);
     await database(TableNames.timeRecords).insert(timeRecord);
     res.sendStatus(201);
   } catch (error) {
@@ -53,15 +62,7 @@ export const update = async (req: Request, res: Response) => {
   try {
     const timeRecord: TimeRecord = await database(TableNames.timeRecords).select().where({id: req.params.id}).first();
     if (timeRecord) {
-      const newTimeRecord: TimeRecord = {
-        userId: req.body.userId,
-        spentTime: req.body.spentTime,
-        milestoneId: req.body.milestoneId,
-        description: req.body.description,
-        actionLabelId: req.body.actionLabelId,
-        overtime: req.body.overtime,
-        date: req.body.date
-      }
+      const newTimeRecord: TimeRecord = timeRecordSerializer.create(req);
       await database(TableNames.timeRecords).update(newTimeRecord).where({id: req.params.id});
       res.sendStatus(204);
     } else {

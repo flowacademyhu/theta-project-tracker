@@ -1254,6 +1254,38 @@
           }
         }
       }
+    },
+    "/timeRecord/{id}": {
+      "get": {
+        "summary": "Test",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teszt"
+          }
+        }
+      }
     }
   },
   "definitions": {
