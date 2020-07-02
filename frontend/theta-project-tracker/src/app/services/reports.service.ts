@@ -21,6 +21,6 @@ export class ReportsService {
     return this.http.get(this.apiUrl + 'report/user/cost');
   }
   getReportsBudget() {
-    return this.http.get(this.apiUrl + 'report/budget');
+    return this.http.get(this.apiUrl + 'report/project/budget');
   }
 }

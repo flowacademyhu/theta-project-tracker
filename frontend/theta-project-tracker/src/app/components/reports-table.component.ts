@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { ReportsService } from '../services/reports.service';
 
 @Component({
   selector: 'app-reports-table',
   template: `
   <div class="wrapper">
+items{{items | json}}
   <table mat-table [dataSource]="items|keyvalue" class="mat-elevation-z8" matSort>
-  <ng-container matColumnDef="projects">
+  <ng-container matColumnDef="firstColumn">
     <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
     <td mat-cell *matCellDef="let element"> {{element.key}} </td>
   </ng-container>
@@ -31,20 +32,33 @@ import { ReportsService } from '../services/reports.service';
   `]
 })
 
-export class ReportsTableComponent implements OnInit {
+export class ReportsTableComponent implements OnInit, OnChanges {
   displayedColumns = [];
-  firstColumnName = 'projects';
+  firstColumnName = 'firstColumn';
   lastColumnName = 'total';
-  items;
+  //@Input() items;
+  items= {
+    "Project One": {
+        "User Test": 2,
+        "Admin Test": 3,
+        "total": 5
+    },
+    "Project Two": {
+        "Ian Holm": 2,
+        "total": 2
+    }
+}
   constructor(private reportsService: ReportsService) { }
 
-  ngOnInit() {
-    this.reportsService.getReportsByProjectHour().subscribe(users => {
-      this.items = users;
-      this.getColumnNames(this.items);
-    });
+  ngOnInit() { /*this.reportsService.getReportsByProjectHour().subscribe(values => {
+    this.items = values;*/
+    console.log(this.items);
+    this.getColumnNames(this.items);
+  //}
+   }
+  ngOnChanges() {
+    console.log(this.items);
   }
-
   getColumnNames = (source: object) => {
     let columnNames = [];
     Object.values(source).forEach(x => {
