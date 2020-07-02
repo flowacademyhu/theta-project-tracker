@@ -85,8 +85,8 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
 
     onAddNewActionLabel() {
       const dialogRef = this.dialog.open(NewActionLabelModalComponent, {
-        width: '60%',
-        height: '80%'
+        width: '35%',
+        height: '40%'
       });
       this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
         this.updateDataSource();
@@ -94,8 +94,8 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
     }
     onOpenEditModal(actionlabel) {
       const dialogRef = this.dialog.open(NewActionLabelModalComponent, {
-        width: '60%',
-        height: '80%',
+        width: '35%',
+        height: '40%',
         data: { actionLabelToEdit: actionlabel }
       });
       this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
@@ -107,7 +107,7 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
       const dialogRef = this.dialog.open(DeleteModalComponent, {
         data: { name: nameToPass },
         width: '25%',
-        height: '25%'
+        height: '15%'
       });
       this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
         if (result) {

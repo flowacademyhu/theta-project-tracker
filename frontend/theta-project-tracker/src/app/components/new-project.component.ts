@@ -40,8 +40,20 @@ import { Subscription } from 'rxjs';
   <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">{{"save"| translate}} </button>
 </div>
 `,
-  styles: [`
-`]
+styles: [
+  `
+  .actions {
+    margin-top: 60px;
+  }
+  .full-width {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  mat-icon:hover {
+    cursor: pointer;
+  }
+  `]
 })
 export class NewProjectComponent implements OnInit, OnDestroy {
 
