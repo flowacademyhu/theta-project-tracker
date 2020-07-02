@@ -64,7 +64,7 @@
               }
             }
           },
-          "404":{
+          "404": {
             "description": "Email or password is incorrect"
           }
         }
@@ -616,6 +616,7 @@
       "delete": {
         "summary": "Delete project by id",
         "tags": [
+          "user",
           "admin"
         ],
         "parameters": [
@@ -645,6 +646,7 @@
       "get": {
         "summary": "Get all users on a specific project",
         "tags": [
+          "user",
           "admin"
         ],
         "parameters": [
@@ -743,6 +745,49 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/project/{projectId}/milestone": {
+      "get": {
+        "summary": "Get milestones on a project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Milestones",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/MilestoneResponse"
+              }
+            }
           }
         }
       }
@@ -950,7 +995,7 @@
       }
     },
     "/actionLabel": {
-      "post":{
+      "post": {
         "summary": "Create new actionLabel",
         "tags": [
           "admin"
