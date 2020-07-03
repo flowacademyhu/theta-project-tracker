@@ -64,7 +64,7 @@
               }
             }
           },
-          "404":{
+          "404": {
             "description": "Email or password is incorrect"
           }
         }
@@ -240,7 +240,7 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#definitions/User"
+              "$ref": "#definitions/UserUpdate"
             }
           }
         ],
@@ -616,6 +616,7 @@
       "delete": {
         "summary": "Delete project by id",
         "tags": [
+          "user",
           "admin"
         ],
         "parameters": [
@@ -645,6 +646,7 @@
       "get": {
         "summary": "Get all users on a specific project",
         "tags": [
+          "user",
           "admin"
         ],
         "parameters": [
@@ -743,6 +745,92 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/project/{projectId}/milestone": {
+      "get": {
+        "summary": "Get milestones on a project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Milestones",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/MilestoneResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/{projectId}/actionLabel": {
+      "get": {
+        "summary": "Get actionLabels on specific project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ActionLabels on specific project",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ActionLabelResponse"
+              }
+            }
           }
         }
       }
@@ -907,7 +995,7 @@
       }
     },
     "/actionLabel": {
-      "post":{
+      "post": {
         "summary": "Create new actionLabel",
         "tags": [
           "admin"
@@ -1061,6 +1149,134 @@
           }
         }
       }
+    },
+    "/overtimeMultiplier": {
+      "get": {
+        "summary": "Get all modified dates and their multipliers",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All modified dates",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/OvertimeMultiplierResponse"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Create custom date; if exists update",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/OvertimeMultiplierCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete custom date by date",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/OvertimeMultiplierCreate"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Custom date with given date does not exist"
+          }
+        }
+      }
+    },
+    "/calendar": {
+      "get": {
+        "summary": "Get days and multipliers for a month",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dates and multipliers of the queried month",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/CalendarResponse"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1082,6 +1298,30 @@
               "type": "string"
             },
             "password": {
+              "type": "string"
+            },
+            "costToCompanyPerHour": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "UserUpdate": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "email": {
               "type": "string"
             },
             "costToCompanyPerHour": {
@@ -1364,6 +1604,9 @@
     "ActionLabelCreate": {
       "type": "object",
       "properties": {
+        "projectId": {
+          "type": "number"
+        },
         "name": {
           "type": "string"
         }
@@ -1375,6 +1618,9 @@
         "id": {
           "type": "number"
         },
+        "projectId": {
+          "type": "number"
+        },
         "name": {
           "type": "string"
         },
@@ -1383,6 +1629,49 @@
         },
         "updatedAt": {
           "type": "string"
+        }
+      }
+    },
+    "OvertimeMultiplierCreate": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "multiplier"
+      ]
+    },
+    "OvertimeMultiplierResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "date": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
+        }
+      }
+    },
+    "CalendarResponse": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "day": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
         }
       }
     }

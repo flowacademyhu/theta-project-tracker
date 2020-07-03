@@ -51,9 +51,10 @@ import { Client } from '../models/client.model';
     .table-container {
       margin: auto;
       max-width: 70%;
-      height: 400px;
+      min-height: auto;
       overflow: auto;
-      margin-top: 200px
+      margin-top: 100px;
+      margin-bottom: 100px;
   }
     mat-icon:hover {
       cursor: pointer;
@@ -82,8 +83,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   onAddNewProject() {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
-      width: '60%',
-      height: '80%'
+      width: '35%',
+      height: '60%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource();
@@ -95,7 +96,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
-      height: '25%'
+      height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -109,8 +110,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
-      width: '60%',
-      height: '80%',
+      width: '35%',
+      height: '60%',
       data: { projectToEdit: project }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {

@@ -46,7 +46,7 @@ export const update = async (req: Request, res: Response) => {
     try {
       if (bcrypt.compareSync(req.body.password, res.locals.user.password)) {
         await database(TableNames.users).update(newUser).where({id: res.locals.user.id});
-        res.sendStatus(200)
+        res.sendStatus(204)
       } else {
         res.sendStatus(400);
       }
