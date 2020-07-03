@@ -16,30 +16,17 @@ export const index = async (req: Request, res: Response) => {
   res.status(200).json(overtimeMultipliers);
 };
 
-export const show = async (req: Request, res: Response) => {
+export const createOrUpdate = async (req: Request, res: Response) => {
   try {
-    const multiplier: OvertimeMultiplier = await database(TableNames.overtimeMultipliers).select().where({id: req.params.id}).first();
-    if (multiplier) {
-      res.status(200).json(multiplier);
-    } else {
-      res.sendStatus(404);
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-};
-
-export const create = async (req: Request, res: Response) => {
-  try {
+    const overtimeMultiplier: OvertimeMultiplier = {
+      date: req.body.date,
+      multiplier: req.body.multiplier
+    };
     const duplicate = await database(TableNames.overtimeMultipliers).select().where({date: req.body.date}).first();
     if (duplicate) {
-      res.sendStatus(400);
+      await database(TableNames.overtimeMultipliers).update(overtimeMultiplier).where({date: req.body.date});
+      res.sendStatus(204);
     } else {
-      const overtimeMultiplier: OvertimeMultiplier = {
-        date: req.body.date,
-        multiplier: req.body.multiplier
-      };
       await database(TableNames.overtimeMultipliers).insert(overtimeMultiplier);
       res.sendStatus(201);
     }
@@ -49,31 +36,12 @@ export const create = async (req: Request, res: Response) => {
   }
 };
 
-export const update = async (req: Request, res: Response) => {
-  try {
-    const overtimeMultiplier: OvertimeMultiplier = await database(TableNames.overtimeMultipliers).select()
-      .where({id: req.params.id}).first();
-    if (overtimeMultiplier) {
-      const newOvertimeMultiplier: OvertimeMultiplier = {
-        date: req.body.date,
-        multiplier: req.body.multiplier
-      }
-      await database(TableNames.overtimeMultipliers).update(newOvertimeMultiplier).where({id: req.params.id});
-      res.sendStatus(204);
-    } else {
-      res.sendStatus(404);
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-};
-
 export const destroy = async (req: Request, res: Response) => {
   try {
-    const overtimeMultiplier: OvertimeMultiplier = await database(TableNames.overtimeMultipliers).select().where({id: req.params.id}).first();
+    const overtimeMultiplier: OvertimeMultiplier = await database(TableNames.overtimeMultipliers).select().where({date: req.body.date}).first();
+    console.log(req.body.date);
     if (overtimeMultiplier) {
-      await database(TableNames.overtimeMultipliers).delete().where({id: req.params.id});
+      await database(TableNames.overtimeMultipliers).delete().where({date: req.body.date});
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

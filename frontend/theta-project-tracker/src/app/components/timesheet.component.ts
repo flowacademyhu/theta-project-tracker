@@ -76,14 +76,14 @@ export class TimesheetComponent implements OnInit {
    } else {
      for(let i = 0; i < this.projectsArrived.length; i++) {
        if (this.projectsArrived[i].name === event.name) {
-         this.projectsArrived[i] = event
+         this.projectsArrived[i] = event;
          this.getWeeklyTotal()
          return this.projectsArrived
        }
      }
-     this.projectsArrived.push(event)
+     this.projectsArrived.push(event);
    }
-    this.getWeeklyTotal()
+   this.getWeeklyTotal();
   }
   getWeeklyTotal() {
     this.getMondayTotals();
@@ -98,8 +98,8 @@ export class TimesheetComponent implements OnInit {
     let total = 0;
     let over = 0;
     for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.monday
-      over += this.projectsArrived[i].overTime.monday
+      total += this.projectsArrived[i].normalHours.monday;
+      over += this.projectsArrived[i].overTime.monday;
     }
     return this.days[0] = {name: 'monday', total: total, overTime: over};
   }
@@ -107,8 +107,8 @@ export class TimesheetComponent implements OnInit {
     let total = 0;
     let over = 0;
     for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.tuesday
-      over += this.projectsArrived[i].overTime.tuesday
+      total += this.projectsArrived[i].normalHours.tuesday;
+      over += this.projectsArrived[i].overTime.tuesday;
     }
     return this.days[1] = {name: 'tuesday', total: total, overTime: over};
   }
@@ -117,7 +117,7 @@ export class TimesheetComponent implements OnInit {
     let over = 0;
     for (let i = 0; i < this.projectsArrived.length; i++) {
       total += this.projectsArrived[i].normalHours.wednesday;
-      over += this.projectsArrived[i].overTime.wednesday
+      over += this.projectsArrived[i].overTime.wednesday;
     }
     return this.days[2] = {name: 'wednesday', total: total, overTime: over};
   }

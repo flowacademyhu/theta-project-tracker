@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { User, UserCreate, UserCreateProjects } from '../models/user.model';
+import { User, UserCreate, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { Project } from '../models/project.model';
 import { ProjectService } from '../services/project.service';
@@ -66,10 +66,13 @@ import { ProjectService } from '../services/project.service';
       <tr>
         <td>
           <mat-form-field>
+
             <mat-select formControlName="projectId">
               <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
             </mat-select>
+
           </mat-form-field>
+
         </td>
         <td>
           <mat-form-field>
@@ -125,26 +128,23 @@ export class NewUserComponent implements OnInit {
     costToClient: new FormControl(null, Validators.required),
   });
   availableProjects: Project[] = [];
-  assignedProjects: UserCreateProjects[] = [];
+  assignedProjects: ProjectAssigned[] = [];
   createdUser: UserCreate;
-  @Input() userToEdit: User;
   constructor(private userService: UserService, private projectService: ProjectService) { }
   ngOnInit(): void {
-    if (this.userToEdit) {
-      console.log(this.userToEdit)
-      this.newUser.get('password').disable()
-      this.assignedProjects = this.userToEdit.projects;
-      this.newUser.patchValue(this.userToEdit);
-    }
     this.projectService.fetchProjects().subscribe(projects => {
       this.availableProjects = projects;
     })
   }
   onAddNewUser() {
     this.assignProjectsToUser();
-    this.createdUser = this.newUser.getRawValue();
-    /* this.createdUser.projects = this.assignedProjects */
-    console.log(this.createdUser)
+    this.assignedProjects.map(p => delete p.projectName)
+    this.newUser.removeControl('projectId');
+    this.newUser.removeControl('costToClient')
+    this.createdUser = {
+      user: this.newUser.getRawValue(),
+      projects: this.assignedProjects
+    }
     this.userService.addUser(this.createdUser).subscribe();
   }
   onDeleteProject(project) {
@@ -154,10 +154,6 @@ export class NewUserComponent implements OnInit {
     this.assignProjectsToUser();
     this.newUser.get('projectId').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
-  }
-  editUser() {
-    this.userToEdit = this.newUser.getRawValue();
-    this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe();
   }
   assignProjectsToUser() {
     console.log(this.newUser.getRawValue());
@@ -174,6 +170,12 @@ export class NewUserComponent implements OnInit {
       console.log('cica')
       console.log(this.newUser.getRawValue());
       this.onAddNewUser();
+      if (this.newUser.get('projectId').value) {
+      this.assignedProjects.push({
+        projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
+        projectId: this.newUser.get('projectId').value,
+        costToClientPerHour: this.newUser.get('costToClient').value
+      });
     }
   }
 }

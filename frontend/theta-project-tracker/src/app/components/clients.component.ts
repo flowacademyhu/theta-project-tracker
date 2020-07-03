@@ -40,9 +40,10 @@ import { Subscription } from 'rxjs';
   .table-container {
     margin: auto;
     max-width: 70%;
-    height: 400px;
+    min-height: auto;
     overflow: auto;
-    margin-top: 200px
+    margin-top: 100px;
+    margin-bottom: 100px;
   }
   mat-icon:hover {
     cursor: pointer;
@@ -64,8 +65,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   }
   onOpenEditModal(client) {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
-      width: '50%',
-      height: '50%',
+      width: '35%',
+      height: '40%',
       data: { clientToEdit: client }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
@@ -79,7 +80,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
-      height: '25%'
+      height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -91,8 +92,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   }
   onAddNewClient() {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
-      width: '50%',
-      height: '50%'
+      width: '35%',
+      height: '40%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
