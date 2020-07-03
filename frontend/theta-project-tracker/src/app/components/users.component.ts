@@ -77,7 +77,6 @@ import { Router, ActivatedRoute } from '@angular/router';
       flex: 0 0 15%;
     }
  
-
     `]
 })
 export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -110,7 +109,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onOpenDeleteModal(user) {
-    const nameToPass = this.dataSource.data.find(u => u.id === user.id).firstName + ' ' +
+    const nameToPass = this.users.find(u => u.id === user.id).firstName + ' ' +
       this.users.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
