@@ -17,8 +17,11 @@ import { FormControl } from '@angular/forms';
   `,
   styles: [`
   .reports {
-    width: 80%;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+  }
+  button {
+    margin: 15px;
   }
   `],
 })

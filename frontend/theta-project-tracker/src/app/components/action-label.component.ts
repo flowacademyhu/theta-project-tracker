@@ -13,28 +13,21 @@ import { DeleteModalComponent } from '../modals/delete-modal.component';
   template: `
   <mat-card class="table-container">
   <div>
-  <button (click)="onAddNewActionLabel()" mat-raised-button>+ Add New Action Label</button>
+  <button (click)="onAddNewActionLabel()" mat-raised-button color="primary">{{ 'add-actionLabel' | translate }}</button>
       <mat-table class="mat-elevation-z8" [dataSource]="actionLabelArrays">
           <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef>{{ 'name' | translate }}</mat-header-cell>
               <mat-cell *matCellDef="let actionlabel">{{ actionlabel.name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="project">
           <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
           <mat-cell *matCellDef="let actionlabel">{{ actionlabel.projectName }}</mat-cell>
-      </ng-container>
-          <ng-container matColumnDef="actions" class="actions">
-              <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
-              <mat-cell *matCellDef="let actionlabel">
-              <mat-icon>edit</mat-icon>
-                  <mat-icon >clear</mat-icon>
-              </mat-cell>
           </ng-container>
           <ng-container matColumnDef="action" class="action">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>{{'actions' | translate }}</mat-header-cell>
           <mat-cell *matCellDef="let actionlabel">
-              <mat-icon (click)="onOpenEditModal(actionlabel)">edit</mat-icon>
-              <mat-icon (click)="onOpenDeleteModal(actionlabel)">clear</mat-icon>
+             <button mat-mini-fab><mat-icon (click)="onOpenEditModal(actionlabel)">edit</mat-icon></button>
+              <button mat-mini-fab color="primary"><mat-icon (click)="onOpenDeleteModal(actionlabel)">clear</mat-icon></button>
           </mat-cell>
       </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -70,56 +63,54 @@ export class ActionLabelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.actionLabelService.fetchActionLabels().subscribe((actionlabel) => {
       this.actionLabelArrays = actionlabel;
-      console.log(this.actionLabelArrays)
     });
-      this.projectService.fetchProjects().subscribe(projects => {
-        this.projects = projects;
-        console.log(this.projects);
-        this.actionLabelArrays.map(a => a.projectName = this.projects.find(p => p.id === a.projectId).name)
-      }) 
+    this.projectService.fetchProjects().subscribe(projects => {
+      this.projects = projects;
+      this.actionLabelArrays.map(a => a.projectName = this.projects.find(p => p.id === a.projectId).name)
+    })
   }
 
-    ngOnDestroy(): void {
-      this.subscriptions$.forEach(sub => sub.unsubscribe());
-    }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  }
 
-    onAddNewActionLabel() {
-      const dialogRef = this.dialog.open(NewActionLabelModalComponent, {
-        width: '35%',
-        height: '40%'
-      });
-      this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
-        this.updateDataSource();
-      }));
-    }
-    onOpenEditModal(actionlabel) {
-      const dialogRef = this.dialog.open(NewActionLabelModalComponent, {
-        width: '35%',
-        height: '40%',
-        data: { actionLabelToEdit: actionlabel }
-      });
-      this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
-        this.updateDataSource();
-      }));
-    }
-    onOpenDeleteModal(actionlabel) {
-      const nameToPass = this.actionLabelArrays.find(a => a.projectId === actionlabel.projectId).name;
-      const dialogRef = this.dialog.open(DeleteModalComponent, {
-        data: { name: nameToPass },
-        width: '25%',
-        height: '15%'
-      });
-      this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.actionLabelService.deleteActionLabel(actionlabel.id).subscribe(() => {
-            this.updateDataSource();
-          });
-        }
-      }));
-    }
+  onAddNewActionLabel() {
+    const dialogRef = this.dialog.open(NewActionLabelModalComponent, {
+      width: '35%',
+      height: '40%'
+    });
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+      this.updateDataSource();
+    }));
+  }
+  onOpenEditModal(actionlabel) {
+    const dialogRef = this.dialog.open(NewActionLabelModalComponent, {
+      width: '35%',
+      height: '40%',
+      data: { actionLabelToEdit: actionlabel }
+    });
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+      this.updateDataSource();
+    }));
+  }
+  onOpenDeleteModal(actionlabel) {
+    const nameToPass = this.actionLabelArrays.find(a => a.projectId === actionlabel.projectId).name;
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
+      data: { name: nameToPass },
+      width: '25%',
+      height: '15%'
+    });
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.actionLabelService.deleteActionLabel(actionlabel.id).subscribe(() => {
+          this.updateDataSource();
+        });
+      }
+    }));
+  }
 
-    updateDataSource() {
-    this.actionLabelService.fetchActionLabels().subscribe(actionlabels  => {
+  updateDataSource() {
+    this.actionLabelService.fetchActionLabels().subscribe(actionlabels => {
       this.actionLabelArrays = actionlabels;
       this.actionLabelArrays.map(a => a.projectName = this.projects.find(p => p.id === a.projectId).name)
     })

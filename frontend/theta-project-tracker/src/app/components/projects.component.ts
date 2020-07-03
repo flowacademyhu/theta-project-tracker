@@ -13,7 +13,7 @@ import { Client } from '../models/client.model';
   template: `
   <mat-card class="table-container">
     <div>
-     <button (click)="onAddNewProject()" mat-raised-button>{{'add-project' | translate}}</button>
+     <button (click)="onAddNewProject()" mat-raised-button color="primary">{{'add-project' | translate}}</button>
      <mat-table class="mat-elevation-z8" [dataSource]="projects">
     <ng-container matColumnDef="actions" class="actions">
       <ng-container matColumnDef="name">
@@ -84,7 +84,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   onAddNewProject() {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '35%',
-      height: '60%'
+      height: '55%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource();
@@ -111,7 +111,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '35%',
-      height: '60%',
+      height: '55%',
       data: { projectToEdit: project }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {

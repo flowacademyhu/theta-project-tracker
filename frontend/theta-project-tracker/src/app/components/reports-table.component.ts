@@ -22,7 +22,7 @@ import { ReportsService } from '../services/reports.service';
   styles: [`
   .wrapper {
     margin: auto;
-    width: 70%;
+    max-width: 50%;
     margin-top: 200px
   }
   table {
