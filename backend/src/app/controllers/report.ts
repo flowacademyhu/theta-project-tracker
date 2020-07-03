@@ -2,7 +2,7 @@ import { QueryBuilder } from "knex";
 import { database } from "../../lib/database";
 import { Request, Response } from "express";
 import { TableNames } from "../../lib/enums";
-import { transformReportForFrontend, transformBudgetReportForFrontend } from "../../lib/report";
+import * as reportSerializer from "../serializers/report"
 
 export const generateReportProjectByHours = async (req: Request, res: Response) => {
     let query: QueryBuilder = database(TableNames.timeRecords)
@@ -14,7 +14,7 @@ export const generateReportProjectByHours = async (req: Request, res: Response) 
         'projects.id as projectId', 'users.id as userId')
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
     const report = await query;
-    res.json(transformReportForFrontend(report, 'userName', 'projectName', 'timeSpent'));
+    res.json(reportSerializer.getReportProjectByHours(report));  
 }
 
 export const generateReportProjectByCost = async (req: Request, res: Response) => {
@@ -26,7 +26,7 @@ export const generateReportProjectByCost = async (req: Request, res: Response) =
         database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as cost'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
     const report = await query;
-    res.json(transformReportForFrontend(report, 'userName', 'projectName', 'cost'));
+    res.json(reportSerializer.getReportProjectByCost(report));
 }
 
 export const generateReportUserByHours = async (req: Request, res: Response) => {
@@ -38,7 +38,7 @@ export const generateReportUserByHours = async (req: Request, res: Response) => 
         'projects.id as projectId', 'users.id as userId',database.raw('sum(timeRecords.spentTime + timeRecords.overTime) as timeSpent'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName');
     const report = await query;
-    res.json(transformReportForFrontend(report, 'projectName', 'userName', 'timeSpent'));
+    res.json(reportSerializer.getReportUserByHours(report));
 }
 
 export const generateReportUserByCost = async (req: Request, res: Response) => {
@@ -50,7 +50,7 @@ export const generateReportUserByCost = async (req: Request, res: Response) => {
         'projects.id as projectId', 'users.id as userId', database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as cost'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
     const report = await query;
-    res.json(transformReportForFrontend(report, 'projectName', 'userName', 'cost'));
+    res.json(reportSerializer.getReportUserByCost(report));
 }
 
 export const generateReportBudget = async (req: Request, res: Response) => {
@@ -64,5 +64,5 @@ export const generateReportBudget = async (req: Request, res: Response) => {
     .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime))) as "overUnder"'))
     .groupBy('projects.name', 'projects.budget')
     const report = await query;
-    res.json(transformBudgetReportForFrontend(report));
+    res.json(reportSerializer.getBudgetReport(report));
 }

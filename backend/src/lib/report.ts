@@ -13,7 +13,7 @@ export const transformReportForFrontend = (report: Array<object>, columnName: st
     return finalObject;
 }
 
-const getUniqueRowNames = (report, rowName): Array<any> => {
+export const getUniqueRowNames = (report, rowName): Array<any> => {
     let uniqueRowNames = new Set();
     report.forEach(individualResult => {
         uniqueRowNames.add(individualResult[rowName])
@@ -29,20 +29,4 @@ export const calculateAndAddTotal = (finalObject: object) => {
         })
         finalObject[row]['total'] = sum;
     });
-}
-
-export const transformBudgetReportForFrontend = (report: Array<Object>) => {
-    let rowNames = getUniqueRowNames(report, 'projectName');
-    let finalObject = {};
-    rowNames.forEach(row => finalObject[row] = (new Object()));
-    Object.keys(finalObject).forEach(key => {
-        report.forEach(individualResult => {
-            if (individualResult['projectName'] === key) {
-                finalObject[key]['actualCosts'] = individualResult['actualCosts'];
-                finalObject[key]['budgetCosts'] = individualResult['budgetCosts'];
-                finalObject[key]['overUnder'] = individualResult['overUnder'];
-            }
-        });
-    })
-    return finalObject;
 }
