@@ -101,7 +101,7 @@ export function appInit(provider: AuthService) {
     NewMilestoneComponent,
     NewMilestoneModalComponent,
     ReportsTableComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
   ],
   imports: [
     MatSidenavModule,
