@@ -68,7 +68,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   displayedColumns = ['name', 'project', 'description', 'action'];
 
   constructor(private milestoneService: MilestoneService, private dialog: MatDialog,
-    private projectService: ProjectService) { }
+              private projectService: ProjectService) { }
 
   ngOnInit(): void {
     console.log('macskaaaa')

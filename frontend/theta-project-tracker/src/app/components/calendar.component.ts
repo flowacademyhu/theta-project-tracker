@@ -1,4 +1,4 @@
-import { EventUtilService, createEventId } from './../services/event-util.service';
+import { EventUtilService } from './../services/event-util.service';
 import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild } from '@angular/core';
 import { map } from 'rxjs/operators';
 
@@ -14,13 +14,16 @@ import {
   EventInput,
   Calendar,
   CalendarOptions,
-  FullCalendarComponent
+  FullCalendarComponent,
+  CalendarDataManager,
+  DayCellContentArg
  } from '@fullcalendar/angular';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { title, exit } from 'process';
 import { isNull } from 'util';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 
@@ -31,32 +34,24 @@ import { Observable } from 'rxjs';
   `,
   styles: [``]
 })
-export class CalendarComponent implements OnInit, AfterContentChecked{
+export class CalendarComponent implements OnInit{
+
+
+  constructor(
+    private eventUtilService: EventUtilService,
+    ) {}
+;
 
 
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
 
   monthIterator = 7;
   yearIterator = 2020;
-
-
-  constructor(
-    private eventUtilService: EventUtilService,
-    private http: HttpClient
-    ) {}
-
   public currentEvents: EventInput[];
+
   calendarOptions: CalendarOptions = {
   initialView: 'dayGridMonth',
   headerToolbar: { left: 'today', center: 'title', right: 'prev next' },
-  customButtons: {
-    prev: {
-      text: 'Previous',
-      click() {
-      this.monthIterator -= 1;
-      }
-    }
-  },
   weekends: true,
   editable: true,
   selectable: true,
@@ -66,16 +61,17 @@ export class CalendarComponent implements OnInit, AfterContentChecked{
   eventClick: this.handleEventClick.bind(this),
   defaultAllDay: true,
   firstDay: 1,
+
   };
 
   getMethod() {
     this.eventUtilService.getEvents(this.yearIterator, this.monthIterator).pipe(map(data => {
       const array: EventInput[] = [];
-      for ( let i = 0; i < data.length; i++) {
+      for ( const i of data) {
         let day: EventInput;
         day = {
-          title: data[i].multiplier.toString(),
-          date: data[i].date
+          title: i.multiplier.toString(),
+          date: i.date
         }
         array.push(day);
       }
@@ -89,38 +85,48 @@ export class CalendarComponent implements OnInit, AfterContentChecked{
   }
 
   ngOnInit(): void {
-      this.getMethod()
+      this.getMethod();
   }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
+  handleDateSelect(selectInfo: DayCellContentArg) {
     const title: any = prompt('Please enter the overtime value');
     const calendarApi = selectInfo.view.calendar;
-    calendarApi.unselect();
-    console.log(selectInfo);
+    console.log(selectInfo, 'KUTYA', title);
+    const calendarData = {
+      multiplier: parseInt(title),
+      date: selectInfo.startStr
+    };
     if (!isNaN(title)) {
-      const calendarData = {
-        multiplier: parseInt(title),
-        date: selectInfo.startStr,
-      }
       this.eventUtilService.createEvent(calendarData).subscribe( event => {
         this.calendarOptions.events = event;
+        this.calendarOptions.events.editable = true;
         this.getMethod();
       });
-    calendarApi.addEvent({});
+      calendarApi.addEvent(calendarData);
     }
     else {
       alert('Wrong value');
     }
-  };
+    return calendarData;
+  }
+
   handleEventClick(clickInfo: EventClickArg) {
+    console.log(clickInfo.event);
+    const calendarData = {
+      multiplier: parseInt(title),
+      date: clickInfo.event.startStr,
+    };
+    console.log(calendarData + 'CICAAAA')
     if (confirm(`Are you sure you want to delete the overtime? '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
+      this.eventUtilService.deleteEvent(calendarData).subscribe( data => {
+        this.getMethod();
+        clickInfo.event.remove();
+      });
     }
+    console.log(calendarData + 'MACSKAAAAAA');
   }
   handleEvents(events: EventApi[]) {
-
+    this.currentEvents = events;
   }
-
 }
-
 

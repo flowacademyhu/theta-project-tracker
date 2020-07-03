@@ -156,26 +156,13 @@ export class NewUserComponent implements OnInit {
     this.newUser.get('costToClient').patchValue(null);
   }
   assignProjectsToUser() {
-    console.log(this.newUser.getRawValue());
+    if (this.newUser.get('projectId').value) {
     this.assignedProjects.push({
       projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
       projectId: this.newUser.get('projectId').value,
       costToClientPerHour: this.newUser.get('costToClient').value
     });
   }
-  onCloseDialog() {
-    if (this.userToEdit) {
-      this.editUser();
-    } else {
-      console.log('cica')
-      console.log(this.newUser.getRawValue());
-      this.onAddNewUser();
-      if (this.newUser.get('projectId').value) {
-      this.assignedProjects.push({
-        projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
-        projectId: this.newUser.get('projectId').value,
-        costToClientPerHour: this.newUser.get('costToClient').value
-      });
-    }
   }
+
 }

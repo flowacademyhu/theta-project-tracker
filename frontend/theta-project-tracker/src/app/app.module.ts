@@ -7,8 +7,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { SidenavContainerComponent } from './components/sidenav-container.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-// OUR COMPONENTS + STUFF
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,7 +27,6 @@ import { UsersComponent } from '../app/components/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
-
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,12 +34,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './components/calendar.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
-
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
 import { ClientManagementComponent } from '../app/components/client-management-component';
 import { ReportsTableComponent } from '../app/components/reports-table.component'
-
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -109,9 +104,11 @@ export function appInit(provider: AuthService) {
     ActionLabelComponent,
     NewActionLabelModalComponent,
     NewActionLabelComponent,
-    EditUserComponent
+    EditUserComponent,
+    CalendarComponent
   ],
   imports: [
+
     MatSidenavModule,
     MatListModule,
     BrowserModule,
@@ -150,6 +147,7 @@ export function appInit(provider: AuthService) {
     MatListModule,
     MatInputModule,
     MatButtonModule,
+    FullCalendarModule
   ],
   bootstrap: [AppComponent],
   providers: [  {

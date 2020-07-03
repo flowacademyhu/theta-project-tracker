@@ -133,7 +133,7 @@ export class EditUserComponent implements OnInit {
   @Input() userToEdit: User;
   id: number;
   constructor(private userService: UserService, private projectService: ProjectService,
-    private projectUserService: ProjectUsersService, private router: Router) { }
+              private projectUserService: ProjectUsersService, private router: Router) { }
   ngOnInit(): void {
     this.projectService.fetchProjects().subscribe(projects => {
       this.availableProjects = projects;
