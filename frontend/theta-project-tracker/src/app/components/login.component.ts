@@ -49,6 +49,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   mat-card {
     max-width: 400px;
     margin: 2em auto;
+    margin-top:150px;
     text-align: center;
   }
   mat-form-field {
