@@ -11,7 +11,9 @@ import {router as actionLabelRouter} from './actionLabel';
 import {router as reportRouter} from './report';
 import {router as userProfileRouter} from './userProfile';
 import {router as overtimeMultiplierRouter} from './overtimeMultiplier';
+import {router as projectMilestoneRouter} from "./projectMilestone";
 import {router as calendarRouter} from "./calendar";
+import {router as projectActionLabelRouter} from "./projectActionLabel";
 
 export const router: Router = Router({mergeParams: true});
 router.use('/login', loginRouter);
@@ -19,6 +21,8 @@ router.use('/user/profile', userProfileRouter)
 router.use('/user/:userId/project', userProjectRouter);
 router.use('/user', userRouter);
 router.use('/client', clientRouter);
+router.use('/project/:projectId/milestone', projectMilestoneRouter);
+router.use('/project/:projectId/actionLabel', projectActionLabelRouter);
 router.use('/project', projectRouter);
 router.use('/milestone', milestoneRouter);
 router.use('/project/user', projectUserRouter);
