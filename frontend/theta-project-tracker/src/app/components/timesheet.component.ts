@@ -178,6 +178,7 @@ export class TimesheetComponent implements OnInit {
     this.record = event;
     const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
     const componentRef = this.entry.createComponent(factory);
+    componentRef.instance.desc = event.description;
     this.projectService.fetchProjects().subscribe(projects => {
       componentRef.instance.project = projects.find(p => p.id === this.record.projectId).name
     })

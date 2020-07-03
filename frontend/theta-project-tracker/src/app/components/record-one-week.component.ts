@@ -15,7 +15,8 @@ import { EventEmitter } from '@angular/core';
       <p>{{ activity }}</p>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="1" [rowspan]="1">
-      <mat-icon>sms</mat-icon>
+   
+      <mat-icon  matTooltip="{{ desc }}">sms</mat-icon>
     </mat-grid-tile>
     <mat-grid-tile class="tile" *ngFor="let day of days" [colspan]="day.cols" [rowspan]="day.rows">
       <form [formGroup]="timeSheet">
@@ -58,6 +59,7 @@ export class RecordOneWeekComponent implements OnInit {
   @Input() project: string;
   @Input() milestone: string;
   @Input() activity: string;
+  @Input() desc: string;
   days = [
     { cols: 3, rows: 1, name: 'monday' },
     { cols: 3, rows: 1, name: 'tuesday' },

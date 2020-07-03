@@ -21,24 +21,24 @@ import { EventEmitter } from '@angular/core';
         <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="recordCreate.get('projectId').value">
       <mat-label>{{'milestone-select' | translate }}</mat-label>
       <mat-select formControlName="milestoneId" (selectionChange)="onMilestoneSelect($event)">
         <mat-option *ngFor="let milestone of milestones" [value]="milestone.id">{{ milestone.name }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="recordCreate.get('milestoneId').value">
       <mat-label>{{'activity-select' | translate }}</mat-label>
       <mat-select formControlName="actionLabelId">
         <mat-option *ngFor="let activity of activities" [value]="activity.id">{{ activity.name }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="recordCreate.get('actionLabelId').value">
       <mat-label>{{'description' | translate }}</mat-label>
-      <textarea matInput type="text" formControlName="desc"></textarea>
+      <textarea matInput type="text" formControlName="description"></textarea>
     </mat-form-field>
     <button mat-raised-button type="button" (click)="onCreateNewRecord()"
-      [disabled]="recordCreate.invalid">{{'add-record' | translate }}</button>
+      *ngIf="recordCreate.get('actionLabelId').value">{{'add-record' | translate }}</button>
   </form>
 </div>
   `,
@@ -61,10 +61,10 @@ export class RecordCreateComponent implements OnInit {
   activities: ActionLabel[] = [];
   @Output() recordEmitter: EventEmitter<RecordCreate> = new EventEmitter<RecordCreate>();
   recordCreate: FormGroup = new FormGroup({
-    projectId: new FormControl(null, Validators.required),
-    milestoneId: new FormControl({ value: '', disabled: true }, Validators.required),
-    actionLabelId: new FormControl({ value: '', disabled: true }, Validators.required),
-    desc: new FormControl({ value: '', disabled: true }),
+    projectId: new FormControl(null),
+    milestoneId: new FormControl({ value: '', disabled: true }),
+    actionLabelId: new FormControl({ value: '', disabled: true }),
+    description: new FormControl({ value: '', disabled: true }),
   })
   constructor(private milestoneService: MilestoneService,
     private authService: AuthService, private actionLabelService:
@@ -90,12 +90,15 @@ export class RecordCreateComponent implements OnInit {
         this.activities = actions.filter(a => a.projectId === this.recordCreate.get('projectId').value);
       })
       this.recordCreate.get('actionLabelId').enable()
-      this.recordCreate.get('desc').enable()
+      this.recordCreate.get('description').enable()
     }
   }
   onCreateNewRecord() {
     this.record = this.recordCreate.getRawValue();
     this.record.userId = this.user.id;
     this.recordEmitter.emit(this.record);
+    this.recordCreate.get('projectId').patchValue(null);
+    this.recordCreate.get('milestoneId').patchValue(null);
+    this.recordCreate.get('actionLabelId').patchValue(null);
   }
 }
