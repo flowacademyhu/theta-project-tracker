@@ -5,6 +5,7 @@ import { ProjectAssigned } from '../models/user.model';
 @Component({
   selector: 'app-timesheet',
   template: `
+  <app-date-picker format='yyyy-MM-dd'></app-date-picker>
   <div>
   <ng-container *ngFor="let project of projects; let i = index">
     <app-record-one-week [project]="project" (projectEmitter)="recordDailyHours($event)"
