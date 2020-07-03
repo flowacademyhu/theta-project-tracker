@@ -58,10 +58,10 @@ export const generateReportBudget = async (req: Request, res: Response) => {
     .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
     .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
     .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
-    .select('projects.name as Project Name')
-    .select(database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as "Actual costs"'))
-    .select('projects.budget as Budget costs')
-    .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime))) as "(Over)/Under"'))
+    .select('projects.name as projectName')
+    .select(database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as "actualCosts"'))
+    .select('projects.budget as budgetCosts')
+    .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime))) as "overUnder"'))
     .groupBy('projects.name', 'projects.budget')
     const report = await query;
     res.json(transformBudgetReportForFrontend(report));
