@@ -14,13 +14,12 @@ export const index = async (req: Request, res: Response) => {
     let toDate: string;
     if (req.query.date) {
       date = moment(req.query.date);
-      fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
-      toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
     } else {
       date = moment();
-      fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
-      toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
     }
+
+    fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
+    toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
     const query: QueryBuilder = database(TableNames.timeRecords)
       .where('date', '>=', fromDate)
       .where('date', '<=', toDate)
@@ -35,10 +34,40 @@ export const index = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
+    let timeRecords: Array<TimeRecord> = [];
+    let date: Moment;
 
-    const timeRecord: TimeRecord = timeRecordSerializer.create(req);
-    await database(TableNames.timeRecords).insert(timeRecord);
-    res.sendStatus(201);
+    if (req.query.date) {
+      date = moment(req.query.date);
+    } else {
+      date = moment();
+    }
+    const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
+    let fromDatePlusOne: string;
+    const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
+    const fromDateArray = fromDate.split('-');
+    const toDateArray = toDate.split('-');
+
+    for (let i = 0; i < 7; i++) {
+     fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
+
+      timeRecords.push(
+        {
+          userId: res.locals.user.id,
+          projectId: req.body.projectId,
+          milestoneId: req.body.milestoneId,
+          actionLabelId: req.body.actionLabelId,
+          description: req.body.description,
+          spentTime: 0,
+          overtime: 0,
+          date: fromDatePlusOne
+        }
+      )
+    }
+
+    //const timeRecord: TimeRecord = timeRecordSerializer.create(req);
+    await database(TableNames.timeRecords).insert(timeRecords);
+    res.status(201).json(timeRecords);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);

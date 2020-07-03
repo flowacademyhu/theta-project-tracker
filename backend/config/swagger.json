@@ -1255,7 +1255,7 @@
         }
       }
     },
-    "/timeRecord/{id}": {
+    "/timeRecord": {
       "get": {
         "summary": "Test",
         "tags": [
@@ -1283,6 +1283,28 @@
         "responses": {
           "200": {
             "description": "Teszt"
+          }
+        }
+      },
+      "post": {
+        "summary": "test",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "asd"
           }
         }
       }
