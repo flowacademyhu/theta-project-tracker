@@ -21,6 +21,7 @@ import { ProjectAssigned } from '../models/user.model';
     </mat-grid-list>
   </div>
 </div>
+<app-record-create></app-record-create>
   `,
   styles: [`
   div{
