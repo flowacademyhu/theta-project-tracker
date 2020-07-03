@@ -9,6 +9,10 @@ import {ProjectUser} from "../models/projectUser";
 
 export const index = async (req: Request, res: Response) => {
   let query: QueryBuilder = database(TableNames.users).select().where({deletedAt: 0});
+  let queryClone: Array<User> = await query.clone();
+  const pageIndex: number = req.query.offset;
+  const pageSize: number = req.query.limit;
+  let count = queryClone.length;
   if (req.query.limit) {
     query = query.limit(req.query.limit);
   }
@@ -16,7 +20,13 @@ export const index = async (req: Request, res: Response) => {
     query = query.offset(req.query.offset);
   }
   const users: Array<User> = await query;
-  res.status(200).json(userSerializer.index(users));
+  const response: object = {
+    pageIndex: pageIndex,
+    pageSize: pageSize,
+    count: count,
+    data: userSerializer.index(users)
+  }
+  res.status(200).json(response);
 }
 
 export const show = async (req: Request, res: Response) => {
