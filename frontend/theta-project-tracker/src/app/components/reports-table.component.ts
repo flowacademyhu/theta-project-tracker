@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { ReportsService } from '../services/reports.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { ReportsService } from '../services/reports.service';
   template: `
   <div class="wrapper">
   <table mat-table [dataSource]="items|keyvalue" class="mat-elevation-z8" matSort>
-  <ng-container matColumnDef="projects">
+  <ng-container matColumnDef="firstColumn">
     <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
     <td mat-cell *matCellDef="let element"> {{element.key}} </td>
   </ng-container>
@@ -31,21 +31,22 @@ import { ReportsService } from '../services/reports.service';
   `]
 })
 
-export class ReportsTableComponent implements OnInit {
+export class ReportsTableComponent implements OnInit, OnChanges {
   displayedColumns = [];
-  firstColumnName = 'projects';
+  firstColumnName = 'firstColumn';
   lastColumnName = 'total';
-  items;
+  @Input() filteredItems;
+  @Input() items;
   constructor(private reportsService: ReportsService) { }
 
   ngOnInit() {
-    this.reportsService.getReportsByProjectHour().subscribe(users => {
-      this.items = users;
-      this.getColumnNames(this.items);
-    });
+    this.getColumnNames(this.items);
   }
-
+  ngOnChanges() {
+    this.getColumnNames(this.items);
+  }
   getColumnNames = (source: object) => {
+    this.displayedColumns = [];
     let columnNames = [];
     Object.values(source).forEach(x => {
       columnNames = columnNames.concat(Object.keys(x));
@@ -55,7 +56,9 @@ export class ReportsTableComponent implements OnInit {
     uniqueColumnNames.forEach(element => {
       this.displayedColumns.push(element);
     });
-    this.displayedColumns.push(this.lastColumnName);
+    if (columnNames.includes(this.lastColumnName)){
+      this.displayedColumns.push(this.lastColumnName);
+  }
     this.displayedColumns.unshift(this.firstColumnName);
   }
 }

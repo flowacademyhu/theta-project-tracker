@@ -51,9 +51,10 @@ import { Project } from '../models/project.model';
   .table-container {
     margin: auto;
     max-width: 70%;
-    height: 400px;
+    min-height: auto;
     overflow: auto;
-    margin-top: 200px
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 mat-icon:hover {
     cursor: pointer;
@@ -87,8 +88,8 @@ export class MilestonesComponent implements OnInit, OnDestroy {
 
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
-      width: '60%',
-      height: '80%'
+      width: '35%',
+      height: '50%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource();
@@ -99,7 +100,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
-      height: '25%'
+      height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -111,8 +112,8 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   }
   onOpenEditModal(milestone) {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
-      width: '60%',
-      height: '80%',
+      width: '35%',
+      height: '50%',
       data: { milestoneToEdit: milestone }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {

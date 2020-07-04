@@ -6,7 +6,5 @@ export const router: Router = Router({mergeParams: true});
 
 router.use(adminAuthorization);
 router.get('/', overtimeMultiplierController.index);
-router.get('/:id', overtimeMultiplierController.show);
-router.post('/', overtimeMultiplierController.create);
-router.put('/:id', overtimeMultiplierController.update);
-router.delete('/:id', overtimeMultiplierController.destroy);
+router.put('/', overtimeMultiplierController.createOrUpdate);
+router.delete('/', overtimeMultiplierController.destroy);
