@@ -1,20 +1,22 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { ProjectAssigned } from 'src/app/models/user.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'app-record-one-week',
   template: `
   <div class="wrapper">
   <mat-grid-list cols="30" rowHeight="100px">
-    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1"><strong>{{ project.projectName }}</strong>
+    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1"><strong>{{project}}</strong>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1">
-      project.milestone
+      <p>{{ milestone }}</p>
+      <p>{{ activity }}</p>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="1" [rowspan]="1">
-      <mat-icon>sms</mat-icon>
+   
+      <mat-icon  matTooltip="{{ desc }}">sms</mat-icon>
     </mat-grid-tile>
     <mat-grid-tile class="tile" *ngFor="let day of days" [colspan]="day.cols" [rowspan]="day.rows">
       <form [formGroup]="timeSheet">
@@ -48,13 +50,16 @@ import { EventEmitter } from '@angular/core';
 }
    .wrapper {
     margin: auto;
-    width: 75%;
+    width: 80%;
     overflow: auto;
   }
   `]
 })
 export class RecordOneWeekComponent implements OnInit {
-  @Input() project: ProjectAssigned;
+  @Input() project: string;
+  @Input() milestone: string;
+  @Input() activity: string;
+  @Input() desc: string;
   days = [
     { cols: 3, rows: 1, name: 'monday' },
     { cols: 3, rows: 1, name: 'tuesday' },
@@ -91,13 +96,13 @@ export class RecordOneWeekComponent implements OnInit {
   }
   getDailyHours() {
     let projectTotal = {
-      name: this.project.projectName,
+      name: this.project,
       normalHours: this.timeSheet.get('normalHours').value,
       overTime: this.timeSheet.get('overTime').value
     }
     this.projectEmitter.emit(projectTotal);
   }
   onDeleteProject() {
-    this.projectToDelete.emit(this.project.projectName);
+    this.projectToDelete.emit(this.project);
   }
 }
