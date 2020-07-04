@@ -6,7 +6,7 @@ export interface TimeRecord {
   actionLabelId: number;
   description: string;
   spentTime: number;
-  overtime: number;
+  overTime: number;
   date: string;
   createdAt?: string;
   updatedAt?: string;
@@ -14,6 +14,7 @@ export interface TimeRecord {
 
 /*
 [
+  ["2020-03-16", "2020-03-17", "2020-03-18"],
   [{project: project, milestone: milestone, action: action}], [{date: date, normalHour: normalHour, overtime: overtime}], [{date: date, normalHour: normalHour, overtime: overtime}],
   [{project: project, milestone: milestone, action: action}], [{date: date, normalHour: normalHour, overtime: overtime}], [{date: date, normalHour: normalHour, overtime: overtime}],
   [{project: project, milestone: milestone, action: action}], [{date: date, normalHour: normalHour, overtime: overtime}], [{date: date, normalHour: normalHour, overtime: overtime}],

@@ -1269,12 +1269,6 @@
             "type": "string"
           },
           {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
-          },
-          {
             "in": "query",
             "name": "date",
             "type": "string"
