@@ -34,7 +34,7 @@ export const index = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    let timeRecords: Array<TimeRecord> = [];
+    let timeRecords: Array<object> = [];
     let date: Moment;
 
     if (req.query.date) {
@@ -54,7 +54,7 @@ export const create = async (req: Request, res: Response) => {
       timeRecords.push(
         {
           userId: res.locals.user.id,
-          projectId: req.body.projectId,
+          //projectId: req.body.projectId,
           milestoneId: req.body.milestoneId,
           actionLabelId: req.body.actionLabelId,
           description: req.body.description,
