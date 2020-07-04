@@ -17,11 +17,13 @@ export const index = async (req: Request, res: Response) => {
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
-    const query: QueryBuilder = database(TableNames.timeRecords)
+    const query: QueryBuilder = database(TableNames.userTimeRecords)
+      .join(TableNames.timeRecords, 'timeRecords.userTimeRecordId', '=', 'userTimeRecords.id')
       .where('date', '>=', fromDate)
       .where('date', '<=', toDate)
-      .where({userId: res.locals.user.id}).orderBy('id', 'asc').select();
-    const timeRecords: Array<TimeRecord> = await query;
+      .where({userId: res.locals.user.id}).orderBy('timeRecords.id', 'asc')
+      .select();
+    const timeRecords: Array<any> = await query;
 
     let fromDatePlusOne: string;
     let response = {
@@ -35,25 +37,22 @@ export const index = async (req: Request, res: Response) => {
     }
     for (let i = 0; i < timeRecords.length / 7; i++) {
       response.projects.push(
-        [
           {
-          projectId: timeRecords[i + i*7].projectId,
-          milestoneId: timeRecords[i + i*7].milestoneId,
-          actionLabelId: timeRecords[i + i*7].actionLabelId
-        }
-        ]
+            projectId: timeRecords[i + i * 7].projectId,
+            milestoneId: timeRecords[i + i * 7].milestoneId,
+            actionLabelId: timeRecords[i + i * 7].actionLabelId,
+            description: timeRecords[i + i * 7].description
+          }
       );
     }
     for (let i = 0; i < timeRecords.length; i++) {
       response.data.push(
-        [
           {
             id: timeRecords[i].id,
             date: moment(timeRecords[i].date).format('YYYY-MM-DD'),
             normalHours: timeRecords[i].spentTime,
             overTime: timeRecords[i].overTime
           }
-        ]
       )
     }
 
@@ -75,18 +74,21 @@ export const create = async (req: Request, res: Response) => {
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     let fromDatePlusOne: string;
-
+    const userTimeRecord = {
+      userId: res.locals.user.id,
+      projectId: req.body.projectId,
+      milestoneId: req.body.milestoneId,
+      actionLabelId: req.body.actionLabelId,
+      description: req.body.description
+    }
+    let userTimeRecordId;
+    await database(TableNames.userTimeRecords).insert(userTimeRecord).returning('id')
+      .then(saveId => {userTimeRecordId = database.raw('LAST_INSERT_ID()')})
     for (let i = 0; i < 7; i++) {
       fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
       timeRecords.push(
         {
-          userId: res.locals.user.id,
-          projectId: req.body.projectId,
-          milestoneId: req.body.milestoneId,
-          actionLabelId: req.body.actionLabelId,
-          description: req.body.description,
-          spentTime: 0,
-          overtime: 0,
+          userTimeRecordId: userTimeRecordId,
           date: fromDatePlusOne
         }
       )
