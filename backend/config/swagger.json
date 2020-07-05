@@ -1442,6 +1442,29 @@
           }
         }
       }
+    },
+    "/report/dates": {
+      "get": {
+        "summary": "get oldest and newest date of timeRecords table",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get oldest and newest date of timeRecords table",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

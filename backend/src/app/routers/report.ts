@@ -8,3 +8,4 @@ router.get('/project/cost', reportController.generateReportProjectByCost);
 router.get('/user/hours', reportController.generateReportUserByHours);
 router.get('/user/cost', reportController.generateReportUserByCost);
 router.get('/project/budget', reportController.generateReportBudget);
+router.get('/dates', reportController.getStartAndEndDates);
