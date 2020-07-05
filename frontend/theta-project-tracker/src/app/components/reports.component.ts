@@ -52,7 +52,6 @@ export class ReportsComponent implements OnInit {
   }
 
   onStartDateChange(event) {
-    console.log(event.value);
     this.startDate = event.value;
     this.onClickReportByProjectHour();
   }
