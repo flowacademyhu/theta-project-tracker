@@ -1,7 +1,7 @@
 import {Request} from "express";
 import {TimeRecord} from "../models/timeRecord";
 
-export const create = (req: Request): TimeRecord => {
+/*export const create = (req: Request): TimeRecord => {
   return {
     userId: req.body.userId,
     projectId: req.body.projectId,
@@ -12,4 +12,4 @@ export const create = (req: Request): TimeRecord => {
     overtime: req.body.overTime,
     date: req.body.date
   }
-}
+}*/

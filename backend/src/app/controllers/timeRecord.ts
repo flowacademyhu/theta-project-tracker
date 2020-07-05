@@ -3,9 +3,9 @@ import {database} from "../../lib/database";
 import {Request, Response} from "express";
 import {QueryBuilder} from "knex";
 import {TableNames} from "../../lib/enums";
-import * as timeRecordSerializer from "../serializers/timeRecord";
 import * as moment from "moment";
 import {Moment} from "moment";
+import {UserTimeRecord} from "../models/userTimeRecord";
 
 export const index = async (req: Request, res: Response) => {
   try {
@@ -24,7 +24,6 @@ export const index = async (req: Request, res: Response) => {
       .where({userId: res.locals.user.id}).orderBy('timeRecords.id', 'asc')
       .select();
     const timeRecords: Array<any> = await query;
-
     let fromDatePlusOne: string;
     let response = {
       weekDays: [],
@@ -55,7 +54,6 @@ export const index = async (req: Request, res: Response) => {
           }
       )
     }
-
     res.status(200).json(response);
   } catch (error) {
     console.error(error);
@@ -73,6 +71,7 @@ export const create = async (req: Request, res: Response) => {
       date = moment();
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
+    const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
     let fromDatePlusOne: string;
     const userTimeRecord = {
       userId: res.locals.user.id,
@@ -82,19 +81,40 @@ export const create = async (req: Request, res: Response) => {
       description: req.body.description
     }
     let userTimeRecordId;
-    await database(TableNames.userTimeRecords).insert(userTimeRecord).returning('id')
-      .then(saveId => {userTimeRecordId = database.raw('LAST_INSERT_ID()')})
-    for (let i = 0; i < 7; i++) {
-      fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
-      timeRecords.push(
-        {
-          userTimeRecordId: userTimeRecordId,
-          date: fromDatePlusOne
-        }
-      )
+    const duplicateUserTimeRecord: UserTimeRecord = await database(TableNames.userTimeRecords)
+      .where({
+        userId: res.locals.user.id,
+        projectId: req.body.projectId,
+        milestoneId: req.body.milestoneId,
+        actionLabelId: req.body.actionLabelId,
+        description: req.body.description
+      }).select().first();
+    if (duplicateUserTimeRecord) {
+      userTimeRecordId = duplicateUserTimeRecord.id;
+    } else {
+      await database(TableNames.userTimeRecords).insert(userTimeRecord)
+        .then(saveId => {userTimeRecordId = database.raw('LAST_INSERT_ID()')})
     }
-    await database(TableNames.timeRecords).insert(timeRecords);
-    res.sendStatus(201);
+    const duplicateWeek = await database(TableNames.timeRecords)
+      .where('date', '>=', fromDate)
+      .where('date', '<=', toDate)
+      .where({userTimeRecordId: userTimeRecordId})
+      .select();
+    if (duplicateWeek.length > 1) {
+      res.sendStatus(400);
+    } else {
+      for (let i = 0; i < 7; i++) {
+        fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
+        timeRecords.push(
+          {
+            userTimeRecordId: userTimeRecordId,
+            date: fromDatePlusOne
+          }
+        )
+      }
+      await database(TableNames.timeRecords).insert(timeRecords);
+      res.sendStatus(201);
+    }
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -103,14 +123,11 @@ export const create = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const timeRecord: TimeRecord = await database(TableNames.timeRecords).select().where({id: req.params.id}).first();
-    if (timeRecord) {
-      const newTimeRecord: TimeRecord = timeRecordSerializer.create(req);
-      await database(TableNames.timeRecords).update(newTimeRecord).where({id: req.params.id});
-      res.sendStatus(204);
-    } else {
-      res.sendStatus(404);
+    const updateArray = req.body.modified;
+    for (let item of updateArray) {
+      await database(TableNames.timeRecords).update(item).where({id: item.id});
     }
+    res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -119,7 +136,6 @@ export const update = async (req: Request, res: Response) => {
 
 export const destroy = async (req: Request, res: Response) => {
   try {
-
     let date: Moment;
     if (req.query.date) {
       date = moment(req.query.date);
@@ -129,13 +145,18 @@ export const destroy = async (req: Request, res: Response) => {
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
 
-    const timeRecord: TimeRecord = await database(TableNames.timeRecords).select().where({id: req.params.id}).first();
-    if (timeRecord) {
-      await database(TableNames.timeRecords).delete().where({id: req.params.id});
-      res.sendStatus(204);
-    } else {
-      res.sendStatus(404);
-    }
+    const query: QueryBuilder = database(TableNames.userTimeRecords).where({
+      userId: res.locals.user.id,
+      projectId: req.body.projectId,
+      milestoneId: req.body.milestoneId,
+      actionLabelId: req.body.actionLabelId
+    }).select();
+    const userTimeRecord: TimeRecord = await query;
+    console.log(userTimeRecord[0].id);
+    await database(TableNames.timeRecords).where({userTimeRecordId: userTimeRecord[0].id})
+      .where('date', '>=', fromDate)
+      .where('date', '<=', toDate).delete();
+    res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);

@@ -5,5 +5,5 @@ export const router: Router = Router({mergeParams: true});
 
 router.get('/', timeRecordController.index);
 router.post('/', timeRecordController.create);
-router.put('/:timeRecordId', timeRecordController.update);
-router.delete('/:timeRecordId', timeRecordController.destroy);
+router.put('/', timeRecordController.update);
+router.delete('/', timeRecordController.destroy);

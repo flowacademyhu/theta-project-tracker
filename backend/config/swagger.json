@@ -1489,6 +1489,40 @@
             "description": "asd"
           }
         }
+      },
+      "put": {
+        "summary": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
       }
     }
   },

@@ -7,6 +7,7 @@ exports.up = function (knex) {
         table.date('date');
         table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
         table.timestamp('updatedAt').defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        table.unique(['userTimeRecordId', 'date']);
     });
 };
 exports.down = function (knex) {
