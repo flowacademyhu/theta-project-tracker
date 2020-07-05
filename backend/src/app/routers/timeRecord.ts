@@ -10,4 +10,4 @@ router.put('/:timeRecordId', timeRecordController.update);
 router.delete('/:timeRecordId', timeRecordController.destroy);
 router.use(adminAuthorization)
 router.get('/', timeRecordController.index);
-
+router.get('/dates', timeRecordController.getStartAndEndDates);

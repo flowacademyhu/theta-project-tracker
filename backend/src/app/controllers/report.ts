@@ -96,11 +96,3 @@ export const generateReportBudget = async (req: Request, res: Response) => {
     const report = await query;
     res.json(reportSerializer.getBudgetReport(report));
 }
-
-export const getStartAndEndDates = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.timeRecords)
-        .min('date')
-        .max('date')
-    const report = await query;
-    res.json(report);
-}
