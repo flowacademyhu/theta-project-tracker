@@ -1,5 +1,5 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { ReportsService } from '../services/reports.service';
+import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Result } from '../services/reports.service';
 
 @Component({
   selector: 'app-reports-table',
@@ -11,8 +11,8 @@ import { ReportsService } from '../services/reports.service';
     <td mat-cell *matCellDef="let element"> {{element.key}} </td>
   </ng-container>
   <ng-container *ngFor="let col of displayedColumns | slice:1" matColumnDef="{{col}}">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col}}</th>
-    <td mat-cell *matCellDef="let element"> {{element.value[col]}} </td>
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col}}</th>
+  <td mat-cell *matCellDef="let element"> {{element.value[col]}} </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -31,23 +31,22 @@ import { ReportsService } from '../services/reports.service';
   `]
 })
 
-export class ReportsTableComponent implements OnInit, OnChanges {
+export class ReportsTableComponent implements OnChanges {
   displayedColumns = [];
   firstColumnName = 'firstColumn';
   lastColumnName = 'total';
-  @Input() filteredItems;
   @Input() items;
-  constructor(private reportsService: ReportsService) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.getColumnNames(this.items);
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges.items && simpleChanges.items.currentValue) {
+      this.getColumnNames(this.items);
+    }
   }
-  ngOnChanges() {
-    this.getColumnNames(this.items);
-  }
-  getColumnNames = (source: object) => {
+
+  getColumnNames = (source: Result) => {
     this.displayedColumns = [];
-    let columnNames = [];
+    let columnNames = []
     Object.values(source).forEach(x => {
       columnNames = columnNames.concat(Object.keys(x));
     });
@@ -58,7 +57,7 @@ export class ReportsTableComponent implements OnInit, OnChanges {
     });
     if (columnNames.includes(this.lastColumnName)){
       this.displayedColumns.push(this.lastColumnName);
-  }
+    }
     this.displayedColumns.unshift(this.firstColumnName);
   }
 }
