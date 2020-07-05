@@ -8,8 +8,8 @@ export class ReportsService {
 
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
-  getReportsByProjectHours() {
-    return this.http.get(this.apiUrl + 'report/project/hours');
+  getReportsByProjectHours(startDate, endDate) {
+    return this.http.get(this.apiUrl + `report/project/hours?to=${startDate}&from=${endDate}`);
   }
   getReportsByProjectCost() {
     return this.http.get(this.apiUrl + 'report/project/cost');
