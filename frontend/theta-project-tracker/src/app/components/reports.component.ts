@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
 
 <mat-form-field appearance="fill">
     <mat-label>From:</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
 </mat-form-field>
@@ -51,7 +51,9 @@ export class ReportsComponent implements OnInit {
     this.onClickReportByProjectHour();
   }
 
-  onDateChange(event) {
+  onStartDateChange(event) {
+    console.log(event.value);
+    this.startDate = event.value;
     this.onClickReportByProjectHour();
   }
 
