@@ -3,14 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
-export interface ProjectItem {
-    projectName: string;
-    userName: string;
-    timeSpent: number;
-    projectId: number;
-    userId: number;
-}
-
 export interface Result {
   [projectName: string]: {
     [userName: string]: number;
