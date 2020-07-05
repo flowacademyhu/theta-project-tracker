@@ -50,6 +50,10 @@
   "pwd-dont-match": "Passwords don't match!",
   "confirmation": "Are you sure?" ,
   "no": "No",
-  "yes": "Yes"
+  "yes": "Yes",
+  "project-select": "Select Project",
+  "milestone-select": "Select Milestone",
+  "activity-select": "Select Activity",
+  "add-record": "Add New Record"
 }
 

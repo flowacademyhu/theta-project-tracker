@@ -1277,6 +1277,171 @@
           }
         }
       }
+    },
+    "/report/project/cost": {
+      "get": {
+        "summary": "Get money spent per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get money spent per project for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/project/hours": {
+      "get": {
+        "summary": "Get hours spent per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get hours spent per project for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/user/hours": {
+      "get": {
+        "summary": "Get hours spent per user",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get hours spent per user for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/user/cost": {
+      "get": {
+        "summary": "Get money spent per user",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get money spent per user for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/project/budget": {
+      "get": {
+        "summary": "Get budgeted and actual cost per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get budgeted and actual cost per project for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
