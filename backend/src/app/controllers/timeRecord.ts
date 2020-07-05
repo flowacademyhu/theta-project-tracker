@@ -49,7 +49,7 @@ export const index = async (req: Request, res: Response) => {
           {
             id: timeRecords[i].id,
             date: moment(timeRecords[i].date).format('YYYY-MM-DD'),
-            normalHours: timeRecords[i].spentTime,
+            normalHours: timeRecords[i].normalHours,
             overTime: timeRecords[i].overTime
           }
       )

@@ -15,6 +15,10 @@
   ],
   "tags": [
     {
+      "name": "no-auth",
+      "description": ""
+    },
+    {
       "name": "user",
       "description": ""
     },
@@ -28,8 +32,7 @@
       "post": {
         "summary": "Login with user",
         "tags": [
-          "user",
-          "admin"
+          "no-auth"
         ],
         "parameters": [
           {
@@ -616,7 +619,6 @@
       "delete": {
         "summary": "Delete project by id",
         "tags": [
-          "user",
           "admin"
         ],
         "parameters": [
@@ -1445,7 +1447,7 @@
     },
     "/timeRecord": {
       "get": {
-        "summary": "Test",
+        "summary": "Get given date's week's timeRecord for logged in user. Default: current week",
         "tags": [
           "user",
           "admin"
@@ -1464,12 +1466,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Teszt"
+            "description": "Weekdays always filled. Projects for rows, data is in order (index 0-6 first project, index 7-13 second project)",
+            "schema": {
+              "$ref": "#definitions/TimeRecordIndex"
+            }
           }
         }
       },
       "post": {
-        "summary": "test",
+        "summary": "Create new week for given date's week. Default: current week",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -1477,50 +1486,89 @@
             "type": "string"
           },
           {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "body",
             "schema": {
-
+              "$ref": "#definitions/TimeRecordCreate"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "asd"
+          "201": {
+            "description": "Week created"
+          },
+          "400": {
+            "description": "Given date's week with parameters already exists"
           }
         }
       },
       "put": {
-        "summary": "",
+        "summary": "Update hours for given week. Default: current week",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          },
           {
             "in": "body",
             "name": "body",
             "schema": {
-
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/TimeRecordUpdate"
+              }
             }
           }
         ],
         "responses": {
           "204": {
-            "description": ""
+            "description": "Updated"
           }
         }
       },
       "delete": {
-        "summary": "",
+        "summary": "Delete date's week for given project",
+        "tags": [
+          "user",
+          "admin"
+        ],
         "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          },
           {
             "in": "body",
             "name": "body",
             "schema": {
-
+              "$ref": "#definitions/TimeRecordDelete"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": ""
+            "description": "Deleted"
           }
         }
       }
@@ -1918,6 +1966,114 @@
           "type": "string"
         },
         "multiplier": {
+          "type": "number"
+        }
+      }
+    },
+    "TimeRecordIndex": {
+      "type": "object",
+      "properties": {
+        "weekdays": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "projectId": {
+                    "type": "number"
+                  },
+                  "milestoneId": {
+                    "type": "number"
+                  },
+                  "actionLabelId": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "normalHours": {
+                    "type": "number"
+                  },
+                  "overTime": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "TimeRecordCreate": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "number"
+        },
+        "milestoneId": {
+          "type": "number"
+        },
+        "actionLabelId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "TimeRecordUpdate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "normalHours": {
+          "type": "number"
+        },
+        "overTime": {
+          "type": "number"
+        }
+      }
+    },
+    "TimeRecordDelete": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "number"
+        },
+        "milestoneId": {
+          "type": "number"
+        },
+        "actionLabelId": {
           "type": "number"
         }
       }
