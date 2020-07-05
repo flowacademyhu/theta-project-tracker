@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { Result } from '../services/reports.service';
 
 @Component({
@@ -35,7 +35,7 @@ export class ReportsTableComponent implements OnChanges {
   displayedColumns = [];
   firstColumnName = 'firstColumn';
   lastColumnName = 'total';
-  @Input() items;
+  @Input() items: Result;
   constructor() { }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
