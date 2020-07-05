@@ -74,7 +74,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private projectService: ProjectService, private dialog: MatDialog, private clientService: ClientService) { }
 
   projects: Project[] = [];
-  clients: Client[];
+  clients: Client[] = [];
   subscriptions$: Subscription[] = [];
   displayedColumns = ['name', 'client', 'description', 'budget', 'action'];
   dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>();
@@ -102,7 +102,6 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.updateDataSource();
     }));
   }
-
   onOpenDeleteModal(project) {
     const nameToPass = this.dataSource.data.find(u => u.id === project.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
@@ -119,7 +118,6 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }));
   }
-
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '35%',
@@ -133,7 +131,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   updateDataSource() {
     this.projectService.fetchProjects().subscribe(projects => {
       this.dataSource.data = projects;
-      this.projects.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name);
+      this.dataSource.data.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name);
     });
   }
   ngOnDestroy(): void {

@@ -129,7 +129,7 @@ export class MilestonesComponent implements OnInit, OnDestroy, AfterViewInit {
   updateDataSource() {
     this.milestoneService.fetchMilestones().subscribe(milestones => {
       this.dataSource.data = milestones;
-      this.milestones.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name);
+      this.dataSource.data.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name);
     });
   }
   ngOnDestroy(): void {
