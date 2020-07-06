@@ -96,7 +96,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   onAddNewProject() {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '35%',
-      height: '60%'
+      height: '55%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource();
@@ -121,7 +121,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
       width: '35%',
-      height: '60%',
+      height: '55%',
       data: { projectToEdit: project }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {

@@ -18,25 +18,18 @@ import { MatPaginator } from '@angular/material/paginator';
   <button (click)="onAddNewActionLabel()" mat-raised-button>+ Add New Action Label</button>
       <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
           <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef>{{ 'name' | translate }}</mat-header-cell>
               <mat-cell *matCellDef="let actionlabel">{{ actionlabel.name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="project">
           <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
           <mat-cell *matCellDef="let actionlabel">{{ actionlabel.projectName }}</mat-cell>
-      </ng-container>
-          <ng-container matColumnDef="actions" class="actions">
-              <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
-              <mat-cell *matCellDef="let actionlabel">
-              <mat-icon>edit</mat-icon>
-                  <mat-icon >clear</mat-icon>
-              </mat-cell>
           </ng-container>
           <ng-container matColumnDef="action" class="action">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>{{'actions' | translate }}</mat-header-cell>
           <mat-cell *matCellDef="let actionlabel">
-              <mat-icon (click)="onOpenEditModal(actionlabel)">edit</mat-icon>
-              <mat-icon (click)="onOpenDeleteModal(actionlabel)">clear</mat-icon>
+             <button mat-mini-fab><mat-icon (click)="onOpenEditModal(actionlabel)">edit</mat-icon></button>
+              <button mat-mini-fab color="primary"><mat-icon (click)="onOpenDeleteModal(actionlabel)">clear</mat-icon></button>
           </mat-cell>
       </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

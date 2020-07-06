@@ -76,6 +76,10 @@ import { Router, ActivatedRoute } from '@angular/router';
     .mat-column-cost {
       flex: 0 0 15%;
     }
+    mat-icon:hover {
+      cursor: pointer;
+  }
+
     `]
 })
 export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
