@@ -13,7 +13,7 @@ export const transformReportForFrontend = (report: Array<object>, columnName: st
     return finalObject;
 }
 
-const getUniqueRowNames = (report, rowName): Array<any> => {
+export const getUniqueRowNames = (report, rowName): Array<any> => {
     let uniqueRowNames = new Set();
     report.forEach(individualResult => {
         uniqueRowNames.add(individualResult[rowName])
