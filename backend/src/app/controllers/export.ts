@@ -1,56 +1,34 @@
-import { QueryBuilder } from "knex";
-import { database } from "../../lib/database";
 import { Request, Response } from "express";
-import { TableNames } from "../../lib/enums";
-import { transformReportForFrontend } from "../../lib/report";
-import * as reportController from "../controllers/report";
 import { createExcelReport, sendExcelFile } from "../../lib/export";
 import * as reportSerializer from "../serializers/report"
+import * as reportQuery from "../../lib/reportQuery"
 
 export const exportReportProjectByHours = async (req: Request, res) => {
-    let data = await reportController.generateReportProjectByHours(req, res);
-    createExcelReport('Report per project', reportSerializer.getReportProjectByHours(data));
+    const report = await reportQuery.queryReportProjectByHours();
+    createExcelReport('Report per project', reportSerializer.getReportProjectByHours(report));
     sendExcelFile(res);
 }
 
-export const generateReportProjectByCost = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.timeRecords)
-        .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
-        .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
-        .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
-        .select(database.raw('concat(users.firstName, " ", users.lastName) as userName'), 'projects.name as projectName',
-        database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as cost'))
-        .groupBy('users.id', 'projects.id', 'projectName', 'userName')
-    const report = await query;
-    res.json(transformReportForFrontend(report, 'userName', 'projectName', 'cost'));
+export const exportReportProjectByCost = async (req: Request, res) => {
+    const report = await reportQuery.queryReportProjectByCost();
+    createExcelReport('Report per project', reportSerializer.getReportProjectByCost(report));
+    sendExcelFile(res);
 }
 
-export const generateReportUserByHours = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.timeRecords)
-        .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
-        .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
-        .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
-        .select('projects.name as projectName', database.raw('concat(users.firstName, " ", users.lastName) as userName'),
-        'projects.id as projectId', 'users.id as userId',database.raw('sum(timeRecords.spentTime + timeRecords.overTime) as timeSpent'))
-        .groupBy('users.id', 'projects.id', 'projectName', 'userName');
-    const report = await query;
-    res.json(transformReportForFrontend(report, 'projectName', 'userName', 'timeSpent'));
+export const exportReportUserByHours = async (req: Request, res) => {
+    const report = await reportQuery.queryReportUserByHours();
+    createExcelReport('Report per contractor', reportSerializer.getReportUserByHours(report));
+    sendExcelFile(res);
 }
 
-export const generateReportUserByCost = async (req: Request, res: Response) => {
-    let query: QueryBuilder = database(TableNames.timeRecords)
-        .join(TableNames.milestones, 'timeRecords.milestoneId', '=', 'milestones.id')
-        .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
-        .join(TableNames.users, 'users.id', '=', 'timeRecords.userId')
-        .select('projects.name as projectName', database.raw('concat(users.firstName, " ", users.lastName) as userName'),
-        'projects.id as projectId', 'users.id as userId', database.raw('sum(users.costToCompanyPerHour * (timeRecords.spentTime + timeRecords.overTime)) as cost'))
-        .groupBy('users.id', 'projects.id', 'projectName', 'userName')
-    const report = await query;
-    res.json(transformReportForFrontend(report, 'projectName', 'userName', 'cost'));
+export const exportReportUserByCost = async (req: Request, res) => {
+    const report = await reportQuery.queryReportUserByCost();
+    createExcelReport('Report per contractor', reportSerializer.getReportUserByCost(report));
+    sendExcelFile(res);
 }
 
-export const generateReportBudget = async (req: Request, res) => {
-    let data = await reportController.generateReportBudget(req, res);
+export const exportReportBudget = async (req: Request, res) => {
+    let data = await reportQuery.queryReportBudget();
     createExcelReport('Project Profitability', reportSerializer.getBudgetReport(data));
     sendExcelFile(res);
 }

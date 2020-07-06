@@ -21,7 +21,7 @@ ws.cell(11, 1).string('Summary').style(style);
 getRowNames();
 getColumnNames();
 fillInData();
-} 
+}
 
 export const sendExcelFile = (res: Response) => {
     wb.write('excel.xlsx', res);

@@ -1,4 +1,4 @@
-export const transformReportForFrontend = (report: Array<object>, columnName: string, rowName: string, data: string): object => {
+export const transformReportForFrontend = (report, columnName: string, rowName: string, data: string): object => {
     let rowNames = getUniqueRowNames(report, rowName);
     let finalObject = {};
     rowNames.forEach(row => finalObject[row] = (new Object()));
