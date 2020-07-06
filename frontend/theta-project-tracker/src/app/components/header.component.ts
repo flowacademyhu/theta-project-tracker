@@ -18,7 +18,7 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
             aria-label="Toggle sidenav"
             mat-icon-button
             routerLink="/timesheet" id="toolBarPic">
-            <img width="1136" height="378"
+            <img width="1136" height="378" [ngStyle]="{ 'cursor': (user$ | async ) ? 'pointer':'default' }"
             src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
             alt="Voodoo Park"
             srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
@@ -122,11 +122,11 @@ export class HeaderComponent implements OnInit {
 
   onOpenConfirmModal() {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
-      width: '25%',
-      height: '25%'
+      width: '15%',
+      height: '15%'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+      if (result) {
         this.authService.logout();
       }
     });
