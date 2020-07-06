@@ -61,7 +61,7 @@ import { EditUserComponent } from '../app/components/edit-user.component';
 import { DatePickerComponent } from './components/date-picker.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-/* import { MAT_DATE_LOCALE } from '@angular/material/core'; */
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 
 export function httpTranslateLoader(http: HttpClient) {
@@ -159,7 +159,7 @@ export function appInit(provider: AuthService) {
       deps: [AuthService],
       multi: true,
   },
- /*  {provide: MAT_DATE_LOCALE, useValue: 'lt-LT'}, */
+  {provide: MAT_DATE_LOCALE, useValue: 'lt-LT'},
   MatDatepickerModule,
   MatNativeDateModule,
   DatePipe
