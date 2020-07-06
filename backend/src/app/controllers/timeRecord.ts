@@ -18,7 +18,8 @@ export const index = async (req: Request, res: Response) => {
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
-    const query: QueryBuilder = database(TableNames.userTimeRecords)
+    const query: QueryBuilder = database(TableNames.milestones)
+      .join(TableNames.userTimeRecords, 'milestones.id', '=', 'userTimeRecords.milestoneId')
       .join(TableNames.timeRecords, 'timeRecords.userTimeRecordId', '=', 'userTimeRecords.id')
       .where('date', '>=', fromDate)
       .where('date', '<=', toDate)
@@ -27,7 +28,7 @@ export const index = async (req: Request, res: Response) => {
     const timeRecords: Array<any> = await query;
     let response = {
       weekDays: timeRecordSerializer.createWeek(fromDate),
-      projects: await timeRecordSerializer.createProjects(timeRecords),
+      projects: timeRecordSerializer.createProjects(timeRecords),
       data: timeRecordSerializer.createData(timeRecords)
     }
     res.status(200).json(response);
