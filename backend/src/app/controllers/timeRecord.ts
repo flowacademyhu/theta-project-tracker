@@ -6,6 +6,7 @@ import {TableNames} from "../../lib/enums";
 import * as moment from "moment";
 import {Moment} from "moment";
 import {UserTimeRecord} from "../models/userTimeRecord";
+import {Milestone} from "../models/milestone";
 
 export const index = async (req: Request, res: Response) => {
   try {
@@ -34,10 +35,14 @@ export const index = async (req: Request, res: Response) => {
       fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
       response.weekDays.push(fromDatePlusOne);
     }
+    let projectId: Milestone;
     for (let i = 0; i < timeRecords.length / 7; i++) {
+      if (i % 7 == 0) {
+        projectId = await database(TableNames.milestones).where({id: timeRecords[i + i * 7].milestoneId, deletedAt: 0}).select().first();
+      }
       response.projects.push(
           {
-            projectId: timeRecords[i + i * 7].projectId,
+            projectId: projectId.projectId,
             milestoneId: timeRecords[i + i * 7].milestoneId,
             actionLabelId: timeRecords[i + i * 7].actionLabelId,
             description: timeRecords[i + i * 7].description
@@ -75,7 +80,6 @@ export const create = async (req: Request, res: Response) => {
     let fromDatePlusOne: string;
     const userTimeRecord = {
       userId: res.locals.user.id,
-      projectId: req.body.projectId,
       milestoneId: req.body.milestoneId,
       actionLabelId: req.body.actionLabelId,
       description: req.body.description
@@ -84,7 +88,6 @@ export const create = async (req: Request, res: Response) => {
     const duplicateUserTimeRecord: UserTimeRecord = await database(TableNames.userTimeRecords)
       .where({
         userId: res.locals.user.id,
-        projectId: req.body.projectId,
         milestoneId: req.body.milestoneId,
         actionLabelId: req.body.actionLabelId,
         description: req.body.description
@@ -147,7 +150,6 @@ export const destroy = async (req: Request, res: Response) => {
 
     const query: QueryBuilder = database(TableNames.userTimeRecords).where({
       userId: res.locals.user.id,
-      projectId: req.body.projectId,
       milestoneId: req.body.milestoneId,
       actionLabelId: req.body.actionLabelId
     }).select();

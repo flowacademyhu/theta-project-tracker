@@ -2036,9 +2036,6 @@
     "TimeRecordCreate": {
       "type": "object",
       "properties": {
-        "projectId": {
-          "type": "number"
-        },
         "milestoneId": {
           "type": "number"
         },
@@ -2067,9 +2064,6 @@
     "TimeRecordDelete": {
       "type": "object",
       "properties": {
-        "projectId": {
-          "type": "number"
-        },
         "milestoneId": {
           "type": "number"
         },
