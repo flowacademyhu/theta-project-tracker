@@ -141,13 +141,10 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
-<<<<<<< HEAD
-=======
     MatDialogModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
->>>>>>> d44becba609953b4f4b6e81e1943181163b7920c
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
