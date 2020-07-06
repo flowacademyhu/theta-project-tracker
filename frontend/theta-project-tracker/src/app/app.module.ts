@@ -163,7 +163,7 @@ export function appInit(provider: AuthService) {
       deps: [AuthService],
       multi: true,
   },
-  {provide: MAT_DATE_LOCALE, useValue: 'lt-LT'},
+  {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
   MatDatepickerModule,
   MatNativeDateModule,
   DatePipe
