@@ -60,6 +60,8 @@ import { NewActionLabelModalComponent } from './modals/new-action-label-modal.co
 import { NewActionLabelComponent } from './components/new-action-label.component';
 import { EditUserComponent } from '../app/components/edit-user.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -135,6 +137,8 @@ export function appInit(provider: AuthService) {
     MatCheckboxModule,
     MatDialogModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
