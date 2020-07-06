@@ -7,6 +7,7 @@ import { ReplaySubject, combineLatest, } from 'rxjs';
 import { Project } from '../models/project.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-reports',
@@ -62,8 +63,8 @@ import { User } from '../models/user.model';
 
 export class ReportsComponent {
   whichTabIsShown = 1;
-  startDate = new Date();
-  endDate = new Date();
+  startDate = moment().format('YYYY-MM-DD');
+  endDate = moment().format('YYYY-MM-DD');
   projects = new FormControl([]);
   users = new FormControl([]);
   private itemsSubject = new ReplaySubject<Result>();
@@ -122,12 +123,44 @@ export class ReportsComponent {
   }
 
   onStartDateChange(event) {
-    this.startDate = event.value;
-    this.onClickReportByProjectHour();
+    this.startDate = moment(event.value).format('YYYY-MM-DD');
+    switch(this.whichTabIsShown) {
+      case 1:
+        this.onClickReportByProjectHour();
+        break;
+      case 2:
+        this.onClickReportByProjectCost();
+        break;
+      case 3:
+        this.onClickReportByUserHours();
+        break;
+      case 4:
+        this.onClickReportByUserCost();
+        break;
+      case 5:
+        this.onClickReportByProjectBudget();
+        break;
+    } 
   }
   onEndDateChange(event) {
-    this.endDate = event.value;
-    this.onClickReportByProjectHour();
+    this.endDate = moment(event.value).format('YYYY-MM-DD');
+    switch(this.whichTabIsShown) {
+      case 1:
+        this.onClickReportByProjectHour();
+        break;
+      case 2:
+        this.onClickReportByProjectCost();
+        break;
+      case 3:
+        this.onClickReportByUserHours();
+        break;
+      case 4:
+        this.onClickReportByUserCost();
+        break;
+      case 5:
+        this.onClickReportByProjectBudget();
+        break;
+    } 
   }
 
   onClickReportByProjectHour() {
@@ -138,10 +171,9 @@ export class ReportsComponent {
     this.whichTabIsShown = 1;
   }
 
-
   onClickReportByProjectCost() {
     this.users.setValue([]);
-    this.reportsService.getReportsByProjectCost().subscribe((result: any) => {
+    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 2;
@@ -149,7 +181,7 @@ export class ReportsComponent {
 
   onClickReportByUserHours() {
     this.projects.setValue([]);
-    this.reportsService.getReportsByUserHours().subscribe((result: any) => {
+    this.reportsService.getReportsByUserHours(this.startDate, this.endDate).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 3;
@@ -157,14 +189,14 @@ export class ReportsComponent {
   
   onClickReportByUserCost() {
     this.projects.setValue([]);
-    this.reportsService.getReportsByUserCost().subscribe((result: any) => {
+    this.reportsService.getReportsByUserCost(this.startDate, this.endDate).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 4;
   }
 
   onClickReportByProjectBudget() {
-    this.reportsService.getReportsBudget().subscribe((result: any) => {
+    this.reportsService.getReportsBudget(this.startDate, this.endDate).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 5;

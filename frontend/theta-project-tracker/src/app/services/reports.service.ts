@@ -16,23 +16,37 @@ export class ReportsService {
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
   getReportsByProjectHours(startDate, endDate) {
-    console.log(startDate, endDate)
-    return this.http.get(this.apiUrl + `report/project/hours?to="${startDate}"&from="${endDate}"`);
+    return this.http.get(this.apiUrl + 'report/project/hours',{ params: {
+      from: startDate,
+      to: endDate
+    }} );
   }
 
-  getReportsByProjectCost(): Observable<Result> {
-    return this.http.get<Result>(this.apiUrl + 'report/project/cost');
+  getReportsByProjectCost(startDate, endDate): Observable<Result> {
+    return this.http.get<Result>(this.apiUrl + 'report/project/cost',{ params: {
+      from: startDate,
+      to: endDate
+    }} );
   }
 
-  getReportsByUserHours(): Observable<Result> {
-    return this.http.get<Result>(this.apiUrl + 'report/user/hours');
+  getReportsByUserHours(startDate, endDate): Observable<Result> {
+    return this.http.get<Result>(this.apiUrl + 'report/user/hours',{ params: {
+      from: startDate,
+      to: endDate
+    }} );
   }
 
-  getReportsByUserCost(): Observable<Result> {
-    return this.http.get<Result>(this.apiUrl + 'report/user/cost');
+  getReportsByUserCost(startDate, endDate): Observable<Result> {
+    return this.http.get<Result>(this.apiUrl + 'report/user/cost',{ params: {
+      from: startDate,
+      to: endDate
+    }} );
   }
 
-  getReportsBudget(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + 'report/project/budget');
+  getReportsBudget(startDate, endDate): Observable<any> {
+    return this.http.get<any>(this.apiUrl + 'report/project/budget',{ params: {
+      from: startDate,
+      to: endDate
+    }} );
   }
 }
