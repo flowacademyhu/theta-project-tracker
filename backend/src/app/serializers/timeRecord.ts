@@ -1,22 +1,12 @@
 import * as moment from "moment";
-import {Milestone} from "../models/milestone";
-import {database} from "../../lib/database";
-import {TableNames} from "../../lib/enums";
 import {Request, Response} from "express";
 
-export const createProjects = async (timeRecords: Array<any>) => {
-  let projectId: Milestone;
+export const createProjects = (timeRecords: Array<any>) => {
   let projects: Array<object> = [];
   for (let i = 0; i < timeRecords.length / 7; i++) {
-    if (i % 7 == 0) {
-      projectId = await database(TableNames.milestones).where({
-        id: timeRecords[i + i * 7].milestoneId,
-        deletedAt: 0
-      }).select().first();
-    }
     projects.push(
       {
-        projectId: projectId.projectId,
+        projectId: timeRecords[i + i * 7].projectId,
         milestoneId: timeRecords[i + i * 7].milestoneId,
         actionLabelId: timeRecords[i + i * 7].actionLabelId,
         description: timeRecords[i + i * 7].description
