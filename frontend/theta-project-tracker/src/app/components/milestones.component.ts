@@ -13,7 +13,7 @@ import { Project } from '../models/project.model';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
+    <button (click)="onAddNewMilestone()" mat-raised-button color="primary">{{'add-milestone' | translate}}</button>
         <mat-table class="mat-elevation-z8" [dataSource]="milestoneArrays">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{'name' | translate}}</mat-header-cell>
@@ -22,20 +22,13 @@ import { Project } from '../models/project.model';
             <ng-container matColumnDef="project">
             <mat-header-cell *matHeaderCellDef>{{'projects' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let milestone">{{ milestone.projectName }}</mat-cell>
-        </ng-container>
+            </ng-container>
             <ng-container matColumnDef="description">
                 <mat-header-cell *matHeaderCellDef>{{'description' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">{{ milestone.description }}</mat-cell>
             </ng-container>
-            <ng-container matColumnDef="actions" class="actions">
-                <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
-                <mat-cell *matCellDef="let milestone">
-                <mat-icon>edit</mat-icon>
-                    <mat-icon >clear</mat-icon>
-                </mat-cell>
-            </ng-container>
             <ng-container matColumnDef="action" class="action">
-            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let milestone">
                 <mat-icon (click)="onOpenEditModal(milestone)">edit</mat-icon>
                 <mat-icon (click)="onOpenDeleteModal(milestone)">clear</mat-icon>
@@ -71,10 +64,8 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     private projectService: ProjectService) { }
 
   ngOnInit(): void {
-    console.log('macskaaaa')
     this.milestoneService.fetchMilestones().subscribe((milestones) => {
       this.milestoneArrays = milestones;
-      console.log(this.milestoneArrays)
     });
     this.projectService.fetchProjects().subscribe(projects => {
       this.projects = projects;
@@ -89,7 +80,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '35%',
-      height: '50%'
+      height: '45%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
       this.updateDataSource();
@@ -113,7 +104,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   onOpenEditModal(milestone) {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '35%',
-      height: '50%',
+      height: '45%',
       data: { milestoneToEdit: milestone }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {

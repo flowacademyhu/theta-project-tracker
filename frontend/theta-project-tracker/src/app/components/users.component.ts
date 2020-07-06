@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
+    <button (click)="onAddNewUser()" mat-raised-button color="primary">{{'add-user' | translate}}</button>
         <mat-table [dataSource]="users" class="mat-elevation-z8">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{ 'name' | translate}}</mat-header-cell>
@@ -76,7 +76,9 @@ import { Router, ActivatedRoute } from '@angular/router';
     .mat-column-cost {
       flex: 0 0 15%;
     }
- 
+    mat-icon:hover {
+      cursor: pointer;
+  }
 
     `]
 })
