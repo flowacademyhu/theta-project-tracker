@@ -21,9 +21,9 @@ import { Subscription } from 'rxjs';
       </mat-form-field>
   </div>
 </form>
-<div class="actions">
+<div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button class="second" (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="true" color="warn"
+  <button class="second" (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="true" color="primary"
       [disabled]="newClientForm.invalid">{{'save' | translate}}</button>
 </div>
   `,
@@ -32,15 +32,14 @@ import { Subscription } from 'rxjs';
     margin-top: 60px;
   }
   .full-width {
-    min-width: 150px;
-    max-width: 500px;
+    max-width: 250px;
     width: 100%;
   }
   mat-icon:hover {
     cursor: pointer;
   }
   .second {
-    margin-left: 5px;
+    margin-left: 10px;
   }
   `]
 })

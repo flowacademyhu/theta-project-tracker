@@ -26,7 +26,7 @@ import { UserService } from '../services/user.service';
             <input matInput formControlName="password" type="password">
           </mat-form-field>
         </div>
-        <button mat-raised-button (click)="onSaveNewEmail()" color="warn"
+        <button mat-raised-button (click)="onSaveNewEmail()" color="primary"
         [disabled]="changeEmail.invalid"
         >{{ 'save' | translate }}</button>
       </form>
@@ -57,7 +57,7 @@ import { UserService } from '../services/user.service';
           </mat-form-field>
         </div>
         <div *ngIf="warn"><p>{{ 'pwd-dont-match' | translate }}</p></div>
-        <button mat-raised-button (click)="onSaveNewPassword()" color="warn"
+        <button mat-raised-button (click)="onSaveNewPassword()" color="primary"
         [disabled]="changePassword.invalid"
         >{{ 'save' | translate }}</button>
       </form>
@@ -87,8 +87,8 @@ import { UserService } from '../services/user.service';
 export class ProfileComponent implements OnInit {
  
   changePassword = new FormGroup({
-    newPassword: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
-    passwordAgain: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]')]),
+    newPassword: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]'), Validators.minLength(5)]),
+    passwordAgain: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]'), Validators.minLength(5)]),
     password: new FormControl(null, Validators.required)
   });
   changeEmail = new FormGroup({

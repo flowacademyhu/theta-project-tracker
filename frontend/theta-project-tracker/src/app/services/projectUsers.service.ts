@@ -22,7 +22,6 @@ export class ProjectUsersService {
       }),
       body: projects
     }
-    console.log('deleting')
     return this.http.delete(this.apiUrl + `project/user/${userId}`, options)
   }
 }
