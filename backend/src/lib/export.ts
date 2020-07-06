@@ -14,13 +14,13 @@ const style = wb.createStyle({
 });
 
 export const createExcelReport = (description: string, source: object) => {
-data = source;
-ws.cell(1, 1).string('Voodoo Park Limited').style(style);
-ws.cell(3, 1).string(description).style(style);
-ws.cell(11, 1).string('Summary').style(style);
-getRowNames();
-getColumnNames();
-fillInData();
+    data = source;
+    ws.cell(1, 1).string('Voodoo Park Limited').style(style);
+    ws.cell(3, 1).string(description).style(style);
+    ws.cell(11, 1).string('Summary').style(style);
+    getRowNames();
+    getColumnNames();
+    fillInData();
 }
 
 export const sendExcelFile = (res: Response) => {
@@ -30,8 +30,8 @@ export const sendExcelFile = (res: Response) => {
 const fillInData = () => {
     let currentRow = rowOfColumnNames + 2;
     Object.entries(data).forEach(row => {
-        for(let i = 0; i < coordinatesOfColumnNames.length; i++){
-            if((Object.keys((row)[1])).includes(coordinatesOfColumnNames[i].columnName)){
+        for (let i = 0; i < coordinatesOfColumnNames.length; i++) {
+            if ((Object.keys((row)[1])).includes(coordinatesOfColumnNames[i].columnName)) {
                 ws.cell(currentRow, coordinatesOfColumnNames[i].currentColumn).number(Object.values(row)[1][coordinatesOfColumnNames[i].columnName]).style(style);
             }
         }
@@ -50,7 +50,7 @@ const getColumnNames = () => {
     uniqueColumnNames.forEach(element => {
         displayedColumns.push(element);
     });
-    if (columnNames.includes('total')){
+    if (columnNames.includes('total')) {
         displayedColumns.push('total');
     }
     let currentColumn = 2;
