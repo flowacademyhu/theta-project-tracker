@@ -3,11 +3,11 @@ import { User, ProjectAssigned } from '../models/user.model';
 import { Milestone } from '../models/milestone.model';
 import { MilestoneService } from '../services/milestone.service';
 import { AuthService } from '../services/auth.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ActionLabelService } from '../services/action-label.service';
 import { ActionLabel } from '../models/action-label.model';
 import { ProjectUsersService } from '../services/projectUsers.service';
-import { RecordCreate } from '../modals/record-create.model';
+import { RecordCreate } from '../models/record-create.model';
 import { EventEmitter } from '@angular/core';
 
 @Component({

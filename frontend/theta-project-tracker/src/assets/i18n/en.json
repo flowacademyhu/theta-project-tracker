@@ -54,6 +54,7 @@
   "project-select": "Select Project",
   "milestone-select": "Select Milestone",
   "activity-select": "Select Activity",
-  "add-record": "Add New Record"
+  "add-record": "Add New Record",
+  "save-record": "Save Records"
 }
 
