@@ -6,7 +6,7 @@ import {TableNames} from "../../lib/enums";
 import * as moment from "moment";
 import {Moment} from "moment";
 import {UserTimeRecord} from "../models/userTimeRecord";
-import {Milestone} from "../models/milestone";
+import * as timeRecordSerializer from "../serializers/timeRecord";
 
 export const index = async (req: Request, res: Response) => {
   try {
@@ -25,39 +25,10 @@ export const index = async (req: Request, res: Response) => {
       .where({userId: res.locals.user.id}).orderBy('timeRecords.id', 'asc')
       .select();
     const timeRecords: Array<any> = await query;
-    let fromDatePlusOne: string;
     let response = {
-      weekDays: [],
-      projects: [],
-      data: []
-    }
-    for (let i = 0; i < 7; i++) {
-      fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
-      response.weekDays.push(fromDatePlusOne);
-    }
-    let projectId: Milestone;
-    for (let i = 0; i < timeRecords.length / 7; i++) {
-      if (i % 7 == 0) {
-        projectId = await database(TableNames.milestones).where({id: timeRecords[i + i * 7].milestoneId, deletedAt: 0}).select().first();
-      }
-      response.projects.push(
-          {
-            projectId: projectId.projectId,
-            milestoneId: timeRecords[i + i * 7].milestoneId,
-            actionLabelId: timeRecords[i + i * 7].actionLabelId,
-            description: timeRecords[i + i * 7].description
-          }
-      );
-    }
-    for (let i = 0; i < timeRecords.length; i++) {
-      response.data.push(
-          {
-            id: timeRecords[i].id,
-            date: moment(timeRecords[i].date).format('YYYY-MM-DD'),
-            normalHours: timeRecords[i].normalHours,
-            overTime: timeRecords[i].overTime
-          }
-      )
+      weekDays: timeRecordSerializer.createWeek(fromDate),
+      projects: await timeRecordSerializer.createProjects(timeRecords),
+      data: timeRecordSerializer.createData(timeRecords)
     }
     res.status(200).json(response);
   } catch (error) {
@@ -68,7 +39,6 @@ export const index = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    let timeRecords: Array<object> = [];
     let date: Moment;
     if (req.query.date) {
       date = moment(req.query.date);
@@ -77,13 +47,7 @@ export const create = async (req: Request, res: Response) => {
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
-    let fromDatePlusOne: string;
-    const userTimeRecord = {
-      userId: res.locals.user.id,
-      milestoneId: req.body.milestoneId,
-      actionLabelId: req.body.actionLabelId,
-      description: req.body.description
-    }
+    const userTimeRecord = timeRecordSerializer.createUserTimeRecord(req, res);
     let userTimeRecordId;
     const duplicateUserTimeRecord: UserTimeRecord = await database(TableNames.userTimeRecords)
       .where({
@@ -106,16 +70,7 @@ export const create = async (req: Request, res: Response) => {
     if (duplicateWeek.length > 1) {
       res.sendStatus(400);
     } else {
-      for (let i = 0; i < 7; i++) {
-        fromDatePlusOne = moment(fromDate).add(i, 'day').format('YYYY-MM-DD');
-        timeRecords.push(
-          {
-            userTimeRecordId: userTimeRecordId,
-            date: fromDatePlusOne
-          }
-        )
-      }
-      await database(TableNames.timeRecords).insert(timeRecords);
+      await database(TableNames.timeRecords).insert(timeRecordSerializer.updateTimeRecord(fromDate, userTimeRecordId));
       res.sendStatus(201);
     }
   } catch (error) {
