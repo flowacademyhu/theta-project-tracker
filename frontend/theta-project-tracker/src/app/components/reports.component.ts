@@ -28,11 +28,10 @@ import { User } from '../models/user.model';
 
 <mat-form-field appearance="fill">
     <mat-label>To:</mat-label>
-    <input matInput [matDatepicker]="picker2">
+    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
 </mat-form-field>
-<app-reports-table *ngIf="items" [items]="items" [filteredItems]="filteredItems"></app-reports-table>
 
 <mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
   <mat-label>Projects</mat-label>
@@ -60,19 +59,11 @@ import { User } from '../models/user.model';
   }
   `],
 })
-export class ReportsComponent implements OnInit {
-  items;
-  filteredItems;
-  startDate: Date;
-  endDate: Date;
-  projects = new FormControl();
-  projectList;
-  constructor(private reportsService: ReportsService, private projectService: ProjectService) { }
-  ngOnInit(): void {
-    this.projectService.fetchProjects().subscribe(projects => {
-      this.projectList = projects;
+
 export class ReportsComponent {
   whichTabIsShown = 1;
+  startDate = new Date();
+  endDate = new Date();
   projects = new FormControl([]);
   users = new FormControl([]);
   private itemsSubject = new ReplaySubject<Result>();
@@ -91,7 +82,7 @@ export class ReportsComponent {
   )
 
   projectList$ = this.projectService.fetchProjects();
-  userList$ = this.userService.fetchUsers().pipe(pluck('data'));
+  userList$ = this.userService.fetchUsers();
 
   constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService) {
     this.onClickReportByProjectHour();
@@ -134,16 +125,19 @@ export class ReportsComponent {
     this.startDate = event.value;
     this.onClickReportByProjectHour();
   }
+  onEndDateChange(event) {
+    this.endDate = event.value;
+    this.onClickReportByProjectHour();
+  }
 
   onClickReportByProjectHour() {
-    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe(values => {
-      this.items = values;
     this.users.setValue([]);
-    this.reportsService.getReportsByProjectHours().subscribe((result: any) => {
+    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 1;
   }
+
 
   onClickReportByProjectCost() {
     this.users.setValue([]);

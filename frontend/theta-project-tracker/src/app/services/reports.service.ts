@@ -16,7 +16,8 @@ export class ReportsService {
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
   getReportsByProjectHours(startDate, endDate) {
-    return this.http.get(this.apiUrl + `report/project/hours?to=${startDate}&from=${endDate}`);
+    console.log(startDate, endDate)
+    return this.http.get(this.apiUrl + `report/project/hours?to="${startDate}"&from="${endDate}"`);
   }
 
   getReportsByProjectCost(): Observable<Result> {
