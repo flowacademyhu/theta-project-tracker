@@ -56,6 +56,7 @@ export class DatePickerComponent implements OnInit {
     this.currentDate.value = dateObject.value;
     let transform = this.datepipe.transform(dateObject.value, 'yyyy-MM-dd');
      console.log(transform);
+     this.datePickerService.fetchCurrentWeek(transform);
    }
    toPreviousWeek() {
      this.currentDate.value = new Date(this.currentDate.value.setDate(this.currentDate.value.getDate() -7))
