@@ -35,9 +35,11 @@ import { Subscription } from 'rxjs';
     <mat-form-field class="cost">
       <input matInput type="number" formControlName="budget">
     </mat-form-field>
-    <div class="actions">
+    <div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn">{{"save"| translate}} </button>
+  <button class="second"  (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn"
+  [disabled]="newProject.invalid"
+  >{{"save"| translate}} </button>
 </div>
 `,
 styles: [
@@ -46,12 +48,17 @@ styles: [
     margin-top: 60px;
   }
   .full-width {
-    min-width: 150px;
-    max-width: 500px;
+    max-width: 250px;
     width: 100%;
   }
   mat-icon:hover {
     cursor: pointer;
+  }
+  .second {
+    margin-left: 10px;
+  }
+  .cost {
+    width: 120px;
   }
   `]
 })
@@ -59,7 +66,7 @@ export class NewProjectComponent implements OnInit, OnDestroy {
 
   constructor(private projectService: ProjectService, private clientService: ClientService) { }
   newProject = new FormGroup({
-    name: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    name: new FormControl(null, Validators.required),
     clientId: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     budget: new FormControl(null, [Validators.required, Validators.min(0)]),
@@ -86,7 +93,6 @@ export class NewProjectComponent implements OnInit, OnDestroy {
   }
   onCloseDialog() {
     if (this.projectToEdit) {
-      console.log(this.newProject.getRawValue())
       this.projectService.updateProject(this.projectToEdit.id, this.newProject.getRawValue()).subscribe();
     } else {
       this.createdProject = this.newProject.getRawValue();

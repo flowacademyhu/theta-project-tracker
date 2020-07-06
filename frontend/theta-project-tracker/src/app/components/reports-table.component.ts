@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ReportsService } from '../services/reports.service';
+import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Result } from '../services/reports.service';
 
 @Component({
   selector: 'app-reports-table',
   template: `
   <div class="wrapper">
   <table mat-table [dataSource]="items|keyvalue" class="mat-elevation-z8" matSort>
-  <ng-container matColumnDef="projects">
+  <ng-container matColumnDef="firstColumn">
     <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
     <td mat-cell *matCellDef="let element"> {{element.key}} </td>
   </ng-container>
   <ng-container *ngFor="let col of displayedColumns | slice:1" matColumnDef="{{col}}">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col}}</th>
-    <td mat-cell *matCellDef="let element"> {{element.value[col]}} </td>
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col}}</th>
+  <td mat-cell *matCellDef="let element"> {{element.value[col]}} </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -22,7 +22,7 @@ import { ReportsService } from '../services/reports.service';
   styles: [`
   .wrapper {
     margin: auto;
-    width: 70%;
+    max-width: 50%;
     margin-top: 200px
   }
   table {
@@ -31,22 +31,22 @@ import { ReportsService } from '../services/reports.service';
   `]
 })
 
-export class ReportsTableComponent implements OnInit {
+export class ReportsTableComponent implements OnChanges {
   displayedColumns = [];
-  firstColumnName = 'projects';
+  firstColumnName = 'firstColumn';
   lastColumnName = 'total';
-  items;
-  constructor(private reportsService: ReportsService) { }
+  @Input() items: Result;
+  constructor() { }
 
-  ngOnInit() {
-    this.reportsService.getReportsByProjectHour().subscribe(users => {
-      this.items = users;
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges.items && simpleChanges.items.currentValue) {
       this.getColumnNames(this.items);
-    });
+    }
   }
 
-  getColumnNames = (source: object) => {
-    let columnNames = [];
+  getColumnNames = (source: Result) => {
+    this.displayedColumns = [];
+    let columnNames = []
     Object.values(source).forEach(x => {
       columnNames = columnNames.concat(Object.keys(x));
     });
@@ -55,7 +55,9 @@ export class ReportsTableComponent implements OnInit {
     uniqueColumnNames.forEach(element => {
       this.displayedColumns.push(element);
     });
-    this.displayedColumns.push(this.lastColumnName);
+    if (columnNames.includes(this.lastColumnName)){
+      this.displayedColumns.push(this.lastColumnName);
+    }
     this.displayedColumns.unshift(this.firstColumnName);
   }
 }

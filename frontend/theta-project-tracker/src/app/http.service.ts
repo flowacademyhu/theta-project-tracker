@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class HttpService {
   getReport() {
-    return this.http.get('http://localhost:3000/report');
+    return this.http.get('http://localhost:3000/report/user/hours');
   }
   constructor(private http: HttpClient) { }
 }
