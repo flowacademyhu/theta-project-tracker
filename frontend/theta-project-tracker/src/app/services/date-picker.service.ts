@@ -11,8 +11,8 @@ export class DatePickerService {
 
   constructor(private http: HttpClient, public datepipe: DatePipe) { }
 
-  fetchCurrentWeek(currentDate: string): Observable<string> {
-    return this.http.get<string>(this.apiUrl + `timeRecord/${currentDate}`);
+  fetchCurrentWeek(currentDate?: string): Observable<string> {
+    return this.http.get<string>(this.apiUrl + `timeRecord?date=${currentDate}`);
   }
 }
 

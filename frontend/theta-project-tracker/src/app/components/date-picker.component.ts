@@ -15,18 +15,6 @@ import { DatePickerService } from '../services/date-picker.service';
 </mat-form-field>
 <mat-icon (click)="toNextWeek()">navigate_next</mat-icon>
 </div>
-<ul>
-<li>Mon</li>
-<li>Tue</li>
-<li>Wed</li>
-<li>Thu</li>
-<li>Fri</li>
-<li>Sat</li>
-<li>Sun</li>
-</ul>
-<div>
-
-</div>
   `,
   styles: [`
   mat-icon:hover {
@@ -34,9 +22,7 @@ import { DatePickerService } from '../services/date-picker.service';
   }
   .container{
     text-align: center;
-  }
-  li{
-    display: inline; margin-left: 10px; padding: 20px; vertical-align: top;
+    margin-top: 50px
   }
   `]
 })
@@ -55,7 +41,6 @@ export class DatePickerComponent implements OnInit {
   updateDoB(dateObject){
     this.currentDate.value = dateObject.value;
     let transform = this.datepipe.transform(dateObject.value, 'yyyy-MM-dd');
-     console.log(transform);
      this.datePickerService.fetchCurrentWeek(transform);
    }
    toPreviousWeek() {
