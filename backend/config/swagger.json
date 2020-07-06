@@ -1572,6 +1572,33 @@
           }
         }
       }
+    },
+    "/timeRecord/copy": {
+      "post": {
+        "summary": "Copy last week",
+        "description": "Expand current week's timeRecord with selected week's prev week's data",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "created"
+          }
+        }
+      }
     }
   },
   "definitions": {
