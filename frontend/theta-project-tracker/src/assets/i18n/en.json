@@ -51,6 +51,7 @@
   "confirmation": "Are you sure?" ,
   "no": "No",
   "yes": "Yes",
+  "add-actionLabel": "+Add New Action Label",
   "project-select": "Select Project",
   "milestone-select": "Select Milestone",
   "activity-select": "Select Activity",
