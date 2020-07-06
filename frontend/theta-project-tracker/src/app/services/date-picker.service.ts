@@ -14,9 +14,6 @@ export class DatePickerService {
   fetchCurrentWeek(): Observable<string> {
     return this.http.get<string>(this.apiUrl + 'timeRecord');
   }
-  transformDate(date) {
-    this.datepipe.transform(date, 'YYYY-MM-DD')
-  }
 }
 
 //'YYYY-MM-DD'
