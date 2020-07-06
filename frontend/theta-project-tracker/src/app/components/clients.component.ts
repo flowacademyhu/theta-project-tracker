@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.model';
 import { DeleteModalComponent } from 'src/app/modals/delete-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NewClientModalComponent } from 'src/app/modals/new-client-modal-component';
 import { Subscription } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-clients',
@@ -12,8 +14,8 @@ import { Subscription } from 'rxjs';
   <div>
   <mat-card class="table-container">
     <div>
-      <button (click)="onAddNewClient()" mat-raised-button color="primary">{{'add-client' | translate}}</button>
-      <mat-table [dataSource]="clients" class="mat-elevation-z8">
+      <button (click)="onAddNewClient()" mat-raised-button>{{'add-client' | translate}}</button>
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef>{{'clients-name' | translate}}</mat-header-cell>
           <mat-cell *matCellDef="let client">{{ client.name }}</mat-cell>
@@ -32,6 +34,11 @@ import { Subscription } from 'rxjs';
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
+      <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons>
+      </mat-paginator>
     </div>
   </mat-card>
 </div>
@@ -50,18 +57,22 @@ import { Subscription } from 'rxjs';
   }
   `]
 })
-export class ClientsComponent implements OnInit, OnDestroy {
+export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   subscriptions$: Subscription[] = [];
   clients: Client[] = [];
   displayedColumns = ['name', 'description', 'actions'];
+  dataSource: MatTableDataSource<Client> = new MatTableDataSource<Client>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private clientService: ClientService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.clientService.fetchClients().subscribe(clients => {
-      this.clients = clients;
-    })
+    this.dataSource.paginator = this.paginator;
+    this.clientService.fetchClients().subscribe((clients) => this.dataSource.data = clients);
+  }
+  public ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
   onOpenEditModal(client) {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
@@ -71,12 +82,12 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.updateDataSource()
+        this.updateDataSource();
       }
     }));
   }
   onOpenDeleteModal(client) {
-    const nameToPass = this.clients.find(c => c.id === client.id).name;
+    const nameToPass = this.dataSource.data.find(c => c.id === client.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -86,7 +97,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
       if (result) {
         this.clientService.deleteClient(client.id).subscribe(() => {
           this.updateDataSource();
-        })
+        });
       }
     }));
   }
@@ -97,16 +108,15 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.updateDataSource()
+        this.updateDataSource();
       }
     }));
   }
   updateDataSource() {
     this.clientService.fetchClients().subscribe(clients => {
-      this.clients = clients;
+      this.dataSource.data = clients;
     });
   }
-
   ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }

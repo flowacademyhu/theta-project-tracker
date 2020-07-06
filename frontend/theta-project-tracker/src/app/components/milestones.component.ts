@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MilestoneService } from '../services/milestone.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Milestone } from '../models/milestone.model';
@@ -7,14 +7,16 @@ import { NewMilestoneModalComponent } from '../modals/new-milestone-modal.compon
 import { DeleteModalComponent } from '../modals/delete-modal.component';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-milestones',
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewMilestone()" mat-raised-button color="primary">{{'add-milestone' | translate}}</button>
-        <mat-table class="mat-elevation-z8" [dataSource]="milestoneArrays">
+    <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
+        <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{'name' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let milestone">{{ milestone.name }}</mat-cell>
@@ -37,6 +39,11 @@ import { Project } from '../models/project.model';
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
+        <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons>
+      </mat-paginator>
     </div>
 </mat-card>
   `,
@@ -54,29 +61,30 @@ mat-icon:hover {
 }
 `]
 })
-export class MilestonesComponent implements OnInit, OnDestroy {
-  milestoneArrays: Milestone[] = [];
+export class MilestonesComponent implements OnInit, OnDestroy, AfterViewInit {
+  milestones: Milestone[] = [];
   projects: Project[] = [];
   subscriptions$: Subscription[] = [];
+  dataSource: MatTableDataSource<Milestone> = new MatTableDataSource<Milestone>();
   displayedColumns = ['name', 'project', 'description', 'action'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private milestoneService: MilestoneService, private dialog: MatDialog,
     private projectService: ProjectService) { }
 
   ngOnInit(): void {
+    this.dataSource.paginator = this.paginator;
     this.milestoneService.fetchMilestones().subscribe((milestones) => {
-      this.milestoneArrays = milestones;
+      this.dataSource.data = milestones;
     });
     this.projectService.fetchProjects().subscribe(projects => {
       this.projects = projects;
-      this.milestoneArrays.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name)
-    })
+      this.dataSource.data.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name);
+    });
   }
-
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
+  public ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
-
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
       width: '35%',
@@ -87,7 +95,7 @@ export class MilestonesComponent implements OnInit, OnDestroy {
     }));
   }
   onOpenDeleteModal(milestone) {
-    const nameToPass = this.milestoneArrays.find(u => u.id === milestone.id).name;
+    const nameToPass = this.dataSource.data.find(u => u.id === milestone.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -113,8 +121,11 @@ export class MilestonesComponent implements OnInit, OnDestroy {
   }
   updateDataSource() {
     this.milestoneService.fetchMilestones().subscribe(milestones => {
-      this.milestoneArrays = milestones;
-      this.milestoneArrays.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name)
-    })
+      this.dataSource.data = milestones;
+      this.dataSource.data.map(m => m.projectName = this.projects.find(p => p.id === m.projectId).name);
+    });
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }
