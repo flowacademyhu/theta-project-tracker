@@ -41,7 +41,7 @@ import { MatPaginator } from '@angular/material/paginator';
       <mat-cell *matCellDef="let project">
        <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
        <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
-       <mat-icon (click)="onAddUserModal()">add</mat-icon>
+       <mat-icon (click)="onAddUserModal(project)">add</mat-icon>
       </mat-cell>
      </ng-container>
     </ng-container>
@@ -146,10 +146,11 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dataSource.data.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name);
     });
   }
-  onAddUserModal() {
+  onAddUserModal(project) {
     const dialogRef = this.dialog.open(AddUserToProjectModalComponent, {
       width: '35%',
-      height: '25%'
+      height: '25%',
+      data: { projectToEdit: project }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

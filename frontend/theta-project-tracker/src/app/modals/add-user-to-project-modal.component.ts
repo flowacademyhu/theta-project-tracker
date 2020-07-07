@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { FormGroup, FormControl} from '@angular/forms';
 import { User } from '../models/user.model';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
+import { ProjectUsersService } from '../services/projectUsers.service'
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-user-to-project-modal',
@@ -36,7 +38,7 @@ import { UserService } from '../services/user.service';
 
 export class AddUserToProjectModalComponent implements OnInit { 
 
-  constructor(private userService: UserService ) {}
+  constructor(private userService: UserService, private projectUsersService: ProjectUsersService, @Inject(MAT_DIALOG_DATA) public data: any ) {}
   subscriptions$: Subscription[] = [];
   availableUsers: User[];
   users: string[] = [];
@@ -54,6 +56,6 @@ export class AddUserToProjectModalComponent implements OnInit {
 
   onAddNewUser() {
     let chosen = this.availableUsers.find(u  => u.firstName + ' ' + u.lastName === this.newUser.get('user').value)
-    this.userService.updateUser(this.userToEdit.id, this.newUser.getRawValue()).subscribe();
+   this.projectUsersService.assignProjectToUser(chosen.id,  [{projectId: this.data.projectToEdit.id, costToClientPerHour: 500}]).subscribe();
   }
 }
