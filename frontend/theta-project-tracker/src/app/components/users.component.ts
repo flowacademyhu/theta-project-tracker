@@ -13,7 +13,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-users',
   template: `
-  <body>
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
@@ -51,7 +50,6 @@ import { Router, ActivatedRoute } from '@angular/router';
       </mat-paginator>
     </div>
     </mat-card>
-    </body>
   `,
   styles: [
     `

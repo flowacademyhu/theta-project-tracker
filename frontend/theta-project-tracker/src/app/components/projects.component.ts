@@ -14,7 +14,6 @@ import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-projects',
   template: `
-  <body>
   <mat-card class="table-container">
     <div>
      <button (click)="onAddNewProject()" mat-raised-button>{{'add-project' | translate}}</button>
@@ -55,7 +54,6 @@ import { MatPaginator } from '@angular/material/paginator';
   </mat-paginator>
  </div>
 </mat-card>
-</body>
   `,
   styles: [
     `

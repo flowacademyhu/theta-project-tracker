@@ -13,7 +13,6 @@ import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-milestones',
   template: `
-  <body>
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
@@ -47,7 +46,6 @@ import { MatPaginator } from '@angular/material/paginator';
       </mat-paginator>
     </div>
 </mat-card>
-</body>
   `,
   styles: [`
   .table-container {

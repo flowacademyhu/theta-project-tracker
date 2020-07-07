@@ -7,7 +7,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-login',
   template: `
-  <body>
     <mat-card>
       <mat-card-content>
         <form [formGroup]="loginForm">
@@ -45,7 +44,6 @@ import { HttpErrorResponse } from '@angular/common/http';
       </div>
       </mat-card-content>
     </mat-card>
-    </body>
   `,
   styles: [`  
   mat-card {
