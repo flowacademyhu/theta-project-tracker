@@ -1,7 +1,7 @@
-let rowOfColumnNames = 11;
-let coordinatesOfRowNames = [];
-let coordinatesOfColumnNames = [];
-let data;
+const rowOfColumnNames = 11;
+const coordinatesOfRowNames = [];
+const coordinatesOfColumnNames = [];
+
 const xl = require('excel4node');
 const wb = new xl.Workbook();
 const ws = wb.addWorksheet('Sheet 1');
@@ -14,20 +14,20 @@ const style = wb.createStyle({
 });
 
 export const createExcelReport = (description: string, source: object) => {
-    data = source;
+    const data = source;
     ws.cell(1, 1).string('Voodoo Park Limited').style(style);
     ws.cell(3, 1).string(description).style(style);
     ws.cell(11, 1).string('Summary').style(style);
-    getRowNames();
-    getColumnNames();
-    fillInData();
+    getRowNames(data);
+    getColumnNames(data);
+    fillInData(data);
 }
 
 export const sendExcelFile = (res: Response) => {
     wb.write('excel.xlsx', res);
 }
 
-const fillInData = () => {
+const fillInData = (data) => {
     let currentRow = rowOfColumnNames + 2;
     Object.entries(data).forEach(row => {
         for (let i = 0; i < coordinatesOfColumnNames.length; i++) {
@@ -39,7 +39,7 @@ const fillInData = () => {
     })
 }
 
-const getColumnNames = () => {
+const getColumnNames = (data) => {
     let displayedColumns = [];
     let columnNames = [];
     Object.values(data).forEach(x => {
@@ -61,7 +61,7 @@ const getColumnNames = () => {
     })
 }
 
-const getRowNames = () => {
+const getRowNames = (data) => {
     let currentRow = 13;
     let currentColumn = 1;
     Object.keys(data).forEach(rowName => {

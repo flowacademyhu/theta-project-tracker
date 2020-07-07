@@ -6,7 +6,7 @@ import * as reportQuery from "../../lib/reportQuery"
 export const exportReportProjectByHours = async (req: Request, res) => {
     const report = await reportQuery.queryReportProjectByHours();
     createExcelReport('Report per project', reportSerializer.getReportProjectByHours(report));
-    sendExcelFile(res);
+    res.status(200).sendExcelFile(res);
 }
 
 export const exportReportProjectByCost = async (req: Request, res) => {
