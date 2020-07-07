@@ -104,7 +104,7 @@ export class RecordOneWeekComponent implements OnInit {
     private actionLabelService: ActionLabelService, private projectUserService: ProjectUsersService, private authService: AuthService) { }
   response: any;
   ngOnInit(): void {
-    this.response = this.timesheetService.getResp();
+   /*  this.response = this.timesheetService.getResp(); */
     if (this.milestoneId && this.projectId && this.activityId) {
       this.milestoneService.fetchMilestones().subscribe(milestones => {
         this.milestone = milestones.find(m => m.id === this.milestoneId).name;
@@ -127,6 +127,5 @@ export class RecordOneWeekComponent implements OnInit {
   } */
   onDeleteProject() {
     this.projectToDelete.emit(this.project);
-    console.log('cica')
   }
 }

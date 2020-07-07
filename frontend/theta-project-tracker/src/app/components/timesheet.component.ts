@@ -6,9 +6,8 @@ import { ProjectUsersService } from '../services/projectUsers.service';
 import { RecordOneWeekComponent } from './record-one-week.component';
 import { MilestoneService } from '../services/milestone.service';
 import { ActionLabelService } from '../services/action-label.service';
-import { TimesheetService, DailyRecord, ResponseItem } from '../services/timsheet.service';
+import { TimesheetService, DailyRecord, ResponseItem, UpdateRecords } from '../services/timsheet.service';
 import { Subscription } from 'rxjs';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-timesheet',
@@ -44,7 +43,6 @@ import { FormGroup } from '@angular/forms';
   </div>
 </div>
 <app-record-create (recordEmitter)="createRecordComponent($event)"></app-record-create>
- 
   `,
   styles: [`
   .recordTime{
@@ -77,31 +75,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   dates: string[] = [];
   record: RecordCreate;
   @ViewChild('container', { static: true, read: ViewContainerRef }) entry: ViewContainerRef;
-  projectsArrived: {
-    name: string;
-    normalHours: {
-      monday: number;
-      tuesday: number;
-      wednesday: number;
-      thursday: number;
-      friday: number;
-      saturday: number;
-      sunday: number;
-    }
-    overTime: {
-      monday: number;
-      tuesday: number;
-      wednesday: number;
-      thursday: number;
-      friday: number;
-      saturday: number;
-      sunday: number;
-    }
-  }[] = [];
-  days: { name?: string, total?: number, overTime?: number }[] = [];
   totals: number[] = [];
   overs: number[] = [];
-  TOTALS: { total: number; over: number }[] = [];
   response: any;
   responseArray = [];
   subscription$: Subscription[] = [];
@@ -114,18 +89,16 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    this.response = this.timesheetService.getResp();
-    this.createFromResponse();
-    this.getDate();
+    this.timesheetService.getTimeRecords().subscribe(response => {
+      this.response = response;
+      this.makeArray();
+      this.getDate();
+      this.createFromResponse();
+      this.getTotals(this.responseArray);
+    })
     this.projectUserService.getUsersProjects(this.authService.authenticate().id).subscribe(projects => {
       this.projects = projects;
-      console.log('ngoninit', this.projects)
     })
-
-    this.makeArray();
-    console.log(this.responseArray)
-    this.getTotals(this.responseArray);
   }
   makeArray() {
     let dataIndex = 0;
@@ -146,41 +119,62 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.response.weekDays.forEach(date => {
       this.dates.push(date);
     })
-    return this.days;
+    return this.dates;
   }
 
   onSaveRecors() {
-    console.log(this.responseArray)
+    let response: UpdateRecords;
+    let oneDArray = [];
+    for (let i = 0; i < this.responseArray.length; i++) {
+      for (let j = 0; j < this.responseArray[i].length; j++) {
+        oneDArray.push(this.responseArray[i][j]);
+      }
+    }
+    response = {
+      modified: oneDArray
+    }
+    this.timesheetService.updateTimeRecords(oneDArray).subscribe(() => {
+      console.log('update cica')
+    })
   }
-  /*   destroyProject(event: any) {
-      this.projects.splice(this.projects.findIndex(p => p.projectName === event), 1);
-      this.projectsArrived.splice(this.projects.findIndex(p => p.projectName === event), 1);
-      
-    } */
   getTotals(array) {
     const totalsNormal = [];
     const totalsOver = []
     for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < 7; j++) {
-        if (totalsNormal[j]) {
-          totalsNormal[j] += array[i][j].normalHours;
-          this.totals = totalsNormal
-        } else {
-          totalsNormal[j] = array[i][j].normalHours;
-          this.totals = totalsNormal
-        }
-        if (totalsOver[j]) {
-          totalsOver[j] += array[i][j].overTime;
-          this.overs = totalsOver;
-        } else {
-          totalsOver[j] = array[i][j].overTime;
-          this.overs = totalsOver
+      if (array[i].length > 0) {
+        for (let j = 0; j < 7; j++) {
+          if (totalsNormal[j]) {
+            totalsNormal[j] += array[i][j].normalHours;
+            this.totals = totalsNormal
+          } else {
+            totalsNormal[j] = array[i][j].normalHours;
+            this.totals = totalsNormal
+          }
+          if (totalsOver[j]) {
+            totalsOver[j] += array[i][j].overTime;
+            this.overs = totalsOver;
+          } else {
+            totalsOver[j] = array[i][j].overTime;
+            this.overs = totalsOver
+          }
         }
       }
+    
     }
   }
   createRecordComponent(event: RecordCreate) {
-    this.record = event;
+    this.timesheetService.createTimeRecords(event).subscribe(() => {
+      setTimeout(() => {
+        this.timesheetService.getTimeRecords().subscribe(array => {
+          console.log(array)
+          this.response = array.projects
+          this.entry.clear()
+          this.createFromResponse()
+        })
+      }, 500);
+      
+    });
+    /* this.record = event;
     console.log(event)
     const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
     const componentRef = this.entry.createComponent(factory);
@@ -201,9 +195,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       if (changes) {
         this.checkForUpdates(componentRef, this.responseArray)
       }
-    }))
+    })) */
+    
+
   }
+
   createFromResponse() {
+    console.log('CICA', this.response.projects)
     const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
     if (this.response.projects.length > 0) {
       let dayCount = 0;
@@ -216,24 +214,31 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         componentRef.instance.projectId = res[i].projectId;
         componentRef.instance.milestoneId = res[i].milestoneId;
         componentRef.instance.activityId = res[i].actionLabelId;
+        componentRef.instance.desc = res[i].description;
         componentRef.instance.ID = i;
+        /* this.responseArray[i] = new Array<ResponseItem[]>(); */
         for (let j = 0; j < 7; j++) {
           let day = this.week[dayIndex];
           let oneDay: DailyRecord = this.response.data[dataIndex];
           componentRef.instance.timeSheet.get('normalHours').get(day).patchValue(oneDay.normalHours);
           componentRef.instance.timeSheet.get('overTime').get(day).patchValue(oneDay.overTime);
-          if (j === week - 1) {
+          if (j === 6) {
             dayIndex = 0
           } else {
             dayIndex++;
           }
           dataIndex++;
         }
-
-        /*  dayCount += 7;
-         week += 7; */
         this.subscription$.push(componentRef.instance.projectToDelete.subscribe(() => {
+          const uniqueIds = {
+            milestoneId: componentRef.instance.milestoneId,
+            actionLabelId: componentRef.instance.activityId
+          }
+          this.timesheetService.deleteTimeRecords(uniqueIds).subscribe();
           componentRef.destroy();
+          this.responseArray.splice(componentRef.instance.ID, 1);
+          this.checkForUpdates(componentRef, this.responseArray)
+        
         }))
         this.subscription$.push(componentRef.instance.timeSheet.valueChanges.subscribe(changes => {
           if (changes) {
