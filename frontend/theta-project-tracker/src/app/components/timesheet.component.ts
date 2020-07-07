@@ -90,14 +90,25 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  this.displayTimeSheet()
+    this.displayTimeSheet()
     this.projectUserService.getUsersProjects(this.authService.authenticate().id).subscribe(projects => {
       this.projects = projects;
     })
   }
   dateChange(event: string) {
-  this.displayTimeSheet(event);
-  return this.currentDisplayedDate = event;
+    this.datePickerService.fetchCurrentWeek(event).subscribe(resp => {
+      let response = resp;
+      if (response.projects.length === 0) {
+        this.responseArray = [];
+        for (let i = 0; i < 7; i++) {
+          this.totals[i] = 0;
+          this.overs[i] = 0;
+        }
+      }
+    })
+
+    this.displayTimeSheet(event);
+    return this.currentDisplayedDate = event;
   }
   makeArray() {
     let dataIndex = 0;
@@ -133,6 +144,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.timesheetService.updateTimeRecords(oneDArray, this.currentDisplayedDate).subscribe();
   }
   getTotals(array) {
+    this.makeArray()
     const totalsNormal = [];
     const totalsOver = []
     for (let i = 0; i < array.length; i++) {
@@ -204,7 +216,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
               this.componentManagement(date)
             })
           });
-         this.responseArray.splice(componentRef.instance.ID, 1)
+          this.responseArray.splice(componentRef.instance.ID, 1)
           this.getTotals(this.responseArray);
         }))
         this.subscription$.push(componentRef.instance.timeSheet.statusChanges.subscribe(status => {

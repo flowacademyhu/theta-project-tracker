@@ -98,7 +98,7 @@ export class RecordOneWeekComponent implements OnInit {
   })
   constructor(private timesheetService: TimesheetService, private milestoneService: MilestoneService,
     private actionLabelService: ActionLabelService, private projectUserService: ProjectUsersService, private authService: AuthService) { }
-  response: any;
+    week = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   ngOnInit(): void {
     if (this.milestoneId && this.projectId && this.activityId) {
       this.milestoneService.fetchMilestones().subscribe(milestones => {
