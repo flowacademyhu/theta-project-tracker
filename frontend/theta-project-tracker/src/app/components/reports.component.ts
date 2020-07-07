@@ -1,11 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ReportsService } from '../services/reports.service';
+import { Component, } from '@angular/core';
+import { ReportsService, Result } from '../services/reports.service';
 import { ProjectService } from '../services/project.service';
 import { FormControl } from '@angular/forms';
+import { map, switchMap, startWith, pluck } from 'rxjs/operators';
+import { ReplaySubject, combineLatest, } from 'rxjs';
+import { Project } from '../models/project.model';
+import { UserService } from '../services/user.service';
+import { User } from '../models/user.model';
+import * as moment from "moment";
+
 @Component({
   selector: 'app-reports',
   template: `
-<div class="reports">
+  <div class="reports">
   <button mat-raised-button (click)="onClickReportByProjectHour()">{{'report-by-project-hours' | translate}}</button>
   <button mat-raised-button (click)="onClickReportByProjectCost()">{{'report-by-project-money' | translate}}</button>
   <button mat-raised-button (click)="onClickReportByUserHours()">{{'report-by-contractor-hours' | translate}}</button>
@@ -13,49 +20,185 @@ import { FormControl } from '@angular/forms';
   <button mat-raised-button (click)="onClickReportByProjectBudget()">{{'project-budget-report' | translate}}</button>
 </div>
 
-<app-reports-table *ngIf="items" [items]="items" [filteredItems]="filteredItems"></app-reports-table>
+<mat-form-field appearance="fill">
+    <mat-label>From:</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+    <mat-label>To:</mat-label>
+    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
+  <mat-label>Projects</mat-label>
+  <mat-select [formControl]="projects" multiple>
+    <mat-option *ngFor="let project of projectList$ | async" [value]="project">{{project.name}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)" appearance="fill">
+  <mat-label>Users</mat-label>
+  <mat-select [formControl]="users" multiple>
+    <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<app-reports-table [items]="items$ | async" ></app-reports-table>
   `,
   styles: [`
   .reports {
-    width: 80%;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+  }
+  button {
+    margin: 15px;
   }
   `],
 })
-export class ReportsComponent implements OnInit {
-  items;
-  filteredItems;
-  projects = new FormControl();
-  projectList;
-  constructor(private reportsService: ReportsService, private projectService: ProjectService) { }
-  ngOnInit(): void {
-    this.projectService.fetchProjects().subscribe(projects => {
-      this.projectList = projects;
+
+export class ReportsComponent {
+  whichTabIsShown = 1;
+  startDate = moment().format('YYYY-MM-DD');
+  endDate = moment().format('YYYY-MM-DD');
+  projects = new FormControl([]);
+  users = new FormControl([]);
+  private itemsSubject = new ReplaySubject<Result>();
+
+  items$ = combineLatest(
+    this.projects.valueChanges.pipe(startWith([])),
+    this.users.valueChanges.pipe(startWith([]))
+  )
+  .pipe(
+    switchMap(([projectFilter, userFilter]: [Project[], User[]]) => {
+      return this.itemsSubject.asObservable().pipe(
+        map(this.filterByProjects(projectFilter)),
+        map(this.filterByUsers(userFilter))
+      );
     })
+  )
+
+  projectList$ = this.projectService.fetchProjects();
+  userList$ = this.userService.fetchUsers();
+
+  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService) {
     this.onClickReportByProjectHour();
+  }
+  
+  filterByProjects(projectFilter: Project[]): (dataSet: Result) => Partial<Result> {
+    return (dataSet: Result) => {
+      if (!projectFilter.length) {
+        return dataSet;
+      };
+      let filtered = {}
+      projectFilter.forEach((project: Project) => {
+        const data = dataSet[project.name];
+        if (data) {
+          filtered[project.name] = data;
+        }
+      });
+      return filtered;
+    }
+  }
+  
+  filterByUsers(userFilter: User[]): (dataset: Result) => Partial<Result> {
+    return (dataSet: Result) => {
+      if (userFilter.length === 0) {
+        return dataSet;
+      };
+      let filtered = {}
+      userFilter.forEach((user: User) => {
+        const userName = `${user.firstName} ${user.lastName}`
+        const data = dataSet[userName];
+        if (data) {
+          filtered[userName] = data;
+        }
+      });
+      return filtered;
+    }
+  }
+
+  onStartDateChange(event) {
+    this.startDate = moment(event.value).format('YYYY-MM-DD');
+    switch(this.whichTabIsShown) {
+      case 1:
+        this.onClickReportByProjectHour();
+        break;
+      case 2:
+        this.onClickReportByProjectCost();
+        break;
+      case 3:
+        this.onClickReportByUserHours();
+        break;
+      case 4:
+        this.onClickReportByUserCost();
+        break;
+      case 5:
+        this.onClickReportByProjectBudget();
+        break;
+    } 
+  }
+  onEndDateChange(event) {
+    this.endDate = moment(event.value).format('YYYY-MM-DD');
+    switch(this.whichTabIsShown) {
+      case 1:
+        this.onClickReportByProjectHour();
+        break;
+      case 2:
+        this.onClickReportByProjectCost();
+        break;
+      case 3:
+        this.onClickReportByUserHours();
+        break;
+      case 4:
+        this.onClickReportByUserCost();
+        break;
+      case 5:
+        this.onClickReportByProjectBudget();
+        break;
+    } 
   }
 
   onClickReportByProjectHour() {
-    this.reportsService.getReportsByProjectHours().subscribe(values => {
-      this.items = values;
+    this.users.setValue([]);
+    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
+      this.itemsSubject.next(result);
     })
+    this.whichTabIsShown = 1;
   }
+
   onClickReportByProjectCost() {
-    this.reportsService.getReportsByProjectCost().subscribe(values => {
-      this.items = values;
+    this.users.setValue([]);
+    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate).subscribe((result: any) => {
+      this.itemsSubject.next(result);
     })
+    this.whichTabIsShown = 2;
   }
+
   onClickReportByUserHours() {
-    this.reportsService.getReportsByUserHours().subscribe(values => {
-      this.items = values;
+    this.projects.setValue([]);
+    this.reportsService.getReportsByUserHours(this.startDate, this.endDate).subscribe((result: any) => {
+      this.itemsSubject.next(result);
     })
-  }  onClickReportByUserCost() {
-    this.reportsService.getReportsByUserCost().subscribe(values => {
-      this.items = values;
+    this.whichTabIsShown = 3;
+  }
+  
+  onClickReportByUserCost() {
+    this.projects.setValue([]);
+    this.reportsService.getReportsByUserCost(this.startDate, this.endDate).subscribe((result: any) => {
+      this.itemsSubject.next(result);
     })
-  }  onClickReportByProjectBudget() {
-    this.reportsService.getReportsBudget().subscribe(values => {
-      this.items = values;
+    this.whichTabIsShown = 4;
+  }
+
+  onClickReportByProjectBudget() {
+    this.reportsService.getReportsBudget(this.startDate, this.endDate).subscribe((result: any) => {
+      this.itemsSubject.next(result);
     })
+    this.whichTabIsShown = 5;
   }
 }

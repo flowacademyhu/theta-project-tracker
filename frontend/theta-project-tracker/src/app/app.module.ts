@@ -54,11 +54,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
 import { ConfirmModalComponent } from './modals/confirm-modal.component';
+import { AddUserToProjectModalComponent } from './modals/add-user-to-project-modal.component'
 import { RecordCreateComponent } from '../app/components/record-create.component';
 import { ActionLabelComponent } from './components/action-label.component';
 import { NewActionLabelModalComponent } from './modals/new-action-label-modal.component';
 import { NewActionLabelComponent } from './components/new-action-label.component';
 import { EditUserComponent } from '../app/components/edit-user.component';
+import { DatePickerComponent } from './components/date-picker.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 export function httpTranslateLoader(http: HttpClient) {
@@ -99,11 +105,14 @@ export function appInit(provider: AuthService) {
     NewMilestoneModalComponent,
     ReportsTableComponent,
     ConfirmModalComponent,
+    AddUserToProjectModalComponent,
     RecordCreateComponent,
     ActionLabelComponent,
     NewActionLabelModalComponent,
     NewActionLabelComponent,
-    EditUserComponent
+    EditUserComponent,
+    DatePickerComponent,
+  
   ],
   imports: [
     MatSidenavModule,
@@ -133,8 +142,9 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
-    MatDialogModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -153,7 +163,11 @@ export function appInit(provider: AuthService) {
       useFactory: appInit,
       deps: [AuthService],
       multi: true,
-  }
+  },
+  {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
+  MatDatepickerModule,
+  MatNativeDateModule,
+  DatePipe
 ],
   bootstrap: [AppComponent],
   entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent]

@@ -16,7 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   <mat-card class="table-container">
     <div>
     <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
-        <mat-table [dataSource]="users" class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{ 'name' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">{{ user.fullName }}</mat-cell>
@@ -53,6 +53,14 @@ import { Router, ActivatedRoute } from '@angular/router';
   `,
   styles: [
     `
+    body {
+      height: 777px;
+     /*  position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0; */
+    }
     .table-container {
       margin: auto;
     max-width: 70%;
@@ -76,7 +84,9 @@ import { Router, ActivatedRoute } from '@angular/router';
     .mat-column-cost {
       flex: 0 0 15%;
     }
- 
+    mat-icon:hover {
+      cursor: pointer;
+  }
 
     `]
 })
@@ -95,23 +105,21 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.userService.fetchUsers().subscribe((users) => {
-      this.users = users;
-      this.users.map(u => {
+      this.dataSource.data = users;
+      this.dataSource.data.map(u => {
         this.projectUserService.getUsersProjects(u.id).subscribe(array => {
-          u.projects = array
-        })
-      })
-      this.users.map(u => u.fullName = u.firstName + ' ' + u.lastName)
+          u.projects = array;
+        });
+      });
+      this.dataSource.data.map(u => u.fullName = u.firstName + ' ' + u.lastName);
     });
   }
-
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
-
   onOpenDeleteModal(user) {
-    const nameToPass = this.users.find(u => u.id === user.id).firstName + ' ' +
-      this.users.find(u => u.id === user.id).lastName;
+    const nameToPass = this.dataSource.data.find(u => u.id === user.id).firstName + ' ' +
+      this.dataSource.data.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
       width: '25%',
@@ -121,47 +129,46 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       if (result) {
         this.userService.deleteUser(user.id).subscribe(() => {
           this.updateDataSource();
-        })
+        });
       }
     }));
-  };
-
+  }
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '35%',
       height: '80%'
     });
-    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {  
-      this.updateDataSource()
+    this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
+      this.updateDataSource();
     }));
   }
   onOpenEditModal(user) {
     this.router.navigate(['edit-user'], {
       relativeTo: this.route,
       queryParams: { userId: user.id }
-    })
+    });
     const dialogRef = this.dialog.open(NewUserModalComponent, {
       width: '35%',
       height: '80%',
       data: { userToEdit: user }
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['..', 'users'])
-      this.updateDataSource()
+      this.router.navigate(['..', 'users']);
+      this.updateDataSource();
     }));
-  }
-  ngOnDestroy(): void {
-    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
   updateDataSource() {
     this.userService.fetchUsers().subscribe(users => {
-      this.users = users;
-      this.users.map(u => {
+      this.dataSource.data = users;
+      this.dataSource.data.map(u => {
         this.projectUserService.getUsersProjects(u.id).subscribe(array => {
           u.projects = array;
-          u.fullName = u.firstName + ' ' + u.lastName
-        })
-      })
+          u.fullName = u.firstName + ' ' + u.lastName;
+        });
+      });
     });
+  }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

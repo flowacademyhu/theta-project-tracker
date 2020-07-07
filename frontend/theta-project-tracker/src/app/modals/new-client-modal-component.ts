@@ -10,6 +10,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
        <app-new-client [clientToEdit]="clientToEdit"></app-new-client>
     </mat-dialog-content>
     `,
+    styles: [`
+    h2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    `]
 })
 
 export class NewClientModalComponent implements OnInit {
