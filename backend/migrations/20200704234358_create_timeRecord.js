@@ -1,7 +1,7 @@
 exports.up = function (knex) {
     return knex.schema.createTable('timeRecords', (table) => {
         table.increments();
-        table.integer('userTimeRecordId').unsigned().references('userTimeRecords.id');
+        table.integer('userTimeRecordId').unsigned().references('userTimeRecords.id').onDelete('CASCADE');
         table.float('normalHours').notNullable().defaultTo(0);
         table.float('overTime').notNullable().defaultTo(0);
         table.date('date');
