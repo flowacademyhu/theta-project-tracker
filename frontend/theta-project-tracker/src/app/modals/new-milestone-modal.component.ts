@@ -10,7 +10,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   <mat-dialog-content class="mat-typography">
     <app-new-milestone [milestoneToEdit]="milestoneToEdit"></app-new-milestone>
   </mat-dialog-content>
-  `
+  `,
+  styles: [`
+  h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  `]
 })
 export class NewMilestoneModalComponent implements OnInit {
 

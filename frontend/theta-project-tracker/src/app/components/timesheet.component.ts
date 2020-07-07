@@ -11,6 +11,7 @@ import { ActionLabelService } from '../services/action-label.service';
 @Component({
   selector: 'app-timesheet',
   template: `
+  <app-date-picker format='yyyy-MM-dd'></app-date-picker>
   <div>
   <ng-template #container>
  
