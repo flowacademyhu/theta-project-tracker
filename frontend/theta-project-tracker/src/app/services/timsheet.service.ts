@@ -18,7 +18,7 @@ export class TimesheetService {
         const httpOptions: object = {responseType: 'text'};
         return this.http.post<RecordCreate>(this.apiUrl + `timeRecord?date=${date}`, record, httpOptions);
     }
-    updateTimeRecords(records: ResponseItem[], date?: string): Observable<string> {
+    updateTimeRecords(records: UpdateRecords, date?: string): Observable<string> {
         console.log('service', date)
         const httpOptions: object = {responseType: 'text'};
         return this.http.put<string>(this.apiUrl + `timeRecord?date=${date}`, records, httpOptions)

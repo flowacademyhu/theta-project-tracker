@@ -141,7 +141,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     response = {
       modified: oneDArray
     }
-    this.timesheetService.updateTimeRecords(oneDArray, this.currentDisplayedDate).subscribe();
+    this.timesheetService.updateTimeRecords(response, this.currentDisplayedDate).subscribe();
   }
   getTotals(array) {
     this.makeArray()
@@ -173,7 +173,9 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.timesheetService.createTimeRecords(event, this.currentDisplayedDate).subscribe(() => {
       this.timesheetService.getTimeRecords(this.currentDisplayedDate).subscribe(array => {
         this.response = array
+        console.log(this.responseArray)
         this.componentManagement()
+        console.log('second', this.responseArray)
       })
     });
   }
@@ -249,6 +251,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         }
       }
     }
+    console.log(this.responseArray, 'checkforupdates')
+    console.log('totals', this.totals, 'overs', this.overs)
     this.getTotals(this.responseArray);
     return array;
   }
