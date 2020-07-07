@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   <div class="weekdays">
   <mat-grid-list cols="7" rowHeight="30px">
     <div class="save"> <button (click)="onSaveRecors()" mat-raised-button
-        color="primary">{{ 'save-record' | translate }}</button></div>
+        color="primary" [disabled]="areRecordsValid">{{ 'save-record' | translate }}</button></div>
     <mat-grid-tile *ngFor="let day of week" [colspan]="1">
       <p><strong>{{ day | titlecase }}</strong></p>
     </mat-grid-tile>
@@ -80,6 +80,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   response: any;
   responseArray = [];
   subscription$: Subscription[] = [];
+  areRecordsValid: boolean;
   constructor(private authService: AuthService, private projectUserService: ProjectUsersService,
     private resolver: ComponentFactoryResolver, private milestoneService:
       MilestoneService, private actionLabelService: ActionLabelService, private timesheetService:
@@ -93,7 +94,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       this.response = response;
       this.makeArray();
       this.getDate();
-      this.createFromResponse();
+      this.componentManagement();
       this.getTotals(this.responseArray);
     })
     this.projectUserService.getUsersProjects(this.authService.authenticate().id).subscribe(projects => {
@@ -133,9 +134,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     response = {
       modified: oneDArray
     }
-    this.timesheetService.updateTimeRecords(oneDArray).subscribe(() => {
-      console.log('update cica')
-    })
+    this.timesheetService.updateTimeRecords(oneDArray).subscribe();
   }
   getTotals(array) {
     const totalsNormal = [];
@@ -159,53 +158,24 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           }
         }
       }
-    
     }
   }
   createRecordComponent(event: RecordCreate) {
     this.timesheetService.createTimeRecords(event).subscribe(() => {
-      setTimeout(() => {
-        this.timesheetService.getTimeRecords().subscribe(array => {
-          console.log(array)
-          this.response = array.projects
-          this.entry.clear()
-          this.createFromResponse()
-        })
-      }, 500);
-      
+      this.timesheetService.getTimeRecords().subscribe(array => {
+        console.log(array)
+        this.response = array
+        this.entry.clear()
+        this.componentManagement()
+      })
     });
-    /* this.record = event;
-    console.log(event)
-    const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
-    const componentRef = this.entry.createComponent(factory);
-    componentRef.instance.desc = event.description;
-    console.log('this.projects', this.projects)
-    componentRef.instance.project = this.projects.find(p => p.projectId === this.record.projectId).name
-    componentRef.instance.ID = this.response.projects.length + 1;
-    this.milestoneService.fetchMilestones().subscribe(milestones => {
-      componentRef.instance.milestone = milestones.find(m => m.id === this.record.milestoneId).name;
-    })
-    this.actionLabelService.fetchActionLabels().subscribe(labels => {
-      componentRef.instance.actionLabel = labels.find(l => l.id === this.record.actionLabelId).name
-    })
-    componentRef.instance.projectToDelete.subscribe(() => {
-      componentRef.destroy();
-    })
-    this.subscription$.push(componentRef.instance.timeSheet.valueChanges.subscribe(changes => {
-      if (changes) {
-        this.checkForUpdates(componentRef, this.responseArray)
-      }
-    })) */
-    
-
   }
 
-  createFromResponse() {
-    console.log('CICA', this.response.projects)
+  componentManagement() {
+    this.entry.clear()
     const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
     if (this.response.projects.length > 0) {
-      let dayCount = 0;
-      let week = 7;
+      this.makeArray();
       let dayIndex = 0;
       let dataIndex = 0;
       const res = this.response.projects;
@@ -216,7 +186,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         componentRef.instance.activityId = res[i].actionLabelId;
         componentRef.instance.desc = res[i].description;
         componentRef.instance.ID = i;
-        /* this.responseArray[i] = new Array<ResponseItem[]>(); */
         for (let j = 0; j < 7; j++) {
           let day = this.week[dayIndex];
           let oneDay: DailyRecord = this.response.data[dataIndex];
@@ -234,22 +203,32 @@ export class TimesheetComponent implements OnInit, OnDestroy {
             milestoneId: componentRef.instance.milestoneId,
             actionLabelId: componentRef.instance.activityId
           }
-          this.timesheetService.deleteTimeRecords(uniqueIds).subscribe();
-          componentRef.destroy();
+          this.timesheetService.deleteTimeRecords(uniqueIds).subscribe(() => {
+            this.timesheetService.getTimeRecords().subscribe(response => {
+              this.response = response;
+              this.componentManagement()
+            })
+          });
           this.responseArray.splice(componentRef.instance.ID, 1);
           this.checkForUpdates(componentRef, this.responseArray)
-        
+        }))
+        this.subscription$.push(componentRef.instance.timeSheet.statusChanges.subscribe(status => {
+          if (status === "VALID") {
+            this.areRecordsValid = false
+          } else {
+            this.areRecordsValid = true;
+          }
         }))
         this.subscription$.push(componentRef.instance.timeSheet.valueChanges.subscribe(changes => {
           if (changes) {
             this.checkForUpdates(componentRef, this.responseArray)
-
           }
         }))
       }
     }
   }
   checkForUpdates(ref: ComponentRef<RecordOneWeekComponent>, array) {
+    console.log(array)
     let copy = [...array];
     let id = ref.instance.ID;
     for (let i = 0; i < array.length; i++) {
@@ -265,7 +244,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       }
     }
     this.getTotals(this.responseArray);
-    console.log('changed', array)
     return array;
   }
 }

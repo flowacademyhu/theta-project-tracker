@@ -100,6 +100,6 @@ export class RecordCreateComponent implements OnInit {
     this.recordCreate.get('projectId').patchValue(null);
     this.recordCreate.get('milestoneId').patchValue(null);
     this.recordCreate.get('actionLabelId').patchValue(null);
-    this.recordCreate.get('description').patchValue(null);
+    this.recordCreate.get('description').patchValue('');
   }
 }

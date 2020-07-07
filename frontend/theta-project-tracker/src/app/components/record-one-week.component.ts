@@ -20,7 +20,6 @@ import { AuthService } from '../services/auth.service';
       <p></p>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="1" [rowspan]="1">
-   
       <mat-icon  matTooltip="{{ desc }}">sms</mat-icon>
     </mat-grid-tile>
     <mat-grid-tile class="tile" *ngFor="let day of days" [colspan]="day.cols" [rowspan]="day.rows">
@@ -37,9 +36,6 @@ import { AuthService } from '../services/auth.service';
       <button mat-icon-button>
         <mat-icon (click)="onDeleteProject()">clear</mat-icon>
       </button>
-      <!--<button [disabled]="timeSheet.invalid" type="submit" mat-icon-button (click)="getDailyHours()">
-        <mat-icon>save</mat-icon>
-      </button>-->
     </mat-grid-tile>
   </mat-grid-list>
 </div>
@@ -78,33 +74,32 @@ export class RecordOneWeekComponent implements OnInit {
     { cols: 3, rows: 1, name: 'sat' },
     { cols: 3, rows: 1, name: 'sun' },
   ];
-  @Output() projectEmitter: EventEmitter<Object> = new EventEmitter<Object>();
+  @Output() buttonToggle: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() projectToDelete: EventEmitter<string> = new EventEmitter<string>();
   timeSheet = new FormGroup({
     normalHours: new FormGroup({
-      mon: new FormControl(null, Validators.max(8)),
-      tue: new FormControl(null, Validators.max(8)),
-      wed: new FormControl(null, Validators.max(8)),
-      thu: new FormControl(null, Validators.max(8)),
-      fri: new FormControl(null, Validators.max(8)),
-      sat: new FormControl(null, Validators.max(8)),
-      sun: new FormControl(null, Validators.max(8)),
+      mon: new FormControl(0, Validators.max(8)),
+      tue: new FormControl(0, Validators.max(8)),
+      wed: new FormControl(0, Validators.max(8)),
+      thu: new FormControl(0, Validators.max(8)),
+      fri: new FormControl(0, Validators.max(8)),
+      sat: new FormControl(0, Validators.max(8)),
+      sun: new FormControl(0, Validators.max(8)),
     }),
     overTime: new FormGroup({
-      mon: new FormControl(null, Validators.max(4)),
-      tue: new FormControl(null, Validators.max(4)),
-      wed: new FormControl(null, Validators.max(4)),
-      thu: new FormControl(null, Validators.max(4)),
-      fri: new FormControl(null, Validators.max(4)),
-      sat: new FormControl(null, Validators.max(4)),
-      sun: new FormControl(null, Validators.max(4)),
+      mon: new FormControl(0, Validators.max(4)),
+      tue: new FormControl(0, Validators.max(4)),
+      wed: new FormControl(0, Validators.max(4)),
+      thu: new FormControl(0, Validators.max(4)),
+      fri: new FormControl(0, Validators.max(4)),
+      sat: new FormControl(0, Validators.max(4)),
+      sun: new FormControl(0, Validators.max(4)),
     })
   })
   constructor(private timesheetService: TimesheetService, private milestoneService: MilestoneService,
     private actionLabelService: ActionLabelService, private projectUserService: ProjectUsersService, private authService: AuthService) { }
   response: any;
   ngOnInit(): void {
-   /*  this.response = this.timesheetService.getResp(); */
     if (this.milestoneId && this.projectId && this.activityId) {
       this.milestoneService.fetchMilestones().subscribe(milestones => {
         this.milestone = milestones.find(m => m.id === this.milestoneId).name;
@@ -117,14 +112,6 @@ export class RecordOneWeekComponent implements OnInit {
       })
     }
   }
-/*   getDailyHours() {
-    let projectTotal = {
-      name: this.project,
-      normalHours: this.timeSheet.get('normalHours').value,
-      overTime: this.timeSheet.get('overTime').value
-    }
-    this.projectEmitter.emit(projectTotal);
-  } */
   onDeleteProject() {
     this.projectToDelete.emit(this.project);
   }
