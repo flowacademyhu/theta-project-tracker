@@ -1528,10 +1528,7 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "type": "array",
-              "items": {
                 "$ref": "#definitions/TimeRecordUpdate"
-              }
             }
           }
         ],
@@ -2077,14 +2074,22 @@
     "TimeRecordUpdate": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "number"
-        },
-        "normalHours": {
-          "type": "number"
-        },
-        "overTime": {
-          "type": "number"
+        "modified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "normalHours": {
+                "type": "number"
+              },
+              "overTime": {
+                "type": "number"
+              }
+            }
+          }
         }
       }
     },

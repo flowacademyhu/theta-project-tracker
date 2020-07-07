@@ -4,25 +4,15 @@ exports.seed = (knex) => {
             userId: 1,
             milestoneId: 2,
             actionLabelId: 1,
-            description: "sample description"
+            description: "sample description",
+            week: '2020-06-29'
         },
         {
             userId: 2,
             milestoneId: 3,
             actionLabelId: 2,
-            description: "sample description"
-        },
-        {
-            userId: 3,
-            milestoneId: 2,
-            actionLabelId: 3,
-            description: "sample description"
-        },
-        {
-            userId: 1,
-            milestoneId: 1,
-            actionLabelId: 4,
-            description: "sample description"
-        },
+            description: "sample description",
+            week: '2020-07-06'
+        }
     ])
 }
