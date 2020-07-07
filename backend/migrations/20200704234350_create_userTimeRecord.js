@@ -4,7 +4,9 @@ exports.up = function (knex) {
         table.integer('userId').unsigned().references('users.id').notNullable();
         table.integer('milestoneId').unsigned().references('milestones.id').notNullable();
         table.integer('actionLabelId').unsigned().references('actionLabels.id').notNullable();
-        table.string('description').nullable();
+        table.string('description').notNullable();
+        table.date('week').notNullable();
+        table.unique(['userId', 'milestoneId', 'actionLabelId', 'week']);
     });
 };
 exports.down = function (knex) {
