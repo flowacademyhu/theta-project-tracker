@@ -15,6 +15,10 @@
   ],
   "tags": [
     {
+      "name": "no-auth",
+      "description": ""
+    },
+    {
       "name": "user",
       "description": ""
     },
@@ -28,8 +32,7 @@
       "post": {
         "summary": "Login with user",
         "tags": [
-          "user",
-          "admin"
+          "no-auth"
         ],
         "parameters": [
           {
@@ -64,7 +67,7 @@
               }
             }
           },
-          "404":{
+          "404": {
             "description": "Email or password is incorrect"
           }
         }
@@ -240,7 +243,7 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#definitions/User"
+              "$ref": "#definitions/UserUpdate"
             }
           }
         ],
@@ -645,6 +648,7 @@
       "get": {
         "summary": "Get all users on a specific project",
         "tags": [
+          "user",
           "admin"
         ],
         "parameters": [
@@ -743,6 +747,92 @@
         "responses": {
           "204": {
             "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/project/{projectId}/milestone": {
+      "get": {
+        "summary": "Get milestones on a project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Milestones",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/MilestoneResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/{projectId}/actionLabel": {
+      "get": {
+        "summary": "Get actionLabels on specific project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "projectId",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ActionLabels on specific project",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/ActionLabelResponse"
+              }
+            }
           }
         }
       }
@@ -907,7 +997,7 @@
       }
     },
     "/actionLabel": {
-      "post":{
+      "post": {
         "summary": "Create new actionLabel",
         "tags": [
           "admin"
@@ -1097,8 +1187,8 @@
           }
         }
       },
-      "post": {
-        "summary": "Create new custom multiplier date",
+      "put": {
+        "summary": "Create custom date; if exists update",
         "tags": [
           "admin"
         ],
@@ -1118,47 +1208,15 @@
         ],
         "responses": {
           "201": {
-            "description": "New custom multiplier date created"
+            "description": "Created"
           },
-          "400": {
-            "description": "This date is already custom"
-          }
-        }
-      }
-    },
-    "/overtimeMultiplier/{id}": {
-      "get": {
-        "summary": "Get specific date by id",
-        "tags": [
-          "admin"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Custom date by id",
-            "schema": {
-              "$ref": "#definitions/OvertimeMultiplierResponse"
-            }
-          },
-          "404": {
-            "description": "Custom date with given id does not exist"
+          "204": {
+            "description": "Updated"
           }
         }
       },
-      "put": {
-        "summary": "Update custom date with id",
+      "delete": {
+        "summary": "Delete custom date by date",
         "tags": [
           "admin"
         ],
@@ -1167,12 +1225,6 @@
             "in": "header",
             "name": "Authorization",
             "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
           },
           {
             "in": "body",
@@ -1184,15 +1236,17 @@
         ],
         "responses": {
           "204": {
-            "description": "Updated"
+            "description": "Deleted"
           },
           "404": {
-            "description": "Custom date with given id does not exist"
+            "description": "Custom date with given date does not exist"
           }
         }
-      },
-      "delete": {
-        "summary": "Delete custom date by id",
+      }
+    },
+    "/calendar": {
+      "get": {
+        "summary": "Get days and multipliers for a month",
         "tags": [
           "admin"
         ],
@@ -1203,18 +1257,318 @@
             "type": "string"
           },
           {
-            "in": "path",
-            "name": "id",
-            "type": "number",
-            "required": true
+            "in": "query",
+            "name": "year",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dates and multipliers of the queried month",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/CalendarResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report/project/cost": {
+      "get": {
+        "summary": "Get money spent per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get money spent per project for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/project/hours": {
+      "get": {
+        "summary": "Get hours spent per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get hours spent per project for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/user/hours": {
+      "get": {
+        "summary": "Get hours spent per user",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get hours spent per user for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/user/cost": {
+      "get": {
+        "summary": "Get money spent per user",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get money spent per user for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/report/project/budget": {
+      "get": {
+        "summary": "Get budgeted and actual cost per project",
+        "tags": [
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get budgeted and actual cost per project for the queried period",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/timeRecord": {
+      "get": {
+        "summary": "Get given date's week's timeRecord for logged in user. Default: current week",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Weekdays always filled. Projects for rows, data is in order (index 0-6 first project, index 7-13 second project)",
+            "schema": {
+              "$ref": "#definitions/TimeRecordIndex"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new week for given date's week. Default: current week",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/TimeRecordCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Week created"
+          },
+          "400": {
+            "description": "Given date's week with parameters already exists"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update hours for given week. Default: current week",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#definitions/TimeRecordUpdate"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete date's week for given project",
+        "tags": [
+          "user",
+          "admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#definitions/TimeRecordDelete"
+            }
           }
         ],
         "responses": {
           "204": {
             "description": "Deleted"
-          },
-          "404": {
-            "description": "Custom date with given id does not exist"
           }
         }
       }
@@ -1239,6 +1593,30 @@
               "type": "string"
             },
             "password": {
+              "type": "string"
+            },
+            "costToCompanyPerHour": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "UserUpdate": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "email": {
               "type": "string"
             },
             "costToCompanyPerHour": {
@@ -1521,6 +1899,9 @@
     "ActionLabelCreate": {
       "type": "object",
       "properties": {
+        "projectId": {
+          "type": "number"
+        },
         "name": {
           "type": "string"
         }
@@ -1530,6 +1911,9 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "number"
+        },
+        "projectId": {
           "type": "number"
         },
         "name": {
@@ -1568,6 +1952,122 @@
           "type": "string"
         },
         "multiplier": {
+          "type": "number"
+        }
+      }
+    },
+    "CalendarResponse": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "day": {
+          "type": "string"
+        },
+        "multiplier": {
+          "type": "number"
+        }
+      }
+    },
+    "TimeRecordIndex": {
+      "type": "object",
+      "properties": {
+        "weekdays": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "projectId": {
+                    "type": "number"
+                  },
+                  "milestoneId": {
+                    "type": "number"
+                  },
+                  "actionLabelId": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "normalHours": {
+                    "type": "number"
+                  },
+                  "overTime": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "TimeRecordCreate": {
+      "type": "object",
+      "properties": {
+        "milestoneId": {
+          "type": "number"
+        },
+        "actionLabelId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "TimeRecordUpdate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "normalHours": {
+          "type": "number"
+        },
+        "overTime": {
+          "type": "number"
+        }
+      }
+    },
+    "TimeRecordDelete": {
+      "type": "object",
+      "properties": {
+        "milestoneId": {
+          "type": "number"
+        },
+        "actionLabelId": {
           "type": "number"
         }
       }

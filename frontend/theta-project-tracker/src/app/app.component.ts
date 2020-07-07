@@ -1,4 +1,3 @@
-import { Role } from './models/user.model';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -10,8 +9,11 @@ import { TranslateService } from '@ngx-translate/core';
     </app-sidenav-container>
        `,
   styles: [`
+    :host ::ng-deep.mat-sidenav-container {
+      height: calc(100vh - 70px) !important;
+    }
     .mat-sidenav-container {
-      height: auto;
+      height: calc(100vh - 70px) !important;
     }
   `],
 })

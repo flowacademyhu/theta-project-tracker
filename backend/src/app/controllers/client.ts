@@ -33,12 +33,14 @@ export const show = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const client: Client = {
-      name: req.body.name,
-      description: req.body.description
+    const duplicate: Client = await database(TableNames.clients).select().where({name: req.body.name}).first();
+    if (duplicate) {
+      res.sendStatus(400);
+    } else {
+      const client: Client = clientSerializer.create(req);
+      await database(TableNames.clients).insert(client);
+      res.sendStatus(201);
     }
-    await database(TableNames.clients).insert(client);
-    res.sendStatus(201);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -49,12 +51,9 @@ export const update = async (req: Request, res: Response) => {
   try {
     const client: Client = await database(TableNames.clients).select().where({id: req.params.id}).where({deletedAt: 0}).first();
     if (client) {
-      const newClient: Client = {
-        name: req.body.name,
-        description: req.body.description
-      }
+      const newClient: Client = clientSerializer.create(req);
       await database(TableNames.clients).update(newClient).where({id: req.params.id});
-      res.sendStatus(200);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }

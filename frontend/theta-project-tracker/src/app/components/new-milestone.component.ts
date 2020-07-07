@@ -30,9 +30,11 @@ import { Subscription } from 'rxjs';
       <input matInput type="text" formControlName="description">
     </mat-form-field>
   </div>
-    <div class="actions">
+    <div class="actions"  align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="warn">{{'save' | translate}}</button>
+  <button class="second" (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdMilestone" color="primary"
+[disabled]="newMilestone.invalid"
+  >{{'save' | translate}}</button>
 </div>
 
   `,
@@ -42,22 +44,23 @@ import { Subscription } from 'rxjs';
       margin-top: 60px;
     }
     .full-width {
-      min-width: 150px;
-      max-width: 500px;
+      max-width: 250px;
       width: 100%;
     }
     mat-icon:hover {
       cursor: pointer;
     }
-    `
-  ]
+    .second {
+      margin-left: 10px;
+    }
+    `]
 })
 export class NewMilestoneComponent implements OnInit, OnDestroy {
 
   constructor(private milestoneService: MilestoneService, private projectService: ProjectService) { }
 
   newMilestone = new FormGroup({
-    name: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    name: new FormControl(null, Validators.required),
     projectId: new FormControl(null, Validators.required),
     description: new FormControl(null, [Validators.required]),
   })

@@ -1,15 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model';
+import { User, Role } from '../models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmModalComponent } from '../modals/confirm-modal.component';
 
 @Component({
   selector: 'app-header',
   template: `
-    <mat-toolbar color="primary" role="heading" *ngIf="user$ | async">
+    <mat-toolbar color="primary" role="heading" >
       <mat-toolbar-row>
         <span id="spanOne">
           <a
@@ -19,7 +18,7 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
             aria-label="Toggle sidenav"
             mat-icon-button
             routerLink="/timesheet" id="toolBarPic">
-            <img width="1136" height="378"
+            <img width="1136" height="378" [ngStyle]="{ 'cursor': (user$ | async ) ? 'pointer':'default' }"
             src="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png"
             alt="Voodoo Park"
             srcset="https://voodoopark.com/wp-content/uploads/2019/10/cropped-vp-logo-white-with-pm-1.png 1136w,
@@ -30,9 +29,11 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
           </a>
         </span>
         <span id="spanTwo">
+        <ng-container *ngIf="user$ | async">
           <p>{{'logged-in-as' | translate}}</p>
           <p routerLink="/profile">{{ (user$ | async).firstName }}</p>
           <button mat-stroked-button (click)="onOpenConfirmModal()"  id="logOut" appHighLight>{{'logout' | translate}}</button>
+          </ng-container>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>`,
@@ -102,23 +103,30 @@ export class HeaderComponent implements OnInit {
 
   @Output() public sidenavTriggerd: EventEmitter<void> = new EventEmitter<void>();
   user$: Observable<User> = this.authService.user;
-
+  userRole: Role;
   public onTrigger() {
-    this.sidenavTriggerd.emit();
+    if (localStorage.getItem('token') && this.userRole === 'admin') {
+      this.sidenavTriggerd.emit();
+    }
   }
 
-  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) { }
+  constructor(private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.authService.user.subscribe(u => {
+      if (u) {
+        this.userRole = u.role;
+      }
+    })
   }
 
   onOpenConfirmModal() {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
-      width: '25%',
-      height: '25%'
+      width: '15%',
+      height: '15%'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+      if (result) {
         this.authService.logout();
       }
     });

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { User, UserCreate, UserCreateProjects } from '../models/user.model';
+import { User, UserCreate, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { Project } from '../models/project.model';
 import { ProjectService } from '../services/project.service';
@@ -66,10 +66,13 @@ import { ProjectService } from '../services/project.service';
       <tr>
         <td>
           <mat-form-field>
+          
             <mat-select formControlName="projectId">
               <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
             </mat-select>
+         
           </mat-form-field>
+
         </td>
         <td>
           <mat-form-field>
@@ -81,9 +84,11 @@ import { ProjectService } from '../services/project.service';
     <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
   </div>
 </form>
-<div class="actions">
+<div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">{{'save' | translate}}</button>
+  <button class="second" (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="primary"
+  [disabled]="newUser.invalid"
+  >{{'save' | translate}}</button>
 </div>
   `,
   styles: [
@@ -109,14 +114,17 @@ import { ProjectService } from '../services/project.service';
     mat-icon:hover {
       cursor: pointer;
     }
+    .second {
+      margin-left: 10px;
+    }
     `
   ]
 })
 export class NewUserComponent implements OnInit {
 
   newUser = new FormGroup({
-    firstName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
-    lastName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    firstName: new FormControl(null, Validators.required),
+    lastName: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, Validators.required),
     costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),
@@ -125,26 +133,23 @@ export class NewUserComponent implements OnInit {
     costToClient: new FormControl(null, Validators.required),
   });
   availableProjects: Project[] = [];
-  assignedProjects: UserCreateProjects[] = [];
+  assignedProjects: ProjectAssigned[] = [];
   createdUser: UserCreate;
-  @Input() userToEdit: User;
   constructor(private userService: UserService, private projectService: ProjectService) { }
   ngOnInit(): void {
-    if (this.userToEdit) {
-      console.log(this.userToEdit)
-      this.newUser.get('password').disable()
-      this.assignedProjects = this.userToEdit.projects;
-      this.newUser.patchValue(this.userToEdit);
-    }
     this.projectService.fetchProjects().subscribe(projects => {
       this.availableProjects = projects;
-    })
+    })   
   }
   onAddNewUser() {
     this.assignProjectsToUser();
-    this.createdUser = this.newUser.getRawValue();
-    /* this.createdUser.projects = this.assignedProjects */
-    console.log(this.createdUser)
+    this.assignedProjects.map(p => delete p.projectName)
+    this.newUser.removeControl('projectId');
+    this.newUser.removeControl('costToClient')
+    this.createdUser = {
+      user: this.newUser.getRawValue(),
+      projects: this.assignedProjects
+    }
     this.userService.addUser(this.createdUser).subscribe();
   }
   onDeleteProject(project) {
@@ -155,25 +160,13 @@ export class NewUserComponent implements OnInit {
     this.newUser.get('projectId').patchValue(null);
     this.newUser.get('costToClient').patchValue(null);
   }
-  editUser() {
-    this.userToEdit = this.newUser.getRawValue();
-    this.userService.updateUser(this.userToEdit.id, this.userToEdit).subscribe();
-  }
   assignProjectsToUser() {
-    console.log(this.newUser.getRawValue())
-    this.assignedProjects.push({
-      projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
-      projectId: this.newUser.get('projectId').value,
-      costToClientPerHour: this.newUser.get('costToClient').value
-    });
-  }
-  onCloseDialog() {
-    if (this.userToEdit) {
-      this.editUser();
-    } else {
-      console.log('cica')
-      console.log(this.newUser.getRawValue())
-      this.onAddNewUser();
+    if (this.newUser.get('projectId').value) {
+      this.assignedProjects.push({
+        projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
+        projectId: this.newUser.get('projectId').value,
+        costToClientPerHour: this.newUser.get('costToClient').value
+      })
     }
   }
 }

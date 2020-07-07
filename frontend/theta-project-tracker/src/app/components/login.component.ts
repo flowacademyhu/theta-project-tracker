@@ -51,7 +51,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   mat-card {
     max-width: 400px;
     margin: 2em auto;
-    text-align: center; 
+    margin-top:150px;
+    text-align: center;
   }
   mat-form-field {
     display: block;
