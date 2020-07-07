@@ -47,6 +47,10 @@ import * as moment from "moment";
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
 </mat-form-field>
+<div>
+<button mat-raised-button (click)="onClickExport()">{{'export-to-excel' | translate}}</button>
+
+</div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
   `,
@@ -162,7 +166,25 @@ export class ReportsComponent {
         break;
     } 
   }
-
+  onClickExport(){
+    switch(this.whichTabIsShown) {
+      case 1:
+        this.onClickReportByProjectHour();
+        break;
+      case 2:
+        this.onClickReportByProjectCost();
+        break;
+      case 3:
+        this.onClickReportByUserHours();
+        break;
+      case 4:
+        this.onClickReportByUserCost();
+        break;
+      case 5:
+        this.onClickReportByProjectBudget();
+        break;
+    } 
+  }
   onClickReportByProjectHour() {
     this.users.setValue([]);
     this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
