@@ -20,6 +20,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     </mat-select>
     </mat-form-field>
   </div>
+  <div>
+  <label for="costToClientPerHour">Cost to Client per Hour</label>
+  <mat-form-field class="full-width">
+    <input matInput type="number" formControlName="costToClientPerHour" [value]="costToClientPerHour">
+  </mat-form-field>
+</div>
   </mat-dialog-content>
   <div class="actions">
   <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
@@ -42,9 +48,11 @@ export class AddUserToProjectModalComponent implements OnInit {
   subscriptions$: Subscription[] = [];
   availableUsers: User[];
   users: string[] = [];
+  costToClientPerHour: number;
   @Input() userToEdit: User;
   newUser = new FormGroup({
-    user: new FormControl(null)
+    user: new FormControl(null),
+    costToClientPerHour: new FormControl(null)
   })  
 
   ngOnInit(): void {
@@ -56,6 +64,6 @@ export class AddUserToProjectModalComponent implements OnInit {
 
   onAddNewUser() {
     let chosen = this.availableUsers.find(u  => u.firstName + ' ' + u.lastName === this.newUser.get('user').value)
-   this.projectUsersService.assignProjectToUser(chosen.id,  [{projectId: this.data.projectToEdit.id, costToClientPerHour: 500}]).subscribe();
+   this.projectUsersService.assignProjectToUser(chosen.id,  [{projectId: this.data.projectToEdit.id, costToClientPerHour: this.newUser.value.costToClientPerHour}]).subscribe();
   }
 }
