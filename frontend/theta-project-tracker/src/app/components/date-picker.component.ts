@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DatePickerService } from '../services/date-picker.service';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-date-picker',
@@ -35,12 +36,15 @@ export class DatePickerComponent implements OnInit {
   currentDate = {
     value : new Date()
   }
+  @Output() dateEmitter: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit(): void {
+    this.dateEmitter.emit(new Date().toISOString().split('T')[0])
   } 
 
   updateDoB(dateObject){
     this.currentDate.value = dateObject.value;
     let transform = this.datepipe.transform(dateObject.value, 'yyyy-MM-dd');
+    this.dateEmitter.emit(transform)
      this.datePickerService.fetchCurrentWeek(transform);
    }
    toPreviousWeek() {
