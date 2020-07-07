@@ -2,11 +2,12 @@ import { Component, } from '@angular/core';
 import { ReportsService, Result } from '../services/reports.service';
 import { ProjectService } from '../services/project.service';
 import { FormControl } from '@angular/forms';
-import { map, switchMap, startWith, pluck } from 'rxjs/operators';
+import { map, switchMap, startWith } from 'rxjs/operators';
 import { ReplaySubject, combineLatest, } from 'rxjs';
 import { Project } from '../models/project.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import { ExportsService } from '../services/export.service'
 import * as moment from "moment";
 
 @Component({
@@ -111,7 +112,7 @@ export class ReportsComponent {
   projectList$ = this.projectService.fetchProjects();
   userList$ = this.userService.fetchUsers();
 
-  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService) {
+  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService, private exportsService: ExportsService) {
     this.onClickReportByProjectHour();
   }
   
@@ -244,5 +245,20 @@ export class ReportsComponent {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 5;
+  }
+  onClickExportReportByProjectHours(){
+    this.exportsService.exportReportsByProjectHours();
+  }
+  onClickExportReportByProjectCost(){
+    this.exportsService.exportReportsByProjectCost();
+  }
+  onClickExportReportByUserHours(){
+    this.exportsService.exportReportsByUserHours();
+  }
+  onClickExportReportByUserCost(){
+    this.exportsService.exportReportsByUserCost();
+  }
+  onClickExportReportByProjectBudget(){
+    this.exportsService.exportReportsBudget();
   }
 }
