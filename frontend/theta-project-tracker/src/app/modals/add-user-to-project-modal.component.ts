@@ -54,6 +54,6 @@ export class AddUserToProjectModalComponent implements OnInit {
 
   onAddNewUser() {
     let chosen = this.availableUsers.find(u  => u.firstName + ' ' + u.lastName === this.newUser.get('user').value)
-  /*   this.userService.updateUser(this.userToEdit.id, this.newUser.getRawValue()).subscribe(); */
+    this.userService.updateUser(this.userToEdit.id, this.newUser.getRawValue()).subscribe();
   }
 }
