@@ -19,8 +19,8 @@ import * as moment from "moment";
   <button mat-raised-button (click)="onClickReportByUserCost()">{{'report-by-contractor-money' | translate}}</button>
   <button mat-raised-button (click)="onClickReportByProjectBudget()">{{'project-budget-report' | translate}}</button>
 </div>
-
-<mat-form-field appearance="fill">
+<div class="date-filter">
+<mat-form-field class="date-from-button" appearance="fill">
     <mat-label>From:</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -33,7 +33,8 @@ import * as moment from "moment";
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
 </mat-form-field>
-
+</div>
+<div class="row-filter">
 <mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
   <mat-label>Projects</mat-label>
   <mat-select [formControl]="projects" multiple>
@@ -47,9 +48,9 @@ import * as moment from "moment";
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
 </mat-form-field>
-<div>
-<button mat-raised-button (click)="onClickExport()">{{'export-to-excel' | translate}}</button>
-
+</div>
+<div class="wrapper">
+<button mat-raised-button  (click)="onClickExport()">{{'export-to-excel' | translate}}</button>
 </div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
@@ -61,6 +62,27 @@ import * as moment from "moment";
   }
   button {
     margin: 15px;
+  }
+  .export-button {
+    display: flex;
+    justify-content:flex-end;
+  }
+  .date-filter {
+    max-width: 80%;
+    margin: auto;
+  }
+  .row-filter{
+    max-width: 80%;
+    margin: auto;
+  }
+  .wrapper {
+    margin: auto;
+    display: flex;
+    justify-content:flex-end;
+    max-width: 80%;
+  }
+  .date-from-button{
+    margin-right:1rem;
   }
   `],
 })
