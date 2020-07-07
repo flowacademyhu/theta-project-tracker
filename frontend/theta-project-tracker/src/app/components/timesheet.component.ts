@@ -4,14 +4,14 @@ import { ProjectAssigned } from '../models/user.model';
 import { RecordCreate } from '../models/record-create.model';
 import { ProjectUsersService } from '../services/projectUsers.service';
 import { RecordOneWeekComponent } from './record-one-week.component';
-import { MilestoneService } from '../services/milestone.service';
-import { ActionLabelService } from '../services/action-label.service';
-import { TimesheetService, DailyRecord, ResponseItem, UpdateRecords } from '../services/timsheet.service';
+import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse } from '../services/timsheet.service';
 import { Subscription } from 'rxjs';
+import { DatePickerService } from '../services/date-picker.service';
 
 @Component({
   selector: 'app-timesheet',
   template: `
+  <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)"></app-date-picker>
   <div class="weekdays">
   <mat-grid-list cols="7" rowHeight="30px">
     <div class="save"> <button (click)="onSaveRecors()" mat-raised-button
@@ -29,6 +29,7 @@ import { Subscription } from 'rxjs';
 <mat-divider></mat-divider>
 <div class="recordTime">
   <ng-template #container></ng-template>
+  <div>
   <mat-divider></mat-divider>
   <div class="footer">
     <mat-grid-list cols="7" rowHeight="30px">
@@ -52,7 +53,7 @@ import { Subscription } from 'rxjs';
   margin-left: -200px;
   }
   .weekdays {
-    margin-top: 150px;
+    margin-top: 70px;
     margin-left: 560px;
     width: 56%
   }
@@ -73,33 +74,30 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   projects: ProjectAssigned[] = [];
   week = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   dates: string[] = [];
-  record: RecordCreate;
   @ViewChild('container', { static: true, read: ViewContainerRef }) entry: ViewContainerRef;
   totals: number[] = [];
   overs: number[] = [];
-  response: any;
+  response: TimeRecordResponse;
   responseArray = [];
   subscription$: Subscription[] = [];
   areRecordsValid: boolean;
+  currentDisplayedDate: string;
   constructor(private authService: AuthService, private projectUserService: ProjectUsersService,
-    private resolver: ComponentFactoryResolver, private milestoneService:
-      MilestoneService, private actionLabelService: ActionLabelService, private timesheetService:
-      TimesheetService) { }
+    private resolver: ComponentFactoryResolver, private timesheetService:
+      TimesheetService, private datePickerService: DatePickerService) { }
   ngOnDestroy(): void {
     this.subscription$.forEach(sub => sub.unsubscribe())
   }
 
   ngOnInit(): void {
-    this.timesheetService.getTimeRecords().subscribe(response => {
-      this.response = response;
-      this.makeArray();
-      this.getDate();
-      this.componentManagement();
-      this.getTotals(this.responseArray);
-    })
+  this.displayTimeSheet()
     this.projectUserService.getUsersProjects(this.authService.authenticate().id).subscribe(projects => {
       this.projects = projects;
     })
+  }
+  dateChange(event: string) {
+  this.displayTimeSheet(event);
+  return this.currentDisplayedDate = event;
   }
   makeArray() {
     let dataIndex = 0;
@@ -116,16 +114,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
     return this.responseArray;
   }
-  getDate() {
-    this.response.weekDays.forEach(date => {
-      this.dates.push(date);
-    })
+  getDates() {
+    this.dates = this.response.weekDays;
     return this.dates;
   }
 
   onSaveRecors() {
     let response: UpdateRecords;
-    let oneDArray = [];
+    let oneDArray: ResponseItem[] = [];
     for (let i = 0; i < this.responseArray.length; i++) {
       for (let j = 0; j < this.responseArray[i].length; j++) {
         oneDArray.push(this.responseArray[i][j]);
@@ -134,7 +130,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     response = {
       modified: oneDArray
     }
-    this.timesheetService.updateTimeRecords(oneDArray).subscribe();
+    this.timesheetService.updateTimeRecords(oneDArray, this.currentDisplayedDate).subscribe();
   }
   getTotals(array) {
     const totalsNormal = [];
@@ -160,18 +156,17 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   createRecordComponent(event: RecordCreate) {
-    this.timesheetService.createTimeRecords(event).subscribe(() => {
-      this.timesheetService.getTimeRecords().subscribe(array => {
-        console.log(array)
+    this.timesheetService.createTimeRecords(event, this.currentDisplayedDate).subscribe(() => {
+      this.timesheetService.getTimeRecords(this.currentDisplayedDate).subscribe(array => {
         this.response = array
-        this.entry.clear()
         this.componentManagement()
       })
     });
   }
 
-  componentManagement() {
+  componentManagement(date?: string) {
     this.entry.clear()
     const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
     if (this.response.projects.length > 0) {
@@ -188,7 +183,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         componentRef.instance.ID = i;
         for (let j = 0; j < 7; j++) {
           let day = this.week[dayIndex];
-          let oneDay: DailyRecord = this.response.data[dataIndex];
+          let oneDay: ResponseItem = this.response.data[dataIndex];
           componentRef.instance.timeSheet.get('normalHours').get(day).patchValue(oneDay.normalHours);
           componentRef.instance.timeSheet.get('overTime').get(day).patchValue(oneDay.overTime);
           if (j === 6) {
@@ -203,14 +198,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
             milestoneId: componentRef.instance.milestoneId,
             actionLabelId: componentRef.instance.activityId
           }
-          this.timesheetService.deleteTimeRecords(uniqueIds).subscribe(() => {
-            this.timesheetService.getTimeRecords().subscribe(response => {
+          this.timesheetService.deleteTimeRecords(uniqueIds, this.currentDisplayedDate).subscribe(() => {
+            this.timesheetService.getTimeRecords(this.currentDisplayedDate).subscribe(response => {
               this.response = response;
-              this.componentManagement()
+              this.componentManagement(date)
             })
           });
-          this.responseArray.splice(componentRef.instance.ID, 1);
-          this.checkForUpdates(componentRef, this.responseArray)
+         this.responseArray.splice(componentRef.instance.ID, 1)
+          this.getTotals(this.responseArray);
         }))
         this.subscription$.push(componentRef.instance.timeSheet.statusChanges.subscribe(status => {
           if (status === "VALID") {
@@ -228,7 +223,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
   }
   checkForUpdates(ref: ComponentRef<RecordOneWeekComponent>, array) {
-    console.log(array)
     let copy = [...array];
     let id = ref.instance.ID;
     for (let i = 0; i < array.length; i++) {
@@ -245,5 +239,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
     this.getTotals(this.responseArray);
     return array;
+  }
+  displayTimeSheet(dateChange?: string) {
+    this.datePickerService.fetchCurrentWeek(dateChange).subscribe(response => {
+      this.response = response;
+      this.makeArray();
+      this.getDates();
+      this.componentManagement(dateChange)
+      this.getTotals(this.responseArray);
+    })
   }
 }

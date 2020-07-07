@@ -59,9 +59,12 @@ import { ActionLabelComponent } from './components/action-label.component';
 import { NewActionLabelModalComponent } from './modals/new-action-label-modal.component';
 import { NewActionLabelComponent } from './components/new-action-label.component';
 import { EditUserComponent } from '../app/components/edit-user.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DatePickerComponent } from './components/date-picker.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -105,7 +108,9 @@ export function appInit(provider: AuthService) {
     ActionLabelComponent,
     NewActionLabelModalComponent,
     NewActionLabelComponent,
-    EditUserComponent
+    EditUserComponent,
+    DatePickerComponent,
+  
   ],
   imports: [
     MatSidenavModule,
@@ -157,7 +162,11 @@ export function appInit(provider: AuthService) {
       useFactory: appInit,
       deps: [AuthService],
       multi: true,
-  }
+  },
+  {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
+  MatDatepickerModule,
+  MatNativeDateModule,
+  DatePipe
 ],
   bootstrap: [AppComponent],
   entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent]
