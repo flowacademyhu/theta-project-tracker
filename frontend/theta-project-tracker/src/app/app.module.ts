@@ -54,6 +54,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
 import { ConfirmModalComponent } from './modals/confirm-modal.component';
+import { AddUserToProjectModalComponent } from './modals/add-user-to-project-modal.component'
 import { RecordCreateComponent } from '../app/components/record-create.component';
 import { ActionLabelComponent } from './components/action-label.component';
 import { NewActionLabelModalComponent } from './modals/new-action-label-modal.component';
@@ -104,6 +105,7 @@ export function appInit(provider: AuthService) {
     NewMilestoneModalComponent,
     ReportsTableComponent,
     ConfirmModalComponent,
+    AddUserToProjectModalComponent,
     RecordCreateComponent,
     ActionLabelComponent,
     NewActionLabelModalComponent,
@@ -140,7 +142,6 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
-    MatDialogModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,

@@ -14,7 +14,14 @@ import { User } from '../models/user.model';
       <app-edit-user [userToEdit]="userToEdit"></app-edit-user>
     </ng-template>
   </mat-dialog-content>
-  `
+  `,
+  styles: [`
+  h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  `]
 })
 export class NewUserModalComponent implements OnInit {
 

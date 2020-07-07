@@ -45,7 +45,7 @@ import { HttpErrorResponse } from '@angular/common/http';
       </mat-card-content>
     </mat-card>
   `,
-  styles: [`
+  styles: [`  
   mat-card {
     max-width: 400px;
     margin: 2em auto;
