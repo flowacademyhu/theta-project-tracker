@@ -1,3 +1,4 @@
+import { CalendarModalComponent } from './modals/calendar-dialog-modal.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -51,6 +52,8 @@ import { AuthService } from './services/auth.service';
 import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction';
+import { MatDialog } from '@angular/material/dialog';
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -84,6 +87,7 @@ export function appInit(provider: AuthService) {
     ClientsComponent,
     ClientManagementComponent,
     CalendarComponent,
+    CalendarModalComponent,
     TimesheetComponent,
     HeaderComponent,
     LoginComponent,
@@ -110,10 +114,9 @@ export function appInit(provider: AuthService) {
     NewActionLabelModalComponent,
     NewActionLabelComponent,
     EditUserComponent,
-    CalendarComponent
+    CalendarComponent,
   ],
   imports: [
-
     MatSidenavModule,
     MatListModule,
     BrowserModule,
@@ -131,7 +134,6 @@ export function appInit(provider: AuthService) {
     MatCardModule,
     MatRadioModule,
     MatTableModule,
-    MatDialogModule,
     MatInputModule,
     MatButtonModule,
     MatPaginatorModule,
@@ -141,7 +143,6 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
-    MatDialogModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -152,11 +153,11 @@ export function appInit(provider: AuthService) {
         deps: [HttpClient],
       }
     }),
-    MatDialogModule,
     MatListModule,
     MatInputModule,
     MatButtonModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatDialog
   ],
   bootstrap: [AppComponent],
   providers: [  {
