@@ -192,19 +192,19 @@ export class ReportsComponent {
   onClickExport(){
     switch(this.whichTabIsShown) {
       case 1:
-        this.onClickReportByProjectHour();
+        this.onClickExportReportByProjectHours();
         break;
       case 2:
-        this.onClickReportByProjectCost();
+        this.onClickExportReportByProjectCost();
         break;
       case 3:
-        this.onClickReportByUserHours();
+        this.onClickExportReportByUserHours();
         break;
       case 4:
-        this.onClickReportByUserCost();
+        this.onClickExportReportByUserCost();
         break;
       case 5:
-        this.onClickReportByProjectBudget();
+        this.onClickExportReportByProjectBudget();
         break;
     } 
   }
