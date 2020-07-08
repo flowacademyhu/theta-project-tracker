@@ -1,6 +1,6 @@
 import { CalendarModalComponent } from './../modals/calendar-dialog-modal.component';
 import { EventUtilService } from './../services/event-util.service';
-import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild, OnDestroy } from '@angular/core';
 import { map, isEmpty } from 'rxjs/operators';
 
 import {
@@ -41,10 +41,10 @@ import { TitleCasePipe } from '@angular/common';
   `,
   styles: [``]
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
-  constructor(private eventUtilService: EventUtilService,  private dialog: MatDialog) { }
-
+  constructor(private eventUtilService: EventUtilService, private dialog: MatDialog) { }
+  validatorTitle = new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{0,}$/)]);
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
 
   monthIterator = 7;
@@ -60,9 +60,9 @@ export class CalendarComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
+    select: this.getMethod.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventChange: this.handleEvents.bind(this),
+    // eventChange: this.handleEvents.bind(this),
     defaultAllDay: true,
     firstDay: 1,
   };
@@ -88,7 +88,7 @@ export class CalendarComponent implements OnInit {
     }))
       .subscribe(event => {
         this.currentEvents = event;
-        console.log(event);
+        console.log(event, "GETEVENT SEEE");
         this.calendarOptions.events = event;
       });
   }
@@ -97,47 +97,35 @@ export class CalendarComponent implements OnInit {
     this.getMethod();
   }
 
-
-  handleDateSelect(selectInfo: DayCellContentArg) {
-    const validatorTitle = new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{0,}$/ )]);
-    const calendarApi = selectInfo.view.calendar;
-    const calendarData = {
-      multiplier: parseInt(title),
-      date: selectInfo.startStr
-    };
-
-    if (!isNaN(title) && !isNull(title)) {
-      this.eventUtilService.createEvent(calendarData).subscribe(event => {
-        this.calendarOptions.events = event;
-        this.getMethod();
-      });
-      calendarApi.addEvent(calendarData);
-    }
-    else {
-      alert('Please add a valid overtime value!');
-    }
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(unsub => { unsub.unsubscribe(); }, );
   }
 
   handleEventClick(clickInfo: EventClickArg) {
+    const calendarApi = clickInfo.view.calendar;
+    const dialogRef = this.dialog.open(CalendarModalComponent, {
+      width: '50%',
+      height: '25%'
+    });
     const calendarData = {
-      multiplier: parseInt(title),
+      multiplier: parseInt(clickInfo.event.title),
       date: clickInfo.event.startStr,
     };
-    const dialogRef = this.dialog.open(CalendarModalComponent, {
-      width: '25%',
-      height: '15%'
-    });
-    this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+    dialogRef.afterClosed().subscribe(res => {
+      if (res === false) {
+        const overT = dialogRef.componentInstance.hour.get('overTime').value;
+        calendarData.multiplier = overT;
+        this.eventUtilService.createEvent(calendarData).subscribe(event => {
+            this.getMethod();
+        });
+    } else if (res) {
+      if (dialogRef.componentInstance.deleteBool) {
         this.eventUtilService.deleteEvent(calendarData).subscribe(data => {
           this.getMethod();
           clickInfo.event.remove();
         });
       }
-    }));
-  }
-
-  handleEvents(events: EventInput[]) {
-  }
+    }
+  });
 }
-
+}

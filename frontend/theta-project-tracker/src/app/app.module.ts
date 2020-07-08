@@ -117,13 +117,13 @@ export function appInit(provider: AuthService) {
     CalendarComponent,
   ],
   imports: [
+    MatFormFieldModule,
     MatSidenavModule,
     MatListModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
     FormsModule,
@@ -134,7 +134,6 @@ export function appInit(provider: AuthService) {
     MatCardModule,
     MatRadioModule,
     MatTableModule,
-    MatInputModule,
     MatButtonModule,
     MatPaginatorModule,
     MatExpansionModule,
@@ -157,7 +156,7 @@ export function appInit(provider: AuthService) {
     MatInputModule,
     MatButtonModule,
     FullCalendarModule,
-    MatDialog
+
   ],
   bootstrap: [AppComponent],
   providers: [  {

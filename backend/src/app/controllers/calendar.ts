@@ -31,7 +31,7 @@ export const index = async (req: Request, res: Response) => {
       month = req.query.month.toString();
     }
     const search = '%' + year + '-' + month + '%';
-    const modifiedDates: Array<OvertimeMultiplier> = await database(TableNames.overtimeMultipliers).where('date', 'like', search).select();
+    const modifiedDates: Array<OvertimeMultiplier> = await database(TableNames.overtimeMultipliers).where('date', 'like', search).select().orderBy('date', 'asc');
     let sqlMomentDateArray: Array<number> = [];
     let multipliersArray: Array<number> = [];
     for (let i = 0; i < modifiedDates.length; i++) {
@@ -51,6 +51,7 @@ export const index = async (req: Request, res: Response) => {
       let dayName = getDay(+req.query.year, +req.query.month, i);
       let multiplier: number = 0;
       let momentDate: number = moment().year(year).month(req.query.month - 1).date(i).hour(0).minute(0).second(0).dayOfYear();
+      console.log(momentDate, sqlMomentDateArray);
       let overridedDate = sqlMomentDateArray.filter(date => date == momentDate);
       if (overridedDate.length == 1) {
         sqlMomentDateArray.shift();
@@ -71,6 +72,7 @@ export const index = async (req: Request, res: Response) => {
         }
       );
     }
+    console.log(daysWithMultipliers);
     res.status(200).json(daysWithMultipliers);
   } catch (error) {
     console.error(error);
