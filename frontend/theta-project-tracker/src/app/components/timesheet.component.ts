@@ -4,7 +4,7 @@ import { ProjectAssigned } from '../models/user.model';
 import { RecordCreate } from '../models/record-create.model';
 import { ProjectUsersService } from '../services/projectUsers.service';
 import { RecordOneWeekComponent } from './record-one-week.component';
-import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse } from '../services/timsheet.service';
+import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse, CopyLastWeek } from '../services/timsheet.service';
 import { Subscription } from 'rxjs';
 import { DatePickerService } from '../services/date-picker.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-timesheet',
   template: `
-  <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)"></app-date-picker>
+  <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)" (onCopy)="createLastWeek($event)"></app-date-picker>
   <div class="warning" *ngIf="warn"><p [ngStyle]="{'color': 'red'}">{{ 'no-duplicates' | translate }}</p></div>
   <div class="weekdays">
   <mat-grid-list cols="7" rowHeight="30px">
@@ -167,6 +167,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       }
     }
   }
+  createLastWeek(event: any) {
+    let body: CopyLastWeek = {
+      date: this.currentDisplayedDate
+    }
+    this.timesheetService.copyLastWeek(body).subscribe(() => {
+    this.displayTimeSheet(this.currentDisplayedDate);
+    })
+  }
 
   createRecordComponent(event: RecordCreate) {
     this.timesheetService.createTimeRecords(event, this.currentDisplayedDate).subscribe(() => {
@@ -180,8 +188,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.warn = false;
       }, 3000);
       console.log(error.error);
-    }
-    )
+    })
   }
 
   componentManagement(date?: string) {
@@ -259,7 +266,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     return array;
   }
   displayTimeSheet(dateChange?: string) {
-    this.datePickerService.fetchCurrentWeek(dateChange).subscribe(response => {
+    this.timesheetService.getTimeRecords(dateChange).subscribe(response => {
+      console.log(response)
       this.response = response;
       this.makeArray(this.response);
       this.getDates();

@@ -28,24 +28,34 @@ export class TimesheetService {
         if (date) {
             params = params.append('date', date)
         }
-        return this.http.put(this.apiUrl + 'timeRecord', records, { params: params, responseType: "text"});
+        return this.http.put(this.apiUrl + 'timeRecord', records, { params: params, responseType: "text" });
     }
 
-    deleteTimeRecords(ids, date?: string):Observable<string> {
+    deleteTimeRecords(ids, date?: string): Observable<string> {
         let params = new HttpParams();
         if (date) {
             params = params.append('date', date)
         }
         const options = {
             headers: new HttpHeaders({
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             }),
             body: ids,
             params: params
-          }
-        return this.http.delete<string>(this.apiUrl + 'timeRecord', options )
+        }
+        return this.http.delete<string>(this.apiUrl + 'timeRecord', options)
+    }
+
+    copyLastWeek(date?: CopyLastWeek): Observable<string> {
+        if (date) {
+            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', date, { responseType: 'text' })
+        } else {
+            let currentDate = new Date().toISOString().split('T')[0];
+            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', currentDate, { responseType: 'text' })
+        }
     }
 }
+
 export interface TimeRecordResponse {
     weekDays: string[];
     projects: RecordCreate[];
@@ -59,6 +69,9 @@ export interface ResponseItem {
     id: number;
     normalHours: number;
     overTime: number;
+}
+export interface CopyLastWeek {
+    date: string
 }
 /* resp:
 {

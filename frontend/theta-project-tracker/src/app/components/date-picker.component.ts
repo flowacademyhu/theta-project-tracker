@@ -2,12 +2,13 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DatePickerService } from '../services/date-picker.service';
 import { EventEmitter } from '@angular/core';
+import { TimesheetService } from '../services/timsheet.service';
 
 @Component({
   selector: 'app-date-picker',
   template: `
   <div class="container">
-  <button  mat-raised-button >{{ 'copy-last-week' | translate }}</button>
+  <button  mat-raised-button (click)="onCopyLastWeek()">{{ 'copy-last-week' | translate }}</button>
   <mat-icon (click)="toPreviousWeek()">navigate_before</mat-icon>
   <mat-form-field appearance="fill">
   <mat-label>{{'choose-date' | translate}}</mat-label>
@@ -35,13 +36,15 @@ import { EventEmitter } from '@angular/core';
 
 export class DatePickerComponent implements OnInit {
   
-  constructor(public datepipe: DatePipe, public datePickerService: DatePickerService) { }
+  constructor(public datepipe: DatePipe, public datePickerService: DatePickerService, 
+    private timesheetService: TimesheetService) { }
   newDate:Date
   date: Date;
   currentDate = {
     value : new Date()
   }
   @Output() dateEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onCopy: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit(): void {
     this.dateEmitter.emit(new Date().toISOString().split('T')[0])
   } 
@@ -59,5 +62,8 @@ export class DatePickerComponent implements OnInit {
   toNextWeek() { 
     this.currentDate.value = new Date(this.currentDate.value.setDate(this.currentDate.value.getDate() + 7))
     this.updateDoB(this.currentDate)
+  }
+  onCopyLastWeek() {
+    this.onCopy.emit();
   }
 }
