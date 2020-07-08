@@ -10,9 +10,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-add-user-to-project-modal',
   template:`
   <form [formGroup]="newUser">
-  <h2 mat-dialog-title><strong>Add New User</strong></h2>
+  <h2 mat-dialog-title><strong>{{'new-user' | translate}}</strong></h2>
   <mat-dialog-content class="mat-typography">
-  <label for="name">Name</label>
+  <label for="name">{{'name' | translate}}</label>
   <div>
   <mat-form-field [formGroup]="newUser">
     <mat-select class="full-width" formControlName="user">
@@ -21,15 +21,15 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     </mat-form-field>
   </div>
   <div>
-  <label for="costToClientPerHour">Cost to Client per Hour</label>
+  <label for="costToClientPerHour">{{'cost-to-client' | translate}}</label>
   <mat-form-field class="full-width">
     <input matInput type="number" formControlName="costToClientPerHour" [value]="costToClientPerHour">
   </mat-form-field>
 </div>
   </mat-dialog-content>
   <div class="actions">
-  <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="availableUsers" color="warn">Add</button>
+  <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
+  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="availableUsers" color="warn">{{'add' | translate}}</button>
 </div>
 </form>
   `,

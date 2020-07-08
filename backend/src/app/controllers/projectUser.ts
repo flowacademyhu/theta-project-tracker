@@ -28,17 +28,16 @@ export const index = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const projectUser: Array<ProjectUser> = [];
     if (req.body.length > 0) {
       for (let i = 0; i < req.body.length; i++) {
-        projectUser.push({
+        const projectUser = {
           userId: +req.params.userId,
           projectId: req.body[i].projectId,
           costToClientPerHour: req.body[i].costToClientPerHour
-        });
+        }
+    await database(TableNames.projectUsers).insert(projectUser);
       }
     }
-    await database(TableNames.projectUsers).insert(projectUser);
     res.sendStatus(201);
   } catch (error) {
     console.error(error);
