@@ -70,7 +70,7 @@ export const index = async (req: Request, res: Response) => {
           multiplier: multiplier
         }
       );
-    }
+    } 
     res.status(200).json(daysWithMultipliers);
   } catch (error) {
     console.error(error);

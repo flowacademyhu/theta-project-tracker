@@ -1,3 +1,4 @@
+import { CalendarComponent } from './calendar.component';
 import { CalendarModalComponent } from './../modals/calendar-dialog-modal.component';
 import { EventUtilService } from './../services/event-util.service';
 import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild, OnDestroy } from '@angular/core';
@@ -30,6 +31,7 @@ import { isEmptyExpression } from '@angular/compiler';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TitleCasePipe } from '@angular/common';
+import { calendarFormat } from 'moment';
 
 
 
@@ -45,7 +47,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   constructor(private eventUtilService: EventUtilService, private dialog: MatDialog) { }
   validatorTitle = new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{0,}$/)]);
-  @ViewChild('calendar') calendarComponent: FullCalendarComponent;
+  @ViewChild('calendar') calendarComponent: FullCalendarModule = new FullCalendarModule();
 
   monthIterator = 7;
   yearIterator = 2020;
@@ -55,6 +57,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     headerToolbar: { left: 'today', center: 'title', right: 'prev next' },
+    customButtons: {
+      prev: {
+        icon: 'left-single-arrow',
+        click() {
+          this.calendarComponent.getApi().next();
+        }
+      }
+    },
     weekends: true,
     editable: true,
     selectable: true,
@@ -62,16 +72,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
     dayMaxEvents: true,
     select: this.getMethod.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    // eventChange: this.handleEvents.bind(this),
     defaultAllDay: true,
     firstDay: 1,
   };
 
-  public noWhitespaceValidator(control: FormControl) {
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { whitespace: true };
+  headerPrevNextButton() {
+    this.calendarComponent.getApi().next();
+    this.monthIterator--;
   }
+
 
   getMethod() {
     this.eventUtilService.getEvents(this.yearIterator, this.monthIterator).pipe(map(data => {
