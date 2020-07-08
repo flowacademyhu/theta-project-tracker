@@ -30,7 +30,8 @@ import { ProjectService } from '../services/project.service';
   <label for="password">{{'password' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="password">
+      <input matInput [type]="isPasswordVisible ? 'text' : 'password'"formControlName="password">
+      <mat-icon matSuffix (click)="onShowPassword()">{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
     </mat-form-field>
   </div>
   <label for="cost">{{'cost' | translate}}</label>
@@ -126,15 +127,16 @@ export class NewUserComponent implements OnInit {
     firstName: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
-    password: new FormControl(null, Validators.required),
+    password: new FormControl(null, [Validators.required, Validators.minLength(5)]),
     costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),
     role: new FormControl(null, Validators.required),
-    projectId: new FormControl(null, Validators.required),
-    costToClient: new FormControl(null, Validators.required),
+    projectId: new FormControl(null),
+    costToClient: new FormControl(null),
   });
   availableProjects: Project[] = [];
   assignedProjects: ProjectAssigned[] = [];
   createdUser: UserCreate;
+  isPasswordVisible: boolean = false;
   constructor(private userService: UserService, private projectService: ProjectService) { }
   ngOnInit(): void {
     this.projectService.fetchProjects().subscribe(projects => {
@@ -168,5 +170,8 @@ export class NewUserComponent implements OnInit {
         costToClientPerHour: this.newUser.get('costToClient').value
       })
     }
+  }
+  onShowPassword() {
+    return this.isPasswordVisible = !this.isPasswordVisible;
   }
 }
