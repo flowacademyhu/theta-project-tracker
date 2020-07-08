@@ -1,4 +1,4 @@
-import {transformBudgetReport, transformReportForFrontend} from "../../lib/report"
+import {transformReportForFrontend, transformBudgetReport} from "../../lib/report"
 
 export const getReportProjectByHours = (report: object[]) => {
     return transformReportForFrontend(report, 'userName', 'projectName', 'timeSpent');

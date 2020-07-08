@@ -8,8 +8,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     <mat-dialog-content class="mat-typography">
     </mat-dialog-content>
     <mat-dialog-actions class="actions" align="end">
-      <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
-      <button mat-raised-button [mat-dialog-close]="true" class="right" color="warn" >Delete</button>
+      <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
+      <button mat-raised-button [mat-dialog-close]="true" class="right" color="warn" >{{'delete' | translate}}</button>
     </mat-dialog-actions>
   `,
   styles: [`

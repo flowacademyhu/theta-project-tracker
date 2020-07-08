@@ -57,14 +57,6 @@ import { MatPaginator } from '@angular/material/paginator';
   `,
   styles: [
     `
-    body {
-      height: 777px;
-     /*  position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0; */
-    }
     .table-container {
       margin: auto;
       max-width: 70%;
