@@ -81,7 +81,7 @@ import { ProjectService } from '../services/project.service';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add-new' | translate}}</button>
   </div>
 </form>
 <div class="actions" align="end">

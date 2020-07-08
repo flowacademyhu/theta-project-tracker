@@ -80,7 +80,7 @@ import { Router } from '@angular/router';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add-new' | translate}}</button>
   </div>
 </form>
 <div class="actions" align="end">
