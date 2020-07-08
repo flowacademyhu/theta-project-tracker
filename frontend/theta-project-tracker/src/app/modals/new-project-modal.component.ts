@@ -9,7 +9,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   <mat-dialog-content class="mat-typography">
     <app-new-project [projectToEdit]="projectToEdit"></app-new-project>
   </mat-dialog-content>
-  `
+  `,
+  styles: [`
+  h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  `]
 })
 export class NewProjectModalComponent implements OnInit {
 
