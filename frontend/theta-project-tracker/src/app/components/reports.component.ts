@@ -2,11 +2,12 @@ import { Component, } from '@angular/core';
 import { ReportsService, Result } from '../services/reports.service';
 import { ProjectService } from '../services/project.service';
 import { FormControl } from '@angular/forms';
-import { map, switchMap, startWith, pluck } from 'rxjs/operators';
+import { map, switchMap, startWith } from 'rxjs/operators';
 import { ReplaySubject, combineLatest, } from 'rxjs';
 import { Project } from '../models/project.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import { ExportsService } from '../services/export.service'
 import * as moment from "moment";
 
 @Component({
@@ -19,8 +20,8 @@ import * as moment from "moment";
   <button mat-raised-button (click)="onClickReportByUserCost()">{{'report-by-contractor-money' | translate}}</button>
   <button mat-raised-button (click)="onClickReportByProjectBudget()">{{'project-budget-report' | translate}}</button>
 </div>
-
-<mat-form-field appearance="fill">
+<div class="date-filter">
+<mat-form-field class="date-from-button" appearance="fill">
     <mat-label>From:</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -33,7 +34,8 @@ import * as moment from "moment";
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
 </mat-form-field>
-
+</div>
+<div class="row-filter">
 <mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
   <mat-label>Projects</mat-label>
   <mat-select [formControl]="projects" multiple>
@@ -47,6 +49,10 @@ import * as moment from "moment";
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
 </mat-form-field>
+</div>
+<div class="wrapper">
+<button mat-raised-button  (click)="onClickExport()">{{'export-to-excel' | translate}}</button>
+</div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
   `,
@@ -57,6 +63,27 @@ import * as moment from "moment";
   }
   button {
     margin: 15px;
+  }
+  .export-button {
+    display: flex;
+    justify-content:flex-end;
+  }
+  .date-filter {
+    max-width: 80%;
+    margin: auto;
+  }
+  .row-filter{
+    max-width: 80%;
+    margin: auto;
+  }
+  .wrapper {
+    margin: auto;
+    display: flex;
+    justify-content:flex-end;
+    max-width: 80%;
+  }
+  .date-from-button{
+    margin-right:1rem;
   }
   `],
 })
@@ -85,7 +112,7 @@ export class ReportsComponent {
   projectList$ = this.projectService.fetchProjects();
   userList$ = this.userService.fetchUsers();
 
-  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService) {
+  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService, private exportsService: ExportsService) {
     this.onClickReportByProjectHour();
   }
   
@@ -162,7 +189,25 @@ export class ReportsComponent {
         break;
     } 
   }
-
+  onClickExport(){
+    switch(this.whichTabIsShown) {
+      case 1:
+        this.onClickExportReportByProjectHours();
+        break;
+      case 2:
+        this.onClickExportReportByProjectCost();
+        break;
+      case 3:
+        this.onClickExportReportByUserHours();
+        break;
+      case 4:
+        this.onClickExportReportByUserCost();
+        break;
+      case 5:
+        this.onClickExportReportByProjectBudget();
+        break;
+    } 
+  }
   onClickReportByProjectHour() {
     this.users.setValue([]);
     this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
@@ -200,5 +245,20 @@ export class ReportsComponent {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 5;
+  }
+  onClickExportReportByProjectHours(){
+    this.exportsService.exportReportsByProjectHours();
+  }
+  onClickExportReportByProjectCost(){
+    this.exportsService.exportReportsByProjectCost();
+  }
+  onClickExportReportByUserHours(){
+    this.exportsService.exportReportsByUserHours();
+  }
+  onClickExportReportByUserCost(){
+    this.exportsService.exportReportsByUserCost();
+  }
+  onClickExportReportByProjectBudget(){
+    this.exportsService.exportReportsBudget();
   }
 }

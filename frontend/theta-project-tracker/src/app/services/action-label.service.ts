@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 import { ActionLabel } from '../models/action-label.model'
@@ -22,7 +22,8 @@ export class ActionLabelService {
     return this.http.get<ActionLabel>(this.apiUrl +`actionLabel/${id}`);
   }
   public addActionLabel(actionlabel: ActionLabel): Observable<ActionLabel> {
-    return this.http.post<ActionLabel>(this.apiUrl + 'actionLabel', actionlabel);
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.post<ActionLabel>(this.apiUrl + 'actionLabel', actionlabel, httpOptions);
   }
   public updateActionLabel(id: number, actionlabel: ActionLabel) {
     return this.http.put(this.apiUrl + `actionLabel/${id}`, actionlabel);
