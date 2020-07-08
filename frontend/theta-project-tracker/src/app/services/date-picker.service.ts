@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { DatePipe } from '@angular/common';
 import { TimeRecordResponse } from './timsheet.service';
@@ -13,13 +13,15 @@ export class DatePickerService {
   constructor(private http: HttpClient, public datepipe: DatePipe) { }
 
   fetchCurrentWeek(currentDate?: string): Observable<TimeRecordResponse> {
-    if (!currentDate) {
-      currentDate = new Date().toISOString().split('T')[0]
-      return this.http.get<TimeRecordResponse>(this.apiUrl + `timeRecord?date=${currentDate}`);
+    let params = new HttpParams();
+    if (currentDate) {
+        params = params.append('date', currentDate);
+        return this.http.get<TimeRecordResponse>(this.apiUrl + 'timeRecord', { params: params });
     } else {
-      return this.http.get<TimeRecordResponse>(this.apiUrl + `timeRecord?date=${currentDate}`);
+      currentDate = new Date().toISOString().split('T')[0];
+      params = params.append('date', currentDate);
+      return this.http.get<TimeRecordResponse>(this.apiUrl + 'timeRecord', { params: params });
     }
-   
   }
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { RecordCreate } from '../models/record-create.model';
@@ -10,31 +10,41 @@ export class TimesheetService {
     constructor(private http: HttpClient) { }
 
     getTimeRecords(date?: string): Observable<TimeRecordResponse> {
-        console.log('service', date)
-        return this.http.get<TimeRecordResponse>(this.apiUrl + `timeRecord?date=${date}`);
+        let params = new HttpParams();
+        if (date) {
+            params = params.append('date', date)
+        }
+        return this.http.get<TimeRecordResponse>(this.apiUrl + 'timeRecord', { params: params });
     }
     createTimeRecords(record: RecordCreate, date?: string) {
-        console.log('service', date)
-        const httpOptions: object = {responseType: 'text'};
-        return this.http.post<RecordCreate>(this.apiUrl + `timeRecord?date=${date}`, record, httpOptions);
+        let params = new HttpParams();
+        if (date) {
+            params = params.append('date', date)
+        }
+        return this.http.post<RecordCreate>(this.apiUrl + 'timeRecord', record, { params: params, responseType: 'text' });
     }
-    updateTimeRecords(records: UpdateRecords, date?: string): Observable<string> {
-        console.log('service', date)
-        console.log(records)
-        const httpOptions: object = {responseType: 'text'};
-        return this.http.put<string>(this.apiUrl + `timeRecord?date=${date}`, records, httpOptions)
+    updateTimeRecords(records: UpdateRecords, date?: string) {
+        let params = new HttpParams();
+        if (date) {
+            params = params.append('date', date)
+        }
+        return this.http.put(this.apiUrl + 'timeRecord', records, { params: params, responseType: "text"});
     }
+
     deleteTimeRecords(ids, date?: string):Observable<string> {
-        console.log('service', date)
+        let params = new HttpParams();
+        if (date) {
+            params = params.append('date', date)
+        }
         const options = {
             headers: new HttpHeaders({
               'Content-Type': 'application/json'
             }),
-            body: ids
+            body: ids,
+            params: params
           }
-        return this.http.delete<string>(this.apiUrl + `timeRecord?date=${date}`, options)
+        return this.http.delete<string>(this.apiUrl + 'timeRecord', options )
     }
-
 }
 export interface TimeRecordResponse {
     weekDays: string[];
