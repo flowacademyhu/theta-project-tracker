@@ -41,12 +41,13 @@ export const createData = (timeRecords: Array<any>) => {
   return data;
 }
 
-export const createUserTimeRecord = (req: Request, res: Response) => {
+export const createUserTimeRecord = (req: Request, res: Response, fromDate) => {
   return {
     userId: res.locals.user.id,
     milestoneId: req.body.milestoneId,
     actionLabelId: req.body.actionLabelId,
-    description: req.body.description
+    description: req.body.description,
+    week: fromDate
   }
 }
 

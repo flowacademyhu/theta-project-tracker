@@ -22,8 +22,8 @@ import { Result } from '../services/reports.service';
   styles: [`
   .wrapper {
     margin: auto;
-    max-width: 50%;
-    margin-top: 200px
+    max-width: 80%;
+    margin-top: 2rem
   }
   table {
     width: 100%;
