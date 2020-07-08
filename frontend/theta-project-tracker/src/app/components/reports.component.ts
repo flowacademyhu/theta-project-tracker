@@ -247,18 +247,18 @@ export class ReportsComponent {
     this.whichTabIsShown = 5;
   }
   onClickExportReportByProjectHours(){
-    this.exportsService.exportReportsByProjectHours();
+    this.exportsService.exportReportsByProjectHours(this.startDate, this.endDate, this.projects.value);
   }
   onClickExportReportByProjectCost(){
-    this.exportsService.exportReportsByProjectCost();
+    this.exportsService.exportReportsByProjectCost(this.startDate, this.endDate, this.projects.value);
   }
   onClickExportReportByUserHours(){
-    this.exportsService.exportReportsByUserHours();
+    this.exportsService.exportReportsByUserHours(this.startDate, this.endDate, this.users.value);
   }
   onClickExportReportByUserCost(){
-    this.exportsService.exportReportsByUserCost();
+    this.exportsService.exportReportsByUserCost(this.startDate, this.endDate, this.users.value);
   }
   onClickExportReportByProjectBudget(){
-    this.exportsService.exportReportsBudget();
+    this.exportsService.exportReportsBudget(this.startDate, this.endDate, this.projects.value);
   }
 }
