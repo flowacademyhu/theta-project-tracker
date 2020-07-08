@@ -26,7 +26,7 @@ export const index = async (req: Request, res: Response) => {
 
 };
 
-export const create = async (req: Request, res: Response) => {
+export const createAndDelete = async (req: Request, res: Response) => {
   try {
     const deletedArray: Array<ProjectUser> = req.body.deleted;
     const createArray: Array<ProjectUser>= req.body.created;
@@ -40,22 +40,3 @@ export const create = async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 };
-
-export const destroy = async (req: Request, res: Response) => {
-  try {
-    const projectUser: Array<ProjectUser> = [];
-    if (req.body.length > 0) {
-      for (let i = 0; i < req.body.length; i++) {
-        projectUser.push({
-          projectId: req.body[i].projectId,
-          userId: +req.params.userId
-        });
-        await database(TableNames.projectUsers).delete().where(projectUser[i]);
-      }
-      res.sendStatus(204);
-    }
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-}
