@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-timesheet',
   template: `
-  <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)"></app-date-picker>
+  <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)" (onCopy)="createLastWeek($event)"></app-date-picker>
   <div class="warning" *ngIf="warn"><p [ngStyle]="{'color': 'red'}">{{ 'no-duplicates' | translate }}</p></div>
   <div class="weekdays">
   <mat-grid-list cols="7" rowHeight="30px">
@@ -167,6 +167,11 @@ export class TimesheetComponent implements OnInit, OnDestroy {
       }
     }
   }
+  createLastWeek(event: any) {
+    console.log('cica')
+    console.log(this.currentDisplayedDate)
+    this.displayTimeSheet(this.currentDisplayedDate);
+  }
 
   createRecordComponent(event: RecordCreate) {
     this.timesheetService.createTimeRecords(event, this.currentDisplayedDate).subscribe(() => {
@@ -180,8 +185,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.warn = false;
       }, 3000);
       console.log(error.error);
-    }
-    )
+    })
   }
 
   componentManagement(date?: string) {

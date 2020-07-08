@@ -28,24 +28,37 @@ export class TimesheetService {
         if (date) {
             params = params.append('date', date)
         }
-        return this.http.put(this.apiUrl + 'timeRecord', records, { params: params, responseType: "text"});
+        return this.http.put(this.apiUrl + 'timeRecord', records, { params: params, responseType: "text" });
     }
 
-    deleteTimeRecords(ids, date?: string):Observable<string> {
+    deleteTimeRecords(ids, date?: string): Observable<string> {
         let params = new HttpParams();
         if (date) {
             params = params.append('date', date)
         }
         const options = {
             headers: new HttpHeaders({
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             }),
             body: ids,
             params: params
-          }
-        return this.http.delete<string>(this.apiUrl + 'timeRecord', options )
+        }
+        return this.http.delete<string>(this.apiUrl + 'timeRecord', options)
+    }
+
+    copyLastWeek(date?: string): Observable<string> {
+        let params = new HttpParams();
+        if (date) {
+            params = params.append('date', date);
+            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', { params: params, responseType: 'text' })
+        } else {
+            let currentDate = new Date().toISOString().split('T')[0];
+            params = params.append('date', currentDate);
+        }
+        return this.http.post<string>(this.apiUrl + 'timeRecord/copy', { params: params, responseType: 'text' })
     }
 }
+
 export interface TimeRecordResponse {
     weekDays: string[];
     projects: RecordCreate[];
