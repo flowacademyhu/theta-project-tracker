@@ -10,6 +10,14 @@ import * as userTimeRecordSerializer from "../serializers/userTimeRecord";
 import {TimeRecord} from "../models/timeRecord";
 import * as _ from "lodash";
 
+const getDate = (req: Request) => {
+  if (req.query.date) {
+    return moment(req.query.date);
+  } else {
+    return moment();
+  }
+}
+
 const pastArray = async (res: Response, fromDatePrevious) => {
   const pastWeekQuery: QueryBuilder = database(TableNames.userTimeRecords)
     .where('week', '=', fromDatePrevious)
@@ -39,12 +47,7 @@ const compareAndCreate = async (pastWeekArray, currentWeekArray, fromDate) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    let date: Moment;
-    if (req.query.date) {
-      date = moment(req.query.date);
-    } else {
-      date = moment();
-    }
+    let date: Moment = getDate(req);
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     const fromDatePrevious = moment(fromDate).subtract(1, 'week').format('YYYY-MM-DD');
     const pastWeekArray = await pastArray(res, fromDatePrevious);
