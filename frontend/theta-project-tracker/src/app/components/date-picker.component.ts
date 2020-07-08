@@ -7,6 +7,7 @@ import { EventEmitter } from '@angular/core';
   selector: 'app-date-picker',
   template: `
   <div class="container">
+  <button  mat-raised-button >{{ 'copy-last-week' | translate }}</button>
   <mat-icon (click)="toPreviousWeek()">navigate_before</mat-icon>
   <mat-form-field appearance="fill">
   <mat-label>Choose a date</mat-label>
@@ -23,7 +24,11 @@ import { EventEmitter } from '@angular/core';
   }
   .container{
     text-align: center;
-    margin-top: 50px
+    margin-top: 50px;
+    margin-left: -210px;
+  }
+  button {
+    margin-right: 80px;
   }
   `]
 })

@@ -20,6 +20,7 @@ export class TimesheetService {
     }
     updateTimeRecords(records: UpdateRecords, date?: string): Observable<string> {
         console.log('service', date)
+        console.log(records)
         const httpOptions: object = {responseType: 'text'};
         return this.http.put<string>(this.apiUrl + `timeRecord?date=${date}`, records, httpOptions)
     }

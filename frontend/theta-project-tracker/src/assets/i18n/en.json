@@ -56,6 +56,8 @@
   "milestone-select": "Select Milestone",
   "activity-select": "Select Activity",
   "add-record": "Add New Record",
-  "save-record": "Save Records"
+  "save-record": "Save Records",
+  "no-duplicates": "Cannot create duplicates!",
+  "copy-last-week": "Copy Last Week"
 }
 

@@ -7,11 +7,13 @@ import { RecordOneWeekComponent } from './record-one-week.component';
 import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse } from '../services/timsheet.service';
 import { Subscription } from 'rxjs';
 import { DatePickerService } from '../services/date-picker.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-timesheet',
   template: `
   <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)"></app-date-picker>
+  <div class="warning" *ngIf="warn"><p [ngStyle]="{'color': 'red'}">{{ 'no-duplicates' | translate }}</p></div>
   <div class="weekdays">
   <mat-grid-list cols="7" rowHeight="30px">
     <div class="save"> <button (click)="onSaveRecors()" mat-raised-button
@@ -29,7 +31,7 @@ import { DatePickerService } from '../services/date-picker.service';
 <mat-divider></mat-divider>
 <div class="recordTime">
   <ng-template #container></ng-template>
-  <div>
+  <div *ngIf="responseArray.length > 0">
   <mat-divider></mat-divider>
   <div class="footer">
     <mat-grid-list cols="7" rowHeight="30px">
@@ -67,6 +69,11 @@ import { DatePickerService } from '../services/date-picker.service';
     width: 80%;
     margin: auto;
   }
+  .warning {
+    width: 9%;
+    margin-right: auto;
+    margin-left: auto;
+  }
   `],
 })
 export class TimesheetComponent implements OnInit, OnDestroy {
@@ -82,6 +89,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   subscription$: Subscription[] = [];
   areRecordsValid: boolean;
   currentDisplayedDate: string;
+  warn: boolean;
   constructor(private authService: AuthService, private projectUserService: ProjectUsersService,
     private resolver: ComponentFactoryResolver, private timesheetService:
       TimesheetService, private datePickerService: DatePickerService) { }
@@ -96,23 +104,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     })
   }
   dateChange(event: string) {
-    this.datePickerService.fetchCurrentWeek(event).subscribe(resp => {
-      let response = resp;
-      if (response.projects.length === 0) {
-        this.responseArray = [];
-        for (let i = 0; i < 7; i++) {
-          this.totals[i] = 0;
-          this.overs[i] = 0;
-        }
-      }
-    })
-
-    this.displayTimeSheet(event);
-    return this.currentDisplayedDate = event;
+    this.currentDisplayedDate = event;
+    this.displayTimeSheet(this.currentDisplayedDate);
   }
-  makeArray() {
+  makeArray(response) {
     let dataIndex = 0;
-    for (let i = 0; i < this.response.projects.length; i++) {
+    this.responseArray = [];
+    for (let i = 0; i < response.projects.length; i++) {
       this.responseArray[i] = new Array<ResponseItem[]>();
       for (let j = 0; j < 7; j++) {
         this.responseArray[i][j] = {
@@ -144,9 +142,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.timesheetService.updateTimeRecords(response, this.currentDisplayedDate).subscribe();
   }
   getTotals(array) {
-    this.makeArray()
     const totalsNormal = [];
-    const totalsOver = []
+    const totalsOver = [];
+    this.totals = [];
+    this.overs = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i].length > 0) {
         for (let j = 0; j < 7; j++) {
@@ -173,18 +172,23 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     this.timesheetService.createTimeRecords(event, this.currentDisplayedDate).subscribe(() => {
       this.timesheetService.getTimeRecords(this.currentDisplayedDate).subscribe(array => {
         this.response = array
-        console.log(this.responseArray)
         this.componentManagement()
-        console.log('second', this.responseArray)
       })
-    });
+    }, (error: HttpErrorResponse) => {
+      this.warn = true;
+      setTimeout(() => {
+        this.warn = false;
+      }, 3000);
+      console.log(error.error);
+    }
+    )
   }
 
   componentManagement(date?: string) {
     this.entry.clear()
     const factory = this.resolver.resolveComponentFactory(RecordOneWeekComponent);
     if (this.response.projects.length > 0) {
-      this.makeArray();
+      this.makeArray(this.response);
       let dayIndex = 0;
       let dataIndex = 0;
       const res = this.response.projects;
@@ -215,7 +219,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
           this.timesheetService.deleteTimeRecords(uniqueIds, this.currentDisplayedDate).subscribe(() => {
             this.timesheetService.getTimeRecords(this.currentDisplayedDate).subscribe(response => {
               this.response = response;
-              this.componentManagement(date)
+              this.componentManagement(this.currentDisplayedDate)
             })
           });
           this.responseArray.splice(componentRef.instance.ID, 1)
@@ -223,7 +227,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         }))
         this.subscription$.push(componentRef.instance.timeSheet.statusChanges.subscribe(status => {
           if (status === "VALID") {
-            this.areRecordsValid = false
+            this.areRecordsValid = false;
           } else {
             this.areRecordsValid = true;
           }
@@ -251,15 +255,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         }
       }
     }
-    console.log(this.responseArray, 'checkforupdates')
-    console.log('totals', this.totals, 'overs', this.overs)
     this.getTotals(this.responseArray);
     return array;
   }
   displayTimeSheet(dateChange?: string) {
     this.datePickerService.fetchCurrentWeek(dateChange).subscribe(response => {
       this.response = response;
-      this.makeArray();
+      this.makeArray(this.response);
       this.getDates();
       this.componentManagement(dateChange)
       this.getTotals(this.responseArray);
