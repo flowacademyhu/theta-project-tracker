@@ -28,17 +28,13 @@ export const index = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    if (req.body.length > 0) {
-      for (let i = 0; i < req.body.length; i++) {
-        const projectUser = {
-          userId: +req.params.userId,
-          projectId: req.body[i].projectId,
-          costToClientPerHour: req.body[i].costToClientPerHour
-        }
-    await database(TableNames.projectUsers).insert(projectUser);
-      }
+    const deletedArray: Array<ProjectUser> = req.body.deleted;
+    const createArray: Array<ProjectUser>= req.body.created;
+    for (let item of deletedArray) {
+      await database(TableNames.projectUsers).where({userId: item.userId, projectId: item.projectId}).delete();
     }
-    res.sendStatus(201);
+    await database(TableNames.projectUsers).insert(createArray);
+    res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
