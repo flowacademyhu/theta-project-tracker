@@ -15,6 +15,7 @@ import {router as projectMilestoneRouter} from "./projectMilestone";
 import {router as calendarRouter} from "./calendar";
 import {router as projectActionLabelRouter} from "./projectActionLabel";
 import {router as timeRecordCopyRouter} from "./timeRecordCopy";
+import {router as exportRouter} from "./export";
 
 export const router: Router = Router({mergeParams: true});
 router.use('/login', loginRouter);
@@ -33,3 +34,4 @@ router.use('/actionLabel', actionLabelRouter);
 router.use('/report', reportRouter);
 router.use('/overtimeMultiplier', overtimeMultiplierRouter);
 router.use('/calendar', calendarRouter);
+router.use('/export', exportRouter);
