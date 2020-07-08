@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Project } from '../models/project.model'
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -21,7 +21,8 @@ export class ProjectService {
     return this.http.get<Project>(this.apiUrl + `project/${id}`);
   }
   public addProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(this.apiUrl + 'project', project);
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.post<Project>(this.apiUrl + 'project', project, httpOptions);
   }
   public updateProject(id: number, project: Project): Observable<any> {
     return this.http.put(this.apiUrl + `project/${id}`, project, { responseType: 'text'});

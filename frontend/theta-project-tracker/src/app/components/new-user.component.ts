@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User, UserCreate, ProjectAssigned } from '../models/user.model';
 import { UserService } from '../services/user.service';
@@ -81,12 +81,14 @@ import { ProjectService } from '../services/project.service';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add-new' | translate}}</button>
   </div>
 </form>
-<div class="actions">
+<div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="warn">{{'save' | translate}}</button>
+  <button class="second" (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="createdUser" color="primary"
+  [disabled]="newUser.invalid"
+  >{{'save' | translate}}</button>
 </div>
   `,
   styles: [
@@ -112,14 +114,17 @@ import { ProjectService } from '../services/project.service';
     mat-icon:hover {
       cursor: pointer;
     }
+    .second {
+      margin-left: 10px;
+    }
     `
   ]
 })
 export class NewUserComponent implements OnInit {
 
   newUser = new FormGroup({
-    firstName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
-    lastName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    firstName: new FormControl(null, Validators.required),
+    lastName: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, Validators.required),
     costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),

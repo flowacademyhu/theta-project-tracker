@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User, Role, UserCreate, PasswordEmailChange, UserUpdate } from '../models/user.model';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User, UserCreate, PasswordEmailChange, UserUpdate } from '../models/user.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 
@@ -32,9 +32,11 @@ export class UserService {
     return this.http.delete(this.apiUrl + `user/${id}`).pipe(tap(() => this.fetchUsers()));
   }
   updatePassword(passwordChanges: PasswordEmailChange) {
-    return this.http.put(this.apiUrl + 'user/profile', passwordChanges)
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.put(this.apiUrl + 'user/profile', passwordChanges, httpOptions)
   }
   updateEmail(emailChanges: PasswordEmailChange) {
-   return this.http.put(this.apiUrl + 'user/profile', emailChanges)
+    const httpOptions: object = {responseType: 'text'};
+   return this.http.put(this.apiUrl + 'user/profile', emailChanges, httpOptions)
   }
 }

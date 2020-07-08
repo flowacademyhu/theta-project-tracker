@@ -1,12 +1,9 @@
 export interface TimeRecord {
   id?: number;
-  userId: number;
-  spentTime: number;
-  milestoneId: number;
-  description: string;
-  actionLabelId: number;
-  overtime: number;
-  date: Date;
+  userTimeRecordId: number,
+  normalHours?: number;
+  overTime?: number;
+  date: string;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client } from '../models/client.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { tap } from 'rxjs/operators';
@@ -19,7 +19,8 @@ export class ClientService {
     return this.http.get<Client>(this.apiUrl + `client/${id}`);
   }
   addClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(this.apiUrl + 'client', client);
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.post<Client>(this.apiUrl + 'client', client, httpOptions);
   }
   updateClient(id: number, client: Client): Observable<Client> {
     return this.http.put<Client>(this.apiUrl + `client/${id}`, client);

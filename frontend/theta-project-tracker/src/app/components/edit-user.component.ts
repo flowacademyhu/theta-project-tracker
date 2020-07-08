@@ -80,13 +80,13 @@ import { Router } from '@angular/router';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add-new' | translate}}</button>
   </div>
 </form>
-<div class="actions">
+<div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="updateUser()" mat-raised-button [mat-dialog-close]="createdUser"
-    color="warn">{{'save' | translate}}</button>
+  <button class="second" (click)="updateUser()" mat-raised-button [mat-dialog-close]="createdUser"
+    color="primary">{{'save' | translate}}</button>
 </div>
   `,
   styles: [
@@ -112,14 +112,17 @@ import { Router } from '@angular/router';
     mat-icon:hover {
       cursor: pointer;
     }
+    .second {
+      margin-left: 10px;
+    }
     `
   ]
 })
 
 export class EditUserComponent implements OnInit {
   editUser = new FormGroup({
-    firstName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
-    lastName: new FormControl(null, [Validators.required, Validators.pattern(/^\S*$/)]),
+    firstName: new FormControl(null, Validators.required),
+    lastName: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, Validators.required),
     costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),
@@ -142,10 +145,11 @@ export class EditUserComponent implements OnInit {
     this.editUser.get('password').disable()
     this.assignedProjects = this.userToEdit.projects;
     this.editUser.patchValue(this.userToEdit)
-    this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
+    // this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
   }
   onDeleteProject(project) {
     this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.name === project.name), 1);
+    this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
   }
   onAddNewProject() {
     this.assignProjectsToUser();
