@@ -170,7 +170,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   createLastWeek(event: any) {
     console.log('cica')
     console.log(this.currentDisplayedDate)
-    this.displayTimeSheet(this.currentDisplayedDate);
+    this.timesheetService.copyLastWeek(this.currentDisplayedDate).subscribe(() => {
+      this.displayTimeSheet(this.currentDisplayedDate);
+    })
+   
   }
 
   createRecordComponent(event: RecordCreate) {

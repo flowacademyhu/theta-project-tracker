@@ -49,13 +49,15 @@ export class TimesheetService {
     copyLastWeek(date?: string): Observable<string> {
         let params = new HttpParams();
         if (date) {
+            console.log(date)
             params = params.append('date', date);
-            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', { params: params, responseType: 'text' })
+            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', null, { params: params, responseType: 'text' })
         } else {
             let currentDate = new Date().toISOString().split('T')[0];
             params = params.append('date', currentDate);
+            console.log('else', date)
         }
-        return this.http.post<string>(this.apiUrl + 'timeRecord/copy', { params: params, responseType: 'text' })
+        return this.http.post<string>(this.apiUrl + 'timeRecord/copy',null, { params: params, responseType: 'text' })
     }
 }
 

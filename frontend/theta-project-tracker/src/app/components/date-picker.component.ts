@@ -64,8 +64,6 @@ export class DatePickerComponent implements OnInit {
     this.updateDoB(this.currentDate)
   }
   onCopyLastWeek() {
-    this.timesheetService.copyLastWeek().subscribe(() => {
-      this.onCopy.emit();
-    })
+    this.onCopy.emit();
   }
 }
