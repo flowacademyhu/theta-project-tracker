@@ -10,7 +10,7 @@ import { EventEmitter } from '@angular/core';
   <button  mat-raised-button >{{ 'copy-last-week' | translate }}</button>
   <mat-icon (click)="toPreviousWeek()">navigate_before</mat-icon>
   <mat-form-field appearance="fill">
-  <mat-label>Choose a date</mat-label>
+  <mat-label>{{'choose-date' | translate}}</mat-label>
   <input   matInput [matDatepicker]="picker" (dateChange)="updateDoB($event)" [value]="currentDate.value">
   <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>

@@ -13,7 +13,8 @@ export class ProjectUsersService {
     return this.http.get<ProjectAssigned[]>(this.apiUrl + `user/${id}/project`)
   }
   assignProjectToUser(userId: number, projects: ProjectAssigned[]) {
-    return this.http.post(this.apiUrl + `project/user/${userId}`, projects)
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.post(this.apiUrl + `project/user/${userId}`, projects, httpOptions)
   }
   unAssignProject(userId: number, projects: ProjectAssigned[]) {
     const options = {
