@@ -21,7 +21,8 @@ export class MilestoneService {
     return this.http.get<Milestone>(this.apiUrl + +`milestone/${id}`);
   }
   public addMilestone(milestone: Milestone): Observable<Milestone> {
-    return this.http.post<Milestone>(this.apiUrl + 'milestone', milestone);
+    const httpOptions: object = {responseType: 'text'};
+    return this.http.post<Milestone>(this.apiUrl + 'milestone', milestone, httpOptions);
   }
   public updateMilestone(id: number, milestone: Milestone) {
     return this.http.put(this.apiUrl + `milestone/${id}`, milestone);
