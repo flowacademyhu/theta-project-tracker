@@ -145,11 +145,11 @@ export class EditUserComponent implements OnInit {
     this.editUser.get('password').disable()
     this.assignedProjects = this.userToEdit.projects;
     this.editUser.patchValue(this.userToEdit)
-    // this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
+    this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
   }
   onDeleteProject(project) {
     this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.name === project.name), 1);
-    this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
+    // this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
   }
   onAddNewProject() {
     this.assignProjectsToUser();

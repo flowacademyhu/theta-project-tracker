@@ -33,7 +33,7 @@ import { MatPaginator } from '@angular/material/paginator';
             <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let milestone">
                 <mat-icon (click)="onOpenEditModal(milestone)">edit</mat-icon>
-                <mat-icon (click)="onOpenDeleteModal(milestone)">clear</mat-icon>
+                <mat-icon (click)="onOpenDeleteModal(milestone)" color="warn">delete_forever</mat-icon>
             </mat-cell>
         </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -39,8 +39,8 @@ import { MatPaginator } from '@angular/material/paginator';
       <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
       <mat-cell *matCellDef="let project">
        <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
-       <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
        <mat-icon (click)="onAddUserModal(project)">add</mat-icon>
+       <mat-icon (click)="onOpenDeleteModal(project)" color="warn">delete_forever</mat-icon>
       </mat-cell>
      </ng-container>
     </ng-container>

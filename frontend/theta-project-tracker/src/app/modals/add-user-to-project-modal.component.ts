@@ -20,8 +20,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     </mat-select>
     </mat-form-field>
   </div>
-  <div>
   <label for="costToClientPerHour">Cost to Client per Hour</label>
+  <div>
   <mat-form-field class="full-width">
     <input matInput type="number" formControlName="costToClientPerHour" [value]="costToClientPerHour">
   </mat-form-field>
@@ -29,14 +29,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   </mat-dialog-content>
   <div class="actions">
   <button mat-raised-button mat-dialog-close color="accent">Cancel</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="availableUsers" color="warn">Add</button>
+  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="availableUsers" color="primary">Add</button>
 </div>
 </form>
   `,
   styles: [`
   .full-width {
     min-width: 150px;
-    max-width: 500px;
+    max-width: 180px;
     width: 100%;
   }
   `]

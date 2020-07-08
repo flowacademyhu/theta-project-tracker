@@ -37,7 +37,7 @@ import { Router, ActivatedRoute } from '@angular/router';
                 <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">
                     <mat-icon (click)="onOpenEditModal(user)">edit</mat-icon>
-                    <mat-icon (click)="onOpenDeleteModal(user)">clear</mat-icon>
+                    <mat-icon (click)="onOpenDeleteModal(user)" color="warn">delete_forever</mat-icon>
                 </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
