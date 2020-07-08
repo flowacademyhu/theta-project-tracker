@@ -1,4 +1,3 @@
-import { CalendarComponent } from './calendar.component';
 import { CalendarModalComponent } from './../modals/calendar-dialog-modal.component';
 import { EventUtilService } from './../services/event-util.service';
 import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild, OnDestroy } from '@angular/core';
@@ -77,7 +76,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   };
 
   headerPrevNextButton() {
-    this.calendarComponent.getApi().next();
     this.monthIterator--;
   }
 
@@ -97,7 +95,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }))
       .subscribe(event => {
         this.currentEvents = event;
-        console.log(event, "GETEVENT SEEE");
         this.calendarOptions.events = event;
       });
   }
@@ -128,12 +125,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
             this.getMethod();
         });
     } else if (res) {
-      if (dialogRef.componentInstance.deleteBool) {
-        this.eventUtilService.deleteEvent(calendarData).subscribe(data => {
-          this.getMethod();
-          clickInfo.event.remove();
-        });
-      }
+      this.eventUtilService.deleteEvent(calendarData).subscribe(data => {
+        clickInfo.event.remove();
+        this.getMethod();
+      });
     }
   });
 }

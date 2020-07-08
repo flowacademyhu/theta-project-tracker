@@ -41,9 +41,6 @@ export class CalendarModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private dialog: MatDialog,  public dialogRef: MatDialogRef<any> ) { }
 
-  editBool: boolean;
-  deleteBool: boolean;
-
   @ViewChild('editOvertime') public editOvertime: ElementRef<any>;
 
   public hour = new FormGroup({
