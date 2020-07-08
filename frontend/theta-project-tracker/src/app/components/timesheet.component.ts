@@ -4,7 +4,7 @@ import { ProjectAssigned } from '../models/user.model';
 import { RecordCreate } from '../models/record-create.model';
 import { ProjectUsersService } from '../services/projectUsers.service';
 import { RecordOneWeekComponent } from './record-one-week.component';
-import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse } from '../services/timsheet.service';
+import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse, CopyLastWeek } from '../services/timsheet.service';
 import { Subscription } from 'rxjs';
 import { DatePickerService } from '../services/date-picker.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -168,12 +168,12 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
   }
   createLastWeek(event: any) {
-    console.log('cica')
-    console.log(this.currentDisplayedDate)
-    this.timesheetService.copyLastWeek(this.currentDisplayedDate).subscribe(() => {
-      this.displayTimeSheet(this.currentDisplayedDate);
+    let body: CopyLastWeek = {
+      date: this.currentDisplayedDate
+    }
+    this.timesheetService.copyLastWeek(body).subscribe(() => {
+    this.displayTimeSheet(this.currentDisplayedDate);
     })
-   
   }
 
   createRecordComponent(event: RecordCreate) {
@@ -266,7 +266,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     return array;
   }
   displayTimeSheet(dateChange?: string) {
-    this.datePickerService.fetchCurrentWeek(dateChange).subscribe(response => {
+    this.timesheetService.getTimeRecords(dateChange).subscribe(response => {
+      console.log(response)
       this.response = response;
       this.makeArray(this.response);
       this.getDates();
