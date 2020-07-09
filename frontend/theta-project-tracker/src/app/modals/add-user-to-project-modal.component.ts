@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
-import { User, ProjectAssigned } from '../models/user.model';
+import { User, ProjectAssigned, UserProjectsUpdate } from '../models/user.model';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { ProjectUsersService } from '../services/projectUsers.service'
@@ -78,6 +78,18 @@ export class AddUserToProjectModalComponent implements OnInit {
 
   onAddNewUser() {
     let chosen = this.filteredUsers.find(u  => u.firstName + ' ' + u.lastName === this.newUser.get('user').value)
-   this.projectUsersService.assignProjectToUser(chosen.id,  [{projectId: this.data.projectToEdit.id, costToClientPerHour: this.newUser.value.costToClientPerHour}]).subscribe();
+    console.log(chosen);
+    const projectUpdate: ProjectAssigned[] = [];
+    projectUpdate.push({
+      userId: chosen.id,
+      projectId: this.data.projectToEdit.id,
+      costToClientPerHour: this.newUser.value.costToClientPerHour
+    })
+    const body: UserProjectsUpdate = {
+      deleted: [],
+      created: projectUpdate
+    }
+    console.log(body);
+   this.projectUsersService.updateUsersProjects(body).subscribe();
   }
 }
