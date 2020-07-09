@@ -47,9 +47,9 @@ export const queryReportUserByHours = async (req) => {
         .select('projects.name as projectName', database.raw('concat(users.firstName, " ", users.lastName) as userName'),
             'projects.id as projectId', 'users.id as userId', database.raw('sum(timeRecords.normalHours + timeRecords.overTime) as timeSpent'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName');
-        if(req.query.projects) {
+        if(req.query.users) {
             const filterArray = JSON.parse(req.query.projects);
-            query = query.whereIn('projectId', filterArray);
+            query = query.whereIn('userId', filterArray);
         }
     const report = await query;
     return(report);  
@@ -64,9 +64,9 @@ export const queryReportUserByCost = async (req) => {
         .select('projects.name as projectName', database.raw('concat(users.firstName, " ", users.lastName) as userName'),
             'projects.id as projectId', 'users.id as userId', database.raw('sum(users.costToCompanyPerHour * (timeRecords.normalHours + timeRecords.overTime)) as cost'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
-        if(req.query.projects) {
+        if(req.query.users) {
             const filterArray = JSON.parse(req.query.projects);
-            query = query.whereIn('projectId', filterArray);
+            query = query.whereIn('userId', filterArray);
         }
     const report = await query;
     return(report);  
