@@ -210,7 +210,7 @@ export class ReportsComponent {
   }
   onClickReportByProjectHour() {
     this.users.setValue([]);
-    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate, this.projects.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 1;
@@ -218,7 +218,7 @@ export class ReportsComponent {
 
   onClickReportByProjectCost() {
     this.users.setValue([]);
-    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate, this.projects.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 2;
@@ -226,7 +226,7 @@ export class ReportsComponent {
 
   onClickReportByUserHours() {
     this.projects.setValue([]);
-    this.reportsService.getReportsByUserHours(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByUserHours(this.startDate, this.endDate, this.users.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 3;
@@ -234,14 +234,14 @@ export class ReportsComponent {
   
   onClickReportByUserCost() {
     this.projects.setValue([]);
-    this.reportsService.getReportsByUserCost(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByUserCost(this.startDate, this.endDate, this.users.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 4;
   }
 
   onClickReportByProjectBudget() {
-    this.reportsService.getReportsBudget(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsBudget(this.startDate, this.endDate, this.projects.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 5;
