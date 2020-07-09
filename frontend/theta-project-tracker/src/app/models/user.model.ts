@@ -10,10 +10,11 @@ export interface User {
   projects?: ProjectAssigned[];
 }
 export interface ProjectAssigned {
+  userId?: number;
   projectId?: number;
   projectName?: string;
   name?: string;
-  costToClientPerHour: number
+  costToClientPerHour?: number
 }
 export enum Role {
   USER = 'user',
@@ -30,4 +31,12 @@ export interface PasswordEmailChange {
 }
 export interface UserUpdate {
   user: User
+}
+export interface UserProjectsUpdate {
+  deleted: UserProjectsDel[];
+  created: ProjectAssigned[];
+}
+export interface UserProjectsDel {
+  userId: number;
+  projectId: number
 }

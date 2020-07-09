@@ -10,10 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
        `,
   styles: [`
     :host ::ng-deep.mat-sidenav-container {
-      height: calc(100vh - 70px) !important;
+      height: calc(100vh - 64px) !important;
     }
     .mat-sidenav-container {
-      height: calc(100vh - 70px) !important;
+      height: calc(100vh - 64px) !important;
     }
   `],
 })

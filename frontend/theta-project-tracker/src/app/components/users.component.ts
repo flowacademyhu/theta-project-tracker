@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
+    <button (click)="onAddNewUser()" mat-raised-button color="primary">{{'add-user' | translate}}</button>
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{ 'name' | translate}}</mat-header-cell>
@@ -37,7 +37,7 @@ import { Router, ActivatedRoute } from '@angular/router';
                 <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
                 <mat-cell *matCellDef="let user">
                     <mat-icon (click)="onOpenEditModal(user)">edit</mat-icon>
-                    <mat-icon (click)="onOpenDeleteModal(user)">clear</mat-icon>
+                    <mat-icon (click)="onOpenDeleteModal(user)" color="warn">delete_forever</mat-icon>
                 </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

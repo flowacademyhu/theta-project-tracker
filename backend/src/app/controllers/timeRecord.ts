@@ -1,4 +1,3 @@
-import {TimeRecord} from "../models/timeRecord";
 import {database} from "../../lib/database";
 import {Request, Response} from "express";
 import {QueryBuilder} from "knex";
@@ -47,31 +46,19 @@ export const create = async (req: Request, res: Response) => {
       date = moment();
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
-    const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
-    const userTimeRecord = timeRecordSerializer.createUserTimeRecord(req, res);
-    let userTimeRecordId;
+    const userTimeRecord = timeRecordSerializer.createUserTimeRecord(req, res, fromDate);
     const duplicateUserTimeRecord: UserTimeRecord = await database(TableNames.userTimeRecords)
       .where({
         userId: res.locals.user.id,
         milestoneId: req.body.milestoneId,
         actionLabelId: req.body.actionLabelId,
-        description: req.body.description
+        week: fromDate
       }).select().first();
     if (duplicateUserTimeRecord) {
-      userTimeRecordId = duplicateUserTimeRecord.id;
-    } else {
-      await database(TableNames.userTimeRecords).insert(userTimeRecord)
-        .then(saveId => {userTimeRecordId = database.raw('LAST_INSERT_ID()')})
-    }
-    const duplicateWeek = await database(TableNames.timeRecords)
-      .where('date', '>=', fromDate)
-      .where('date', '<=', toDate)
-      .where({userTimeRecordId: userTimeRecordId})
-      .select();
-    if (duplicateWeek.length > 1) {
       res.sendStatus(400);
     } else {
-      await database(TableNames.timeRecords).insert(timeRecordSerializer.updateTimeRecord(fromDate, userTimeRecordId));
+      const userTimeRecordId = await database(TableNames.userTimeRecords).insert(userTimeRecord);
+      await database(TableNames.timeRecords).insert(timeRecordSerializer.updateTimeRecord(fromDate, userTimeRecordId[0]));
       res.sendStatus(201);
     }
   } catch (error) {
@@ -102,21 +89,22 @@ export const destroy = async (req: Request, res: Response) => {
       date = moment();
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
-    const toDate = date.endOf('isoWeek').format('YYYY-MM-DD');
-
-    const query: QueryBuilder = database(TableNames.userTimeRecords).where({
-      userId: res.locals.user.id,
+    await database(TableNames.userTimeRecords).where({
       milestoneId: req.body.milestoneId,
-      actionLabelId: req.body.actionLabelId
-    }).select();
-    const userTimeRecord: TimeRecord = await query;
-    console.log(userTimeRecord[0].id);
-    await database(TableNames.timeRecords).where({userTimeRecordId: userTimeRecord[0].id})
-      .where('date', '>=', fromDate)
-      .where('date', '<=', toDate).delete();
+      actionLabelId: req.body.actionLabelId,
+      week: fromDate
+    }).delete();
     res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
+}
+
+export const getStartAndEndDates = async (req: Request, res: Response) => {
+  let query: QueryBuilder = database(TableNames.timeRecords)
+      .min('date')
+      .max('date')
+  const report = await query;
+  res.status(200).json(report);
 }

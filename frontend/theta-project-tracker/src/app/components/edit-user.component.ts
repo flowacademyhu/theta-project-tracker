@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project } from '../models/project.model';
-import { User, ProjectAssigned, UserUpdate } from '../models/user.model';
+import { User, ProjectAssigned, UserUpdate, UserProjectsUpdate, UserProjectsDel } from '../models/user.model';
 import { ProjectService } from '../services/project.service';
 import { UserService } from '../services/user.service';
 import { ProjectUsersService } from '../services/projectUsers.service';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-edit-user',
@@ -69,7 +70,7 @@ import { Router } from '@angular/router';
         <td>
           <mat-form-field>
             <mat-select formControlName="projectId">
-              <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
+              <mat-option *ngFor="let project of chooseableProjects" [value]="project.projectId">{{ project.name }}</mat-option>
             </mat-select>
           </mat-form-field>
         </td>
@@ -80,7 +81,7 @@ import { Router } from '@angular/router';
         </td>
       </tr>
     </table>
-    <button mat-raised-button (click)="onAddNewProject()">{{'add' | translate}}</button>
+    <button mat-raised-button (click)="onAddNewProject()">{{'add-new' | translate}}</button>
   </div>
 </form>
 <div class="actions" align="end">
@@ -124,30 +125,75 @@ export class EditUserComponent implements OnInit {
     firstName: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
-    password: new FormControl(null, Validators.required),
+    password: new FormControl(null),
     costToCompanyPerHour: new FormControl(null, [Validators.required, Validators.min(0)]),
     role: new FormControl(null, Validators.required),
     projectId: new FormControl(null, Validators.required),
     costToClient: new FormControl(null, Validators.required),
   });
-  availableProjects: Project[] = [];
+  availableProjects: ProjectAssigned[] = [];
   assignedProjects: ProjectAssigned[] = [];
+  projectsToDelete: UserProjectsDel[] = [];
+  chooseableProjects: ProjectAssigned[] = [];
   createdUser: UserUpdate;
+  shifteableProject: ProjectAssigned[] = [];
   @Input() userToEdit: User;
   id: number;
   constructor(private userService: UserService, private projectService: ProjectService,
               private projectUserService: ProjectUsersService, private router: Router) { }
   ngOnInit(): void {
-    this.projectService.fetchProjects().subscribe(projects => {
-      this.availableProjects = projects;
-    })
     this.id = this.userToEdit.id;
     this.editUser.get('password').disable()
-    this.assignedProjects = this.userToEdit.projects;
     this.editUser.patchValue(this.userToEdit)
-    this.projectUserService.unAssignProject(this.id, this.assignedProjects).subscribe();
+    this.shifteableProject = this.userToEdit.projects;
+    console.log('shifteable nogonint', this.shifteableProject)
+    if (this.userToEdit.projects.length > 0) {
+      for (let i = 0; i < this.userToEdit.projects.length; i++) {
+        this.assignedProjects.push({
+          userId: this.id,
+          projectId: this.userToEdit.projects[i].projectId,
+          costToClientPerHour: this.userToEdit.projects[i].costToClientPerHour,
+          name: this.userToEdit.projects[i].name
+        })
+      }
+      this.projectService.fetchProjects().subscribe(projects => {
+        for (let i = 0; i < projects.length; i++) {
+          this.availableProjects.push({
+            userId: this.id,
+            projectId: projects[i].projectId,
+            name: projects[i].name
+          })
+        }
+        this.availableProjects.filter(availableP => {
+          availableP.projectId
+        });
+      })
+    } else {
+      this.projectService.fetchProjects().subscribe(projects => {
+        for (let i = 0; i < projects.length; i++) {
+          this.availableProjects.push({
+            userId: this.id,
+            projectId: projects[i].projectId,
+            name: projects[i].name
+          })
+        }
+        this.chooseableProjects = this.availableProjects;
+      })
+    }
+    console.log(this.availableProjects)
   }
   onDeleteProject(project) {
+
+    const deleteProject: UserProjectsDel = {
+      userId: this.id,
+      projectId: project.projectId
+    }
+    this.chooseableProjects.push({
+      projectId: project.projectId,
+      name: project.name
+    })
+    this.projectsToDelete.push(deleteProject);
+
     this.assignedProjects.splice(this.assignedProjects.findIndex(p => p.name === project.name), 1);
   }
   onAddNewProject() {
@@ -157,20 +203,52 @@ export class EditUserComponent implements OnInit {
   }
   updateUser() {
     this.assignProjectsToUser()
+    if (this.shifteableProject.length > 0) {
+      this.shifteableProject.forEach(originalP => {
+        let duplicateIndex = this.assignedProjects.findIndex(p => p.projectId === originalP.projectId);
+        this.assignedProjects.splice(duplicateIndex, 1);
+      })
+    }
+    /*   for (let i = 1; i < this.shifteableProject.length; i++) {
+        for (let j = 0; j < this.assignedProjects.length; j++) {
+          if (this.shifteableProject[i].projectId === this.assignedProjects[j].projectId || 
+            this.shifteableProject[i].costToClientPerHour !== this.assignedProjects[i].costToClientPerHour) {
+            
+              this.assignedProjects.splice(j, 1);
+          }
+        }
+      }   */
+
     this.editUser.removeControl('projectId')
     this.editUser.removeControl('costToClient')
     this.createdUser = {
       user: this.editUser.getRawValue()
     }
     this.assignedProjects.map(p => delete p.name)
-    this.projectUserService.assignProjectToUser(this.id, this.assignedProjects).subscribe()
-    this.userService.updateUser(this.id, this.createdUser).subscribe();
-    this.router.navigate(['..', 'users'])
+    if (this.createdUser) {
+      this.userService.updateUser(this.id, this.createdUser).subscribe(() => {
+        this.router.navigate(['..', 'users'])
+      })
+    }
+    const projectUpdate: UserProjectsUpdate = {
+      deleted: this.projectsToDelete ? this.projectsToDelete : [],
+      created: this.assignedProjects ? this.assignedProjects : []
+    }
+    console.log(projectUpdate, "RESPONSE")
+    if (projectUpdate) {
+      this.projectUserService.updateUsersProjects(projectUpdate).subscribe(() => {
+        this.userService.updateUser(this.id, this.createdUser).subscribe();
+        this.router.navigate(['..', 'users'])
+      });
+    }
   }
   assignProjectsToUser() {
-    if (this.editUser.get('projectId').value) {
+    if (this.editUser.get('projectId').value && this.editUser.get('costToClient').value) {
+      let index = this.chooseableProjects.findIndex(p => p.projectId === this.editUser.get('projectId').value)
+      this.chooseableProjects.splice(index, 1);
       this.assignedProjects.push({
-        name: this.availableProjects.find(p => p.id === this.editUser.get('projectId').value).name,
+        userId: this.id,
+        name: this.availableProjects.find(p => p.projectId === this.editUser.get('projectId').value).name,
         projectId: this.editUser.get('projectId').value,
         costToClientPerHour: this.editUser.get('costToClient').value
       })

@@ -7,6 +7,7 @@ import { NewProjectModalComponent } from '../modals/new-project-modal.component'
 import { DeleteModalComponent } from '../modals/delete-modal.component';
 import { ClientService } from '../services/client.service';
 import { Client } from '../models/client.model';
+import { AddUserToProjectModalComponent } from '../modals/add-user-to-project-modal.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -15,7 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
   template: `
   <mat-card class="table-container">
     <div>
-     <button (click)="onAddNewProject()" mat-raised-button>{{'add-project' | translate}}</button>
+     <button (click)="onAddNewProject()" mat-raised-button color="primary">{{'add-project' | translate}}</button>
      <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
     <ng-container matColumnDef="actions" class="actions">
       <ng-container matColumnDef="name">
@@ -38,7 +39,8 @@ import { MatPaginator } from '@angular/material/paginator';
       <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
       <mat-cell *matCellDef="let project">
        <mat-icon (click)="onOpenEditModal(project)">edit</mat-icon>
-       <mat-icon (click)="onOpenDeleteModal(project)">clear</mat-icon>
+       <mat-icon (click)="onAddUserModal(project)">add</mat-icon>
+       <mat-icon (click)="onOpenDeleteModal(project)" color="warn">delete_forever</mat-icon>
       </mat-cell>
      </ng-container>
     </ng-container>
@@ -134,7 +136,18 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dataSource.data.map(p => p.clientName = this.clients.find(c => c.id === p.clientId).name);
     });
   }
-  ngOnDestroy(): void {
+  onAddUserModal(project) {
+    const dialogRef = this.dialog.open(AddUserToProjectModalComponent, {
+      width: '35%',
+      height: '25%',
+      data: { projectToEdit: project }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+  }
+    ngOnDestroy(): void {
     this.subscriptions$.forEach(sub => sub.unsubscribe());
   }
 }

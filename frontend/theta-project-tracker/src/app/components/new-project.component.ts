@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
       <input matInput type="text" formControlName="name">
     </mat-form-field>
   </div>
-  <label for="name">{{'clients' | translate}}</label>
+  <label for="clients">{{'clients' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
     <mat-select formControlName="clientId">
@@ -24,20 +24,20 @@ import { Subscription } from 'rxjs';
       </mat-select>
     </mat-form-field>
   </div>
-  <label for="email">{{'description' | translate}}</label>
+  <label for="description">{{'description' | translate}}</label>
   <div>
     <mat-form-field class="full-width">
       <input matInput type="text" formControlName="description">
     </mat-form-field>
   </div>
-  <label for="cost">{{'budget' | translate}}</label>
+  <label for="budget">{{'budget' | translate}}</label>
   <div>
     <mat-form-field class="cost">
       <input matInput type="number" formControlName="budget">
     </mat-form-field>
     <div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button class="second"  (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn"
+  <button class="second"  (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="primary"
   [disabled]="newProject.invalid"
   >{{"save"| translate}} </button>
 </div>

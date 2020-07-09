@@ -1,52 +1,58 @@
 import { Component, } from '@angular/core';
-import { ReportsService, Result } from '../services/reports.service';
+import { ReportsService, Result, ReportRoute } from '../services/reports.service';
 import { ProjectService } from '../services/project.service';
 import { FormControl } from '@angular/forms';
-import { map, switchMap, startWith, pluck } from 'rxjs/operators';
+import { map, switchMap, startWith } from 'rxjs/operators';
 import { ReplaySubject, combineLatest, } from 'rxjs';
 import { Project } from '../models/project.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import { ExportsService } from '../services/export.service'
 import * as moment from "moment";
 
 @Component({
   selector: 'app-reports',
   template: `
   <div class="reports">
-  <button mat-raised-button (click)="onClickReportByProjectHour()">{{'report-by-project-hours' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByProjectCost()">{{'report-by-project-money' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByUserHours()">{{'report-by-contractor-hours' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByUserCost()">{{'report-by-contractor-money' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByProjectBudget()">{{'project-budget-report' | translate}}</button>
+  <button mat-raised-button (click)="onTabChange('report/project/hours')" color="primary">{{'report-by-project-hours' | translate}}</button>
+  <button mat-raised-button (click)="onTabChange('report/project/cost')" color="primary">{{'report-by-project-money' | translate}}</button>
+  <button mat-raised-button (click)="onTabChange('report/user/hours')" color="primary">{{'report-by-contractor-hours' | translate}}</button>
+  <button mat-raised-button (click)="onTabChange('report/user/cost')" color="primary">{{'report-by-contractor-money' | translate}}</button>
+  <button mat-raised-button (click)="onTabChange('report/project/budget')" color="primary">{{'project-budget-report' | translate}}</button>
 </div>
-
-<mat-form-field appearance="fill">
-    <mat-label>From:</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
+<div class="date-filter">
+<mat-form-field class="date-from-button" appearance="fill">
+    <mat-label >{{'from' | translate}}</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)" [value]="startDate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+    <mat-datepicker #picker startView="month" [value]="startDate"></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
-    <mat-label>To:</mat-label>
-    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
+    <mat-label>{{'to' | translate}}</mat-label>
+    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)" [value]="endDate">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-    <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
+    <mat-datepicker #picker2 startView="month" [value]="endDate"></mat-datepicker>
 </mat-form-field>
-
-<mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>Projects</mat-label>
+</div>
+<div class="row-filter">
+<mat-form-field *ngIf="['report/project/hours','report/project/cost','report/project/budget'].includes(whichTabIsShown)" >
+  <mat-label>{{ 'project-select' | translate }}</mat-label>
   <mat-select [formControl]="projects" multiple>
     <mat-option *ngFor="let project of projectList$ | async" [value]="project">{{project.name}}</mat-option>
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>Users</mat-label>
+<mat-form-field *ngIf="['report/user/hours','report/user/cost'].includes(whichTabIsShown)">
+  <mat-label>{{ 'users' | translate}}</mat-label>
   <mat-select [formControl]="users" multiple>
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
 </mat-form-field>
+</div>
+<div class="wrapper">
+<button mat-raised-button  (click)="onClickExport()" color="accent">{{'export-to-excel' | translate}}</button>
+</div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
   `,
@@ -58,11 +64,32 @@ import * as moment from "moment";
   button {
     margin: 15px;
   }
+  .export-button {
+    display: flex;
+    justify-content:flex-end;
+  }
+  .date-filter {
+    max-width: 80%;
+    margin: auto;
+  }
+  .row-filter{
+    max-width: 80%;
+    margin: auto;
+  }
+  .wrapper {
+    margin: auto;
+    display: flex;
+    justify-content:flex-end;
+    max-width: 80%;
+  }
+  .date-from-button{
+    margin-right:1rem;
+  }
   `],
 })
 
 export class ReportsComponent {
-  whichTabIsShown = 1;
+  whichTabIsShown: ReportRoute = ReportRoute.BY_PROJECT_HOURS;
   startDate = moment().format('YYYY-MM-DD');
   endDate = moment().format('YYYY-MM-DD');
   projects = new FormControl([]);
@@ -85,8 +112,8 @@ export class ReportsComponent {
   projectList$ = this.projectService.fetchProjects();
   userList$ = this.userService.fetchUsers();
 
-  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService) {
-    this.onClickReportByProjectHour();
+  constructor(private reportsService: ReportsService, private projectService: ProjectService, private userService: UserService, private exportsService: ExportsService) {
+    this.onTabChange(ReportRoute.BY_PROJECT_HOURS);
   }
   
   filterByProjects(projectFilter: Project[]): (dataSet: Result) => Partial<Result> {
@@ -124,81 +151,69 @@ export class ReportsComponent {
 
   onStartDateChange(event) {
     this.startDate = moment(event.value).format('YYYY-MM-DD');
-    switch(this.whichTabIsShown) {
-      case 1:
-        this.onClickReportByProjectHour();
-        break;
-      case 2:
-        this.onClickReportByProjectCost();
-        break;
-      case 3:
-        this.onClickReportByUserHours();
-        break;
-      case 4:
-        this.onClickReportByUserCost();
-        break;
-      case 5:
-        this.onClickReportByProjectBudget();
-        break;
-    } 
+    this.onTabChange(this.whichTabIsShown);
   }
   onEndDateChange(event) {
     this.endDate = moment(event.value).format('YYYY-MM-DD');
+    this.onTabChange(this.whichTabIsShown);
+  }
+  onClickExport(){
     switch(this.whichTabIsShown) {
-      case 1:
-        this.onClickReportByProjectHour();
+      case ReportRoute.BY_PROJECT_HOURS:
+        this.onClickExportReportByProjectHours();
         break;
-      case 2:
-        this.onClickReportByProjectCost();
+      case ReportRoute.BY_PROJECT_COST:
+        this.onClickExportReportByProjectCost();
         break;
-      case 3:
-        this.onClickReportByUserHours();
+      case ReportRoute.BY_USER_HOURS:
+        this.onClickExportReportByUserHours();
         break;
-      case 4:
-        this.onClickReportByUserCost();
+      case ReportRoute.BY_USER_COST:
+        this.onClickExportReportByUserCost();
         break;
-      case 5:
-        this.onClickReportByProjectBudget();
+      case ReportRoute.BY_BUDGET:
+        this.onClickExportReportByProjectBudget();
         break;
     } 
   }
 
-  onClickReportByProjectHour() {
-    this.users.setValue([]);
-    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
-      this.itemsSubject.next(result);
-    })
-    this.whichTabIsShown = 1;
+  onClickExportReportByProjectHours(){
+    this.exportsService.exportReportsByProjectHours(this.startDate, this.endDate, this.projects.value);
+  }
+  onClickExportReportByProjectCost(){
+    this.exportsService.exportReportsByProjectCost(this.startDate, this.endDate, this.projects.value);
+  }
+  onClickExportReportByUserHours(){
+    this.exportsService.exportReportsByUserHours(this.startDate, this.endDate, this.users.value);
+  }
+  onClickExportReportByUserCost(){
+    this.exportsService.exportReportsByUserCost(this.startDate, this.endDate, this.users.value);
+  }
+  onClickExportReportByProjectBudget(){
+    this.exportsService.exportReportsBudget(this.startDate, this.endDate, this.projects.value);
   }
 
-  onClickReportByProjectCost() {
-    this.users.setValue([]);
-    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate).subscribe((result: any) => {
-      this.itemsSubject.next(result);
-    })
-    this.whichTabIsShown = 2;
-  }
 
-  onClickReportByUserHours() {
-    this.projects.setValue([]);
-    this.reportsService.getReportsByUserHours(this.startDate, this.endDate).subscribe((result: any) => {
-      this.itemsSubject.next(result);
-    })
-    this.whichTabIsShown = 3;
-  }
-  
-  onClickReportByUserCost() {
-    this.projects.setValue([]);
-    this.reportsService.getReportsByUserCost(this.startDate, this.endDate).subscribe((result: any) => {
-      this.itemsSubject.next(result);
-    })
-    this.whichTabIsShown = 4;
-  }
-
-  onClickReportByProjectBudget() {
-    this.reportsService.getReportsBudget(this.startDate, this.endDate).subscribe((result: any) => {
-      this.itemsSubject.next(result);
-    })
-    this.whichTabIsShown = 5;
+  public onTabChange(type: ReportRoute) {
+    switch (type) {
+      case ReportRoute.BY_PROJECT_COST:
+      case ReportRoute.BY_PROJECT_HOURS:
+      case ReportRoute.BY_BUDGET:
+        this.users.setValue([]);
+        this.reportsService.getReports(this.startDate, this.endDate, this.projects.value, type).subscribe((result: any) => {
+          this.itemsSubject.next(result);
+        })
+        this.whichTabIsShown = type;
+        break;
+    
+      case ReportRoute.BY_USER_COST:
+      case ReportRoute.BY_USER_HOURS:
+        this.projects.setValue([]);
+        this.reportsService.getReports(this.startDate, this.endDate, this.users.value, type).subscribe((result: any) => {
+          this.itemsSubject.next(result);
+        })
+        this.whichTabIsShown = type;
+        break;
+    }
   }
 }
