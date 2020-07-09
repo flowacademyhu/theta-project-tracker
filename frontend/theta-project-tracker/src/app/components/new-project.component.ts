@@ -37,7 +37,7 @@ import { Subscription } from 'rxjs';
     </mat-form-field>
     <div class="actions" align="end">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button class="second"  (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="warn"
+  <button class="second"  (click)="onCloseDialog()" mat-raised-button [mat-dialog-close]="createdProject" color="primary"
   [disabled]="newProject.invalid"
   >{{"save"| translate}} </button>
 </div>
