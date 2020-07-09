@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, ComponentRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ComponentRef, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ProjectAssigned } from '../models/user.model';
 import { RecordCreate } from '../models/record-create.model';
@@ -8,14 +8,11 @@ import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse, Copy
 import { Subscription } from 'rxjs';
 import { DatePickerService } from '../services/date-picker.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 
 @Component({
   selector: 'app-timesheet',
   template: `
-  <div>
-  <ng-template #container>
-
-  </ng-template>
   <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)" (onCopy)="createLastWeek($event)"></app-date-picker>
   <div class="warning" *ngIf="warn"><p [ngStyle]="{'color': 'red'}">{{ 'no-duplicates' | translate }}</p></div>
   <div class="weekdays">
@@ -124,61 +121,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         }
         dataIndex++;
       }
-      this.projectsArrived.push(event)
-    }
-    this.getWeeklyTotal()
-  }
-  getWeeklyTotal() {
-    this.getMondayTotals();
-    this.getTuesdayTotals();
-    this.getWednesdayTotals();
-    this.getThursdayTotals();
-    this.getFridayTotals();
-    this.getThursdayTotals();
-    this.getMondayTotals();
-  }
-  getMondayTotals() {
-    let total = 0;
-    let over = 0;
-    for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.monday;
-      over += this.projectsArrived[i].overTime.monday;
-    }
-    return this.days[0] = { name: 'monday', total: total, overTime: over };
-  }
-  getTuesdayTotals() {
-    let total = 0;
-    let over = 0;
-    for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.tuesday;
-      over += this.projectsArrived[i].overTime.tuesday;
-    }
-    return this.days[1] = { name: 'tuesday', total: total, overTime: over };
-  }
-  getWednesdayTotals() {
-    let total = 0;
-    let over = 0;
-    for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.wednesday;
-      over += this.projectsArrived[i].overTime.wednesday;
-    }
-    return this.days[2] = { name: 'wednesday', total: total, overTime: over };
-  }
-  getThursdayTotals() {
-    let total = 0;
-    let over = 0;
-    for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.thursday;
-      over += this.projectsArrived[i].overTime.thursday
-    }
-    return this.days[3] = { name: 'thursday', total: total, overTime: over };
-  }
-  getFridayTotals() {
-    let total = 0;
-    let over = 0;
-    for (let i = 0; i < this.projectsArrived.length; i++) {
-      total += this.projectsArrived[i].normalHours.friday;
-      over += this.projectsArrived[i].overTime.friday
     }
     return this.responseArray;
   }
