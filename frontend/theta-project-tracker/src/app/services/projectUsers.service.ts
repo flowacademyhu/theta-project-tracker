@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { ProjectAssigned } from '../models/user.model';
+import { ProjectAssigned, UserProjectsUpdate } from '../models/user.model';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,17 +12,8 @@ export class ProjectUsersService {
   getUsersProjects(id: number) {
     return this.http.get<ProjectAssigned[]>(this.apiUrl + `user/${id}/project`)
   }
-  assignProjectToUser(userId: number, projects: ProjectAssigned[]) {
+  updateUsersProjects(projects: UserProjectsUpdate) {
     const httpOptions: object = {responseType: 'text'};
-    return this.http.post(this.apiUrl + `project/user/${userId}`, projects, httpOptions)
-  }
-  unAssignProject(userId: number, projects: ProjectAssigned[]) {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      body: projects
-    }
-    return this.http.delete(this.apiUrl + `project/user/${userId}`, options)
+    return this.http.post(this.apiUrl + 'project/user', projects, httpOptions);
   }
 }
