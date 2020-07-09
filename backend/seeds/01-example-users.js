@@ -13,7 +13,7 @@ exports.seed = (knex) => {
       firstName: 'Jázon',
       lastName: 'Juhász',
       role: 'user',
-      email: 'jazonjuhasz@flow.com',
+      email: 'jazon.juhasz@flow.com',
       password: bcrypt.hashSync('jazonpwd', 10),
       costToCompanyPerHour: 10
     },
@@ -21,41 +21,41 @@ exports.seed = (knex) => {
       firstName: 'Bence',
       lastName: 'Rácz',
       role: 'user',
-      email: 'benceracz@flow.com',
+      email: 'bence.racz@flow.com',
       password: bcrypt.hashSync('bencepwd', 10),
-      costToCompanyPerHour: 10
+      costToCompanyPerHour: 11
     },
     {
       firstName: 'Máté',
       lastName: 'Szabó',
       role: 'user',
-      email: 'mateszabo@flow.com',
+      email: 'mate.szabo@flow.com',
       password: bcrypt.hashSync('matepwd', 10),
-      costToCompanyPerHour: 10
+      costToCompanyPerHour: 12
     },
     {
       firstName: 'Tamás',
       lastName: 'Szemesi',
       role: 'user',
-      email: 'tamasszemesi@flow.com',
+      email: 'tamas.szemesi@flow.com',
       password: bcrypt.hashSync('matepwd', 10),
-      costToCompanyPerHour: 10
+      costToCompanyPerHour: 13
     },
     {
       firstName: 'Zita',
       lastName: 'Szirovicza',
       role: 'user',
-      email: 'zitaszirovicza@flow.com',
+      email: 'zita.szirovicza@flow.com',
       password: bcrypt.hashSync('zitapwd', 10),
-      costToCompanyPerHour: 10
+      costToCompanyPerHour: 14
     },
     {
       firstName: 'Péter',
       lastName: 'Sztantics',
       role: 'user',
-      email: 'peterszantics@flow.com',
+      email: 'peter.sztantics@flow.com',
       password: bcrypt.hashSync('peterpwd', 10),
-      costToCompanyPerHour: 10
+      costToCompanyPerHour: 15
     }
     ])
 }

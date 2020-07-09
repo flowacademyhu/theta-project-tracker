@@ -28,13 +28,13 @@ exports.seed = (knex) => {
             name: 'Project Tracker',
             clientId: 3,
             description: 'Final project',
-            budget: 2500
+            budget: 5000
         },
         {
             name: 'Test Aggregator',
             clientId: 2,
             description: 'Final project',
-            budget: 2500
+            budget: 5000
         }
         ])
 }
