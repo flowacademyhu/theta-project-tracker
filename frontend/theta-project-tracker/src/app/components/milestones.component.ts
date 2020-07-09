@@ -15,7 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
+    <button (click)="onAddNewMilestone()" mat-raised-button color="primary">{{'add-milestone' | translate}}</button>
         <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{'name' | translate}}</mat-header-cell>

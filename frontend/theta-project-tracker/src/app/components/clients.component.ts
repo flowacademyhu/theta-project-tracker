@@ -14,7 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
   <div>
   <mat-card class="table-container">
     <div>
-      <button (click)="onAddNewClient()" mat-raised-button>{{'add-client' | translate}}</button>
+      <button (click)="onAddNewClient()" mat-raised-button color="primary">{{'add-client' | translate}}</button>
       <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef>{{'clients-name' | translate}}</mat-header-cell>

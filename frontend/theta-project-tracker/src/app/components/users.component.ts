@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewUser()" mat-raised-button>{{'add-user' | translate}}</button>
+    <button (click)="onAddNewUser()" mat-raised-button color="primary">{{'add-user' | translate}}</button>
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{ 'name' | translate}}</mat-header-cell>
