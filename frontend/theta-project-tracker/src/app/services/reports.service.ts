@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -10,43 +10,28 @@ export interface Result {
   }
 }
 
+export enum ReportRoute {
+  BY_PROJECT_HOURS = 'report/project/hours',
+  BY_PROJECT_COST = 'report/project/cost',
+  BY_USER_HOURS = 'report/user/hours',
+  BY_USER_COST = 'report/user/cost',
+  BY_BUDGET = 'report/project/budget'
+}
+
 @Injectable({providedIn: 'root'})
 export class ReportsService {
+  apiUrl = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
-  apiUrl = environment.baseUrl;
-  getReportsByProjectHours(startDate, endDate) {
-    return this.http.get(this.apiUrl + 'report/project/hours',{ params: {
-      from: startDate,
-      to: endDate
-    }} );
-  }
 
-  getReportsByProjectCost(startDate, endDate): Observable<Result> {
-    return this.http.get<Result>(this.apiUrl + 'report/project/cost',{ params: {
-      from: startDate,
-      to: endDate
-    }} );
-  }
+  getReports(start, end, array: any[], route: ReportRoute) {
+    let params: HttpParams = new HttpParams();
+    params = params.append('from', start);
+    params = params.append('to', end);
+    if (array.length !== 0) {
+      params = params.append('projects', JSON.stringify(array.map(i => i.id)));
+    }
 
-  getReportsByUserHours(startDate, endDate): Observable<Result> {
-    return this.http.get<Result>(this.apiUrl + 'report/user/hours',{ params: {
-      from: startDate,
-      to: endDate
-    }} );
-  }
-
-  getReportsByUserCost(startDate, endDate): Observable<Result> {
-    return this.http.get<Result>(this.apiUrl + 'report/user/cost',{ params: {
-      from: startDate,
-      to: endDate
-    }} );
-  }
-
-  getReportsBudget(startDate, endDate): Observable<any> {
-    return this.http.get<any>(this.apiUrl + 'report/project/budget',{ params: {
-      from: startDate,
-      to: endDate
-    }} );
+    return this.http.get(this.apiUrl + route, { params });
   }
 }

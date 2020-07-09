@@ -31,7 +31,7 @@ import { ProjectService } from '../services/project.service';
   <div>
     <mat-form-field class="full-width">
       <input matInput [type]="isPasswordVisible ? 'text' : 'password'"formControlName="password">
-      <mat-icon matSuffix (click)="onShowPassword()">{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+      <mat-icon matSuffix (click)="onShowPassword()">{{ isPasswordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
     </mat-form-field>
   </div>
   <label for="cost">{{'cost' | translate}}</label>

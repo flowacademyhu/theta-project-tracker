@@ -1,48 +1,62 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
-import { saveAs } from 'file-saver';
 
 @Injectable({ providedIn: 'root' })
 export class ExportsService {
 
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
-  exportReportsByProjectHours() {
-    return this.http.get(this.apiUrl + 'export/project/hours', {responseType: 'blob'}).subscribe(file => {
-      this.downLoadFile(file, "application/ms-excel")
-    });
+  exportReportsByProjectHours(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
+    return this.http.get(this.apiUrl + 'export/project/hours', { params: {
+      from: startDate,
+      to: endDate,
+      projects: arrayString
+    }} );
   }
 
-  exportReportsByProjectCost() {
-    return this.http.get(this.apiUrl + 'export/project/cost', {responseType: 'blob'}).subscribe(file => {
-      this.downLoadFile(file, "application/ms-excel")
-    });
+  exportReportsByProjectCost(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
+    return this.http.get<File>(this.apiUrl + 'export/project/cost', { params: {
+      from: startDate,
+      to: endDate,
+      projects: arrayString
+    }} );
   }
 
-  exportReportsByUserHours() {
-    return this.http.get(this.apiUrl + 'export/user/hours', {responseType: 'blob'}).subscribe(file => {
-      this.downLoadFile(file, "application/ms-excel")
-    });
+  exportReportsByUserHours(startDate, endDate, users) {
+    const arrayString = JSON.stringify(this.createArray(users));
+    return this.http.get<File>(this.apiUrl + 'export/user/hours', { params: {
+      from: startDate,
+      to: endDate,
+      users: arrayString
+    }});
   }
 
-  exportReportsByUserCost() {
-    return this.http.get(this.apiUrl + 'export/user/cost', {responseType: 'blob'}).subscribe(file => {
-      this.downLoadFile(file, "application/ms-excel")
-    });
+  exportReportsByUserCost(startDate, endDate, users) {
+    const arrayString = JSON.stringify(this.createArray(users));
+    return this.http.get<File>(this.apiUrl + 'export/user/cost', { params: {
+      from: startDate,
+      to: endDate,
+      users: arrayString
+    }});
   }
 
-  exportReportsBudget() {
-    return this.http.get(this.apiUrl + 'export/project/budget', {responseType: 'blob'}).subscribe(file => {
-      this.downLoadFile(file, "application/ms-excel")
-    });
+  exportReportsBudget(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
+    return this.http.get<File>(this.apiUrl + 'export/project/budget', { params: {
+      from: startDate,
+      to: endDate,
+      projects: arrayString
+    }});
   }
 
-
-  downLoadFile(data: any, type: string) {
-    let blob = new Blob([data], { type: type});
-    let url = window.URL.createObjectURL(blob);
-    let pwa = window.open(url);
+  createArray(original) {
+    const result = [];
+    original.forEach(value => {
+      result.push(value.id);
+    })
+    return result;
   }
 }
