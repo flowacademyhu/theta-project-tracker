@@ -1,35 +1,62 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ExportsService {
 
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
-  exportReportsByProjectHours() {
-    return this.http.get(this.apiUrl + 'export/project/hours', {
-    });
+  exportReportsByProjectHours(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
+    return this.http.get(this.apiUrl + 'export/project/hours', { params: {
+      from: startDate,
+      to: endDate,
+      projects: arrayString
+    }} );
   }
 
-  exportReportsByProjectCost(): Observable<File> {
-    return this.http.get<File>(this.apiUrl + 'export/project/cost', {
-    });
+  exportReportsByProjectCost(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
+    return this.http.get<File>(this.apiUrl + 'export/project/cost', { params: {
+      from: startDate,
+      to: endDate,
+      projects: arrayString
+    }} );
   }
 
-  exportReportsByUserHours(): Observable<File> {
-    return this.http.get<File>(this.apiUrl + 'export/user/hours', {
-    });
+  exportReportsByUserHours(startDate, endDate, users) {
+    const arrayString = JSON.stringify(this.createArray(users));
+    return this.http.get<File>(this.apiUrl + 'export/user/hours', { params: {
+      from: startDate,
+      to: endDate,
+      users: arrayString
+    }});
   }
 
-  exportReportsByUserCost(): Observable<File> {
-    return this.http.get<File>(this.apiUrl + 'export/user/cost', {
-    });
+  exportReportsByUserCost(startDate, endDate, users) {
+    const arrayString = JSON.stringify(this.createArray(users));
+    return this.http.get<File>(this.apiUrl + 'export/user/cost', { params: {
+      from: startDate,
+      to: endDate,
+      users: arrayString
+    }});
   }
 
-  exportReportsBudget(): Observable<File> {
-    return this.http.get<File>(this.apiUrl + 'export/project/budget', {
-    });
+  exportReportsBudget(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
+    return this.http.get<File>(this.apiUrl + 'export/project/budget', { params: {
+      from: startDate,
+      to: endDate,
+      projects: arrayString
+    }});
+  }
+
+  createArray(original) {
+    const result = [];
+    original.forEach(value => {
+      result.push(value.id);
+    })
+    return result;
   }
 }

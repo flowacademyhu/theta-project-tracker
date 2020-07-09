@@ -15,7 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
   template: `
   <mat-card class="table-container">
     <div>
-    <button (click)="onAddNewMilestone()" mat-raised-button>{{'add-milestone' | translate}}</button>
+    <button (click)="onAddNewMilestone()" mat-raised-button color="primary">{{'add-milestone' | translate}}</button>
         <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>{{'name' | translate}}</mat-header-cell>
@@ -33,7 +33,7 @@ import { MatPaginator } from '@angular/material/paginator';
             <mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</mat-header-cell>
             <mat-cell *matCellDef="let milestone">
                 <mat-icon (click)="onOpenEditModal(milestone)">edit</mat-icon>
-                <mat-icon (click)="onOpenDeleteModal(milestone)">clear</mat-icon>
+                <mat-icon (click)="onOpenDeleteModal(milestone)" color="warn">delete_forever</mat-icon>
             </mat-cell>
         </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
