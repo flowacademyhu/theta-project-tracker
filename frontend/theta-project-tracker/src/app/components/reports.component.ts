@@ -22,17 +22,17 @@ import * as moment from "moment";
 </div>
 <div class="date-filter">
 <mat-form-field class="date-from-button" appearance="fill">
-    <mat-label>{{'from' | translate}}</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
+    <mat-label >{{'from' | translate}}</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)" [value]="startDate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+    <mat-datepicker #picker startView="month" [value]="startDate"></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
     <mat-label>{{'to' | translate}}</mat-label>
-    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
+    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)" [value]="endDate">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-    <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
+    <mat-datepicker #picker2 startView="month" [value]="endDate"></mat-datepicker>
 </mat-form-field>
 </div>
 <div class="row-filter">
