@@ -3,6 +3,7 @@ import { database } from "./database";
 import { TableNames } from "./enums";
 import moment = require("moment");
 
+const DATE_FORMAT = 'YYYY-MM-DD';
 export const queryReportProjectByHours = async (req) => {
 
     let query: QueryBuilder = database(TableNames.timeRecords)
@@ -15,11 +16,11 @@ export const queryReportProjectByHours = async (req) => {
             'projects.id as projectId', 'users.id as userId')
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
         if (req.query.from){
-            let from = moment(req.query.from).format('YYYY-MM-DD');
+            let from = moment(req.query.from).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '>=', from);
         }
         if (req.query.to){
-            let to = moment(req.query.to).format('YYYY-MM-DD');
+            let to = moment(req.query.to).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '<=', to);
         }
     const report = await query;
@@ -36,11 +37,11 @@ export const queryReportProjectByCost = async (req) => {
             database.raw('sum(users.costToCompanyPerHour * (timeRecords.normalHours + timeRecords.overTime)) as cost'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
         if (req.query.from){
-            let from = moment(req.query.from).format('YYYY-MM-DD');
+            let from = moment(req.query.from).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '>=', from);
         }
         if (req.query.to){
-            let to = moment(req.query.to).format('YYYY-MM-DD');
+            let to = moment(req.query.to).format(DATE_FORMAT;
             query = query.where('timeRecords.date', '<=', to);
         }
         const report = await query;
@@ -57,11 +58,11 @@ export const queryReportUserByHours = async (req) => {
             'projects.id as projectId', 'users.id as userId', database.raw('sum(timeRecords.normalHours + timeRecords.overTime) as timeSpent'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName');
         if (req.query.from){
-            let from = moment(req.query.from).format('YYYY-MM-DD');
+            let from = moment(req.query.from).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '>=', from);
         }
         if (req.query.to){
-            let to = moment(req.query.to).format('YYYY-MM-DD');
+            let to = moment(req.query.to).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '<=', to);
         }
     const report = await query;
@@ -78,11 +79,11 @@ export const queryReportUserByCost = async (req) => {
             'projects.id as projectId', 'users.id as userId', database.raw('sum(users.costToCompanyPerHour * (timeRecords.normalHours + timeRecords.overTime)) as cost'))
         .groupBy('users.id', 'projects.id', 'projectName', 'userName')
         if (req.query.from){
-            let from = moment(req.query.from).format('YYYY-MM-DD');
+            let from = moment(req.query.from).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '>=', from);
         }
         if (req.query.to){
-            let to = moment(req.query.to).format('YYYY-MM-DD');
+            let to = moment(req.query.to).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '<=', to);
         }
     const report = await query;
@@ -101,11 +102,11 @@ export const queryReportBudget = async (req) => {
         .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.normalHours + timeRecords.overTime))) as "overUnder"'))
         .groupBy('projects.name', 'projects.budget')
         if (req.query.from){
-            let from = moment(req.query.from).format('YYYY-MM-DD');
+            let from = moment(req.query.from).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '>=', from);
         }
         if (req.query.to){
-            let to = moment(req.query.to).format('YYYY-MM-DD');
+            let to = moment(req.query.to).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '<=', to);
         }
     const report = await query;
