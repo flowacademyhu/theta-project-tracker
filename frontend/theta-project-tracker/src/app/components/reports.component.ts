@@ -63,7 +63,6 @@ import * as moment from "moment";
   }
   button {
     margin: 15px;
-    color: "primary";
   }
   .export-button {
     display: flex;
