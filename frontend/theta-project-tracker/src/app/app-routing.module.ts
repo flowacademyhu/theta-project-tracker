@@ -14,6 +14,7 @@ import { RoleGuard } from './guards/role.guard';
 import { Role } from './models/user.model';
 import { ActionLabelComponent } from './components/action-label.component';
 import { EditUserComponent } from './components/edit-user.component';
+import { TimeRecordsResolver } from './resolvers/timeRecords.resolver';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'timesheet',
     pathMatch: 'full',
+    resolve: { records: TimeRecordsResolver}
   },
   {
     path: 'users',

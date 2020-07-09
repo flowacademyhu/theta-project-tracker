@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
   template: `
   <div class="wrapper">
+  <div *ngIf="warn"><p>{{ 'pwd-dont-match' | translate }}</p></div>
   <mat-accordion>
-    <mat-expansion-panel [expanded]="panelOpenState">
+    <mat-expansion-panel [expanded]="emailPanelState">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ 'email-change' | translate }}
@@ -56,9 +58,9 @@ import { UserService } from '../services/user.service';
             <input matInput formControlName="password" type="password">
           </mat-form-field>
         </div>
-        <div *ngIf="warn"><p>{{ 'pwd-dont-match' | translate }}</p></div>
         <button mat-raised-button (click)="onSaveNewPassword()" color="primary"
         [disabled]="changePassword.invalid"
+        type="button"
         >{{ 'save' | translate }}</button>
       </form>
     </mat-expansion-panel>
@@ -77,6 +79,7 @@ import { UserService } from '../services/user.service';
   }
   p {
     color: red;
+    margin-left: 235px;
   }
   .full-width {
     width: 200px;
@@ -85,7 +88,7 @@ import { UserService } from '../services/user.service';
 })
 
 export class ProfileComponent implements OnInit {
- 
+
   changePassword = new FormGroup({
     newPassword: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]'), Validators.minLength(5)]),
     passwordAgain: new FormControl(null, [Validators.required, Validators.pattern('.*\\S.*[a-zA-z0-9 ]'), Validators.minLength(5)]),
@@ -97,19 +100,47 @@ export class ProfileComponent implements OnInit {
   });
   warn: boolean;
   panelOpenState: boolean;
-  constructor(private userSerive: UserService) { }
+  emailPanelState: boolean;
+  constructor(private userService: UserService) { }
   ngOnInit() { }
   onSaveNewPassword() {
     if (this.changePassword.get('newPassword').value === this.changePassword.get('passwordAgain').value) {
-      this.changePassword.removeControl('passwordAgain');
-      this.userSerive.updatePassword(this.changePassword.getRawValue()).subscribe();
-      this.panelOpenState = false;
+      let change = {
+        password: this.changePassword.get('password').value,
+        newPassword: this.changePassword.get('newPassword').value
+      }
+      this.userService.updatePassword(change).subscribe(() => {
+        this.panelOpenState = false;
+        this.changePassword.reset();
+      },
+      (error: HttpErrorResponse) => {
+      console.log(error.error);
+      this.panelOpenState = true;
+      this.warn = true;
+    });
     } else {
       this.warn = true;
+      setTimeout(() => {
+        this.warn = false;
+      }, 2000);
     }
   }
   onSaveNewEmail() {
-    this.userSerive.updateEmail(this.changeEmail.getRawValue()).subscribe();
-    this.panelOpenState = false;
+    this.userService.updateEmail(this.changeEmail.getRawValue()).subscribe(() => {
+      this.emailPanelState = false;
+      this.changeEmail.reset();
+      for (let control in this.changeEmail.controls) {
+        this.changeEmail.controls[control].setErrors(null);
+     }
+    },
+    (error: HttpErrorResponse) => {
+      console.log(error.error);
+      this.emailPanelState = true;
+      this.warn = true;
+      setTimeout(() => {
+        this.warn = false;
+      }, 2000);
+    });
+
   }
 }
