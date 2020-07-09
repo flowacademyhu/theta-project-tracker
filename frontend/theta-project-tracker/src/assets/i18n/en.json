@@ -55,6 +55,8 @@
   "milestone-select": "Select Milestone",
   "activity-select": "Select Activity",
   "add-record": "Add New Record",
+  "edit-overtime": "Edit Overtime",
+  "delete-overtime": "Delete Custom Overtime",
   "export-to-excel": "Export to Excel",
   "add-action-label": "+ Add New Action Label",
   "save-record": "Save Records",

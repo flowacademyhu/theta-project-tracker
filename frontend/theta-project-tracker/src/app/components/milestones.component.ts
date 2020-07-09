@@ -70,7 +70,7 @@ export class MilestonesComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private milestoneService: MilestoneService, private dialog: MatDialog,
-    private projectService: ProjectService) { }
+              private projectService: ProjectService) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;

@@ -67,11 +67,11 @@ import { ProjectService } from '../services/project.service';
       <tr>
         <td>
           <mat-form-field>
-          
+
             <mat-select formControlName="projectId">
               <mat-option *ngFor="let project of availableProjects" [value]="project.id">{{ project.name }}</mat-option>
             </mat-select>
-         
+
           </mat-form-field>
 
         </td>
@@ -141,7 +141,7 @@ export class NewUserComponent implements OnInit {
   ngOnInit(): void {
     this.projectService.fetchProjects().subscribe(projects => {
       this.availableProjects = projects;
-    })   
+    })
   }
   onAddNewUser() {
     this.assignProjectsToUser();
@@ -164,13 +164,15 @@ export class NewUserComponent implements OnInit {
   }
   assignProjectsToUser() {
     if (this.newUser.get('projectId').value) {
-      this.assignedProjects.push({
-        projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
-        projectId: this.newUser.get('projectId').value,
-        costToClientPerHour: this.newUser.get('costToClient').value
-      })
+    this.assignedProjects.push({
+      projectName: this.availableProjects.find(p => p.id === this.newUser.get('projectId').value).name,
+      projectId: this.newUser.get('projectId').value,
+      costToClientPerHour: this.newUser.get('costToClient').value
+      });
     }
   }
+
+
   onShowPassword() {
     return this.isPasswordVisible = !this.isPasswordVisible;
   }

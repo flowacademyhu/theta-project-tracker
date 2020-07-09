@@ -2,6 +2,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,webstorm,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,webstorm,visualstudiocode
 
+##Bundle
+
+
+
 ### Node ###
 # Logs
 logs
@@ -10,6 +14,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -41,6 +46,7 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+./build/bundle.js
 
 # Dependency directories
 node_modules/

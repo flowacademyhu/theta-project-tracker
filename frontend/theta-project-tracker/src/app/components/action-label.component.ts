@@ -67,7 +67,7 @@ export class ActionLabelComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private actionLabelService: ActionLabelService, private dialog: MatDialog,
-    private projectService: ProjectService) { }
+              private projectService: ProjectService) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;

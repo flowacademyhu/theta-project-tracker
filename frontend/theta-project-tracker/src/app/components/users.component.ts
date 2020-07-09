@@ -91,8 +91,8 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private userService: UserService, private dialog: MatDialog, private projectUserService: ProjectUsersService, 
-    private router: Router, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private dialog: MatDialog, private projectUserService: ProjectUsersService,
+              private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;

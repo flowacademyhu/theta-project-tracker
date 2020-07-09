@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, ComponentRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ComponentRef, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ProjectAssigned } from '../models/user.model';
 import { RecordCreate } from '../models/record-create.model';
@@ -8,6 +8,7 @@ import { TimesheetService, ResponseItem, UpdateRecords, TimeRecordResponse, Copy
 import { Subscription } from 'rxjs';
 import { DatePickerService } from '../services/date-picker.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 
 @Component({
   selector: 'app-timesheet',
@@ -59,7 +60,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     margin-left: 560px;
     width: 56%
   }
-  
+
   .footer {
     margin-top: 5px;
     width: 56%;
