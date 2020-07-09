@@ -37,7 +37,7 @@ import { Project } from '../models/project.model';
   styles: [`
   .full-width {
     min-width: 150px;
-    max-width: 500px;
+    max-width: 180px;
     width: 100%;
   }
   `]
