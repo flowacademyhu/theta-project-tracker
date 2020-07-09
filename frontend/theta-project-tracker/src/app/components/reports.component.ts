@@ -14,11 +14,11 @@ import * as moment from "moment";
   selector: 'app-reports',
   template: `
   <div class="reports">
-  <button mat-raised-button (click)="onClickReportByProjectHour()">{{'report-by-project-hours' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByProjectCost()">{{'report-by-project-money' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByUserHours()">{{'report-by-contractor-hours' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByUserCost()">{{'report-by-contractor-money' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByProjectBudget()">{{'project-budget-report' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByProjectHour()" color="primary">{{'report-by-project-hours' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByProjectCost()" color="primary">{{'report-by-project-money' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByUserHours()" color="primary">{{'report-by-contractor-hours' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByUserCost()" color="primary">{{'report-by-contractor-money' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByProjectBudget()" color="primary">{{'project-budget-report' | translate}}</button>
 </div>
 <div class="date-filter">
 <mat-form-field class="date-from-button" appearance="fill">
@@ -36,22 +36,22 @@ import * as moment from "moment";
 </mat-form-field>
 </div>
 <div class="row-filter">
-<mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>{{'projects' | translate}}</mat-label>
+<mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" >
+  <mat-label>{{ 'project-select' | translate }}</mat-label>
   <mat-select [formControl]="projects" multiple>
     <mat-option *ngFor="let project of projectList$ | async" [value]="project">{{project.name}}</mat-option>
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>{{'users' | translate}}</mat-label>
+<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)">
+  <mat-label>{{ 'users' | translate}}</mat-label>
   <mat-select [formControl]="users" multiple>
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
 </mat-form-field>
 </div>
 <div class="wrapper">
-<button mat-raised-button  (click)="onClickExport()">{{'export-to-excel' | translate}}</button>
+<button mat-raised-button  (click)="onClickExport()" color="accent">{{'export-to-excel' | translate}}</button>
 </div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
