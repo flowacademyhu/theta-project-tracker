@@ -76,7 +76,7 @@ export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onOpenEditModal(client) {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
-      width: '35%',
+      width: '15%',
       height: '40%',
       data: { clientToEdit: client }
     });
@@ -90,7 +90,7 @@ export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
     const nameToPass = this.dataSource.data.find(c => c.id === client.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
-      width: '25%',
+      width: '20%',
       height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
@@ -103,7 +103,7 @@ export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onAddNewClient() {
     const dialogRef = this.dialog.open(NewClientModalComponent, {
-      width: '35%',
+      width: '15%',
       height: '40%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {

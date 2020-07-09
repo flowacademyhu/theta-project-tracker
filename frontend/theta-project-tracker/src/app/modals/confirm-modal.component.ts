@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
   `,
   styles: [`
   .second {
-    margin-left:10px;
+    margin-right:50px;
   }
     `]
 })

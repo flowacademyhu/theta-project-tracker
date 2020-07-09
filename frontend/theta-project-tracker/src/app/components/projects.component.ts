@@ -97,7 +97,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onAddNewProject() {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
-      width: '35%',
+      width: '15%',
       height: '55%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
@@ -108,7 +108,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
     const nameToPass = this.dataSource.data.find(u => u.id === project.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
-      width: '25%',
+      width: '20%',
       height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
@@ -122,7 +122,7 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onOpenEditModal(project) {
     const dialogRef = this.dialog.open(NewProjectModalComponent, {
-      width: '35%',
+      width: '15%',
       height: '55%',
       data: { projectToEdit: project }
     });
@@ -138,8 +138,8 @@ export class ProjectsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onAddUserModal(project) {
     const dialogRef = this.dialog.open(AddUserToProjectModalComponent, {
-      width: '35%',
-      height: '25%',
+      width: '12%',
+      height: '30%',
       data: { projectToEdit: project }
     });
     dialogRef.afterClosed().subscribe(result => {

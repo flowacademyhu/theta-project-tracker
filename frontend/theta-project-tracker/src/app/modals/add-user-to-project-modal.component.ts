@@ -21,8 +21,8 @@ import { Project } from '../models/project.model';
     </mat-select>
     </mat-form-field>
   </div>
+    <label for="costToClientPerHour">{{'cost-to-client' | translate}}</label>
   <div>
-  <label for="costToClientPerHour">{{'cost-to-client' | translate}}</label>
   <mat-form-field class="full-width">
     <input matInput type="number" formControlName="costToClientPerHour" [value]="costToClientPerHour">
   </mat-form-field>
@@ -30,7 +30,7 @@ import { Project } from '../models/project.model';
   </mat-dialog-content>
   <div class="actions">
   <button mat-raised-button mat-dialog-close color="accent">{{'cancel' | translate}}</button>
-  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="availableUsers" color="warn">{{'add' | translate}}</button>
+  <button (click)="onAddNewUser()" mat-raised-button [mat-dialog-close]="availableUsers" color="primary">{{'add' | translate}}</button>
 </div>
 </form>
   `,
