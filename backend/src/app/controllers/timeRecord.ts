@@ -47,7 +47,6 @@ export const create = async (req: Request, res: Response) => {
     }
     const fromDate = date.startOf('isoWeek').format('YYYY-MM-DD');
     const userTimeRecord = timeRecordSerializer.createUserTimeRecord(req, res, fromDate);
-    let userTimeRecordId;
     const duplicateUserTimeRecord: UserTimeRecord = await database(TableNames.userTimeRecords)
       .where({
         userId: res.locals.user.id,
@@ -58,11 +57,8 @@ export const create = async (req: Request, res: Response) => {
     if (duplicateUserTimeRecord) {
       res.sendStatus(400);
     } else {
-      await database(TableNames.userTimeRecords).insert(userTimeRecord)
-        .then(saveId => {
-          userTimeRecordId = database.raw('LAST_INSERT_ID()');
-        })
-      await database(TableNames.timeRecords).insert(timeRecordSerializer.updateTimeRecord(fromDate, userTimeRecordId));
+      const userTimeRecordId = await database(TableNames.userTimeRecords).insert(userTimeRecord);
+      await database(TableNames.timeRecords).insert(timeRecordSerializer.updateTimeRecord(fromDate, userTimeRecordId[0]));
       res.sendStatus(201);
     }
   } catch (error) {
@@ -103,4 +99,12 @@ export const destroy = async (req: Request, res: Response) => {
     console.error(error);
     res.sendStatus(500);
   }
+}
+
+export const getStartAndEndDates = async (req: Request, res: Response) => {
+  let query: QueryBuilder = database(TableNames.timeRecords)
+      .min('date')
+      .max('date')
+  const report = await query;
+  res.status(200).json(report);
 }
