@@ -15,6 +15,14 @@ exports.seed = (knex) => {
         {
             projectId: 5,
             name: 'test',
+        },
+        {
+            projectId: 5,
+            name: 'styles',
+        },
+        {
+            projectId: 5,
+            name: 'documentation',
         }
     ])
 }

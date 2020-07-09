@@ -21,24 +21,44 @@ exports.seed = (knex) => {
             description: 'Timesheet, final touch'
         },
         {
-            name: 'Make it work',
+            name: 'Logic',
             projectId: 1,
-            description: ''
+            description: 'Create the methods'
         },
         {
-            name: 'Make it work',
+            name: 'Display',
+            projectId: 1,
+            description: 'Read and print maps'
+        },
+        {
+            name: 'Logic',
             projectId: 2,
-            description: ''
+            description: 'Create the methods'
         },
         {
-            name: 'Make it work',
+            name: 'Handle inputs',
+            projectId: 2,
+            description: 'Create the keyprocessor'
+        },
+        {
+            name: 'Sounds',
             projectId: 3,
-            description: ''
+            description: 'Record action effects'
         },
         {
-            name: 'Make it work',
+            name: 'Logic',
+            projectId: 3,
+            description: 'Create the methods'
+        },
+        {
+            name: 'Bunkers',
             projectId: 4,
-            description: ''
+            description: 'Area and health'
+        },
+        {
+            name: 'Movement',
+            projectId: 4,
+            description: 'Alien and player movement'
         }
     ])
 }

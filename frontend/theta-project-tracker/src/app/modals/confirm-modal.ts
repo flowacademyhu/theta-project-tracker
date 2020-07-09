@@ -12,6 +12,14 @@ import { Component, OnInit } from '@angular/core';
     </mat-dialog-actions>
   `,
   styles: [`
+  mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center !important;
+  }
+  h2 {
+    text-align: center;
+  }
     `]
 })
 
