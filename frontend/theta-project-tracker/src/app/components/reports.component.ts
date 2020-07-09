@@ -51,7 +51,7 @@ import * as moment from "moment";
 </mat-form-field>
 </div>
 <div class="wrapper">
-<button mat-raised-button  (click)="onClickExport()" color="primary">{{'export-to-excel' | translate}}</button>
+<button mat-raised-button  (click)="onClickExport()" color="accent">{{'export-to-excel' | translate}}</button>
 </div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
