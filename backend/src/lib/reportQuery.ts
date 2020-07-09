@@ -112,7 +112,7 @@ export const queryReportBudget = async (req) => {
         .join(TableNames.users, 'userTimeRecords.userId', '=', 'users.id')
         .join(TableNames.milestones, 'userTimeRecords.milestoneId', '=', 'milestones.id')
         .join(TableNames.projects, 'milestones.projectId', '=', 'projects.id')
-        .select('projects.name as projectName, projects.id')
+        .select('projects.name as projectName')
         .select(database.raw('sum(users.costToCompanyPerHour * (timeRecords.normalHours + timeRecords.overTime)) as "actualCosts"'))
         .select('projects.budget as budgetCosts')
         .select(database.raw('projects.budget -(sum(users.costToCompanyPerHour * (timeRecords.normalHours + timeRecords.overTime))) as "overUnder"'))
