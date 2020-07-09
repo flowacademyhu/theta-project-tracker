@@ -1548,9 +1548,16 @@
             "type": "string"
           },
           {
-            "in": "query",
-            "name": "date",
-            "type": "string"
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date":{
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
