@@ -48,10 +48,10 @@ export class TimesheetService {
 
     copyLastWeek(date?: CopyLastWeek): Observable<string> {
         if (date) {
-            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', date, { responseType: 'text' })
+            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', date, { responseType: 'json' });
         } else {
             let currentDate = new Date().toISOString().split('T')[0];
-            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', currentDate, { responseType: 'text' })
+            return this.http.post<string>(this.apiUrl + 'timeRecord/copy', currentDate, { responseType: 'json' });
         }
     }
 }
