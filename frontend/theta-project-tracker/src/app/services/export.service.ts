@@ -13,7 +13,7 @@ export class ExportsService {
       from: startDate,
       to: endDate,
       projects: arrayString
-    }} ).subscribe();
+    }} );
   }
 
   exportReportsByProjectCost(startDate, endDate, projects) {
@@ -22,7 +22,7 @@ export class ExportsService {
       from: startDate,
       to: endDate,
       projects: arrayString
-    }} ).subscribe();
+    }} );
   }
 
   exportReportsByUserHours(startDate, endDate, users) {
@@ -31,7 +31,7 @@ export class ExportsService {
       from: startDate,
       to: endDate,
       users: arrayString
-    }}).subscribe();
+    }});
   }
 
   exportReportsByUserCost(startDate, endDate, users) {
@@ -40,7 +40,7 @@ export class ExportsService {
       from: startDate,
       to: endDate,
       users: arrayString
-    }}).subscribe();
+    }});
   }
 
   exportReportsBudget(startDate, endDate, projects) {
@@ -49,7 +49,7 @@ export class ExportsService {
       from: startDate,
       to: endDate,
       projects: arrayString
-    }}).subscribe();
+    }});
   }
 
   createArray(original) {
