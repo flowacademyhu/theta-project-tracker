@@ -53,7 +53,7 @@ export class AddUserToProjectModalComponent implements OnInit {
   newUser = new FormGroup({
     user: new FormControl(null),
     costToClientPerHour: new FormControl(null)
-  })  
+  })
 
   ngOnInit(): void {
     this.subscriptions$.push(this.userService.fetchUsers().subscribe(users => {
