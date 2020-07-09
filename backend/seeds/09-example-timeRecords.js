@@ -2,87 +2,87 @@ exports.seed = (knex) => {
     return knex('timeRecords').insert([
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-06-29'
+            normalHours: 8,
+            overTime: 0,
+            date: '2020-06-15'
         },
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-06-30'
+            normalHours: 8,
+            overTime: 0,
+            date: '2020-06-16'
         },
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-01'
+            normalHours: 8,
+            overTime: 0,
+            date: '2020-06-17'
         },
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-02'
+            normalHours: 8,
+            overTime: 0,
+            date: '2020-06-18'
         },
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-03'
+            normalHours: 8,
+            overTime: 0,
+            date: '2020-06-19'
         },
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-04'
+            normalHours: 0,
+            overTime: 4,
+            date: '2020-06-20'
         },
         {
             userTimeRecordId: 1,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-05'
+            normalHours: 0,
+            overTime: 4,
+            date: '2020-06-21'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-06'
+            normalHours: 0,
+            overTime: 0,
+            date: '2020-06-15'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-07'
+            normalHours: 0,
+            overTime: 0,
+            date: '2020-06-16'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-08'
+            normalHours: 0,
+            overTime: 0,
+            date: '2020-06-17'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-09'
+            normalHours: 0,
+            overTime: 2,
+            date: '2020-06-18'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-10'
+            normalHours: 0,
+            overTime: 2.5,
+            date: '2020-06-19'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-11'
+            normalHours: 0,
+            overTime: 0,
+            date: '2020-06-20'
         },
         {
             userTimeRecordId: 2,
-            normalHours: 2,
-            overTime: 1,
-            date: '2020-07-12'
+            normalHours: 0,
+            overTime: 0,
+            date: '2020-06-21'
         },
     ])
 }

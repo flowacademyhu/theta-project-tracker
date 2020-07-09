@@ -1,18 +1,44 @@
 exports.seed = (knex) => {
-  return knex('milestones').insert([
-      {
-          name: 'milestoneOne',
-          projectId: 1,
-          description: 'milestone 1'
-      },
-      {
-          name: 'milestoneTwo',
-          projectId: 1,
-          description: 'milestone 2'
-      },
-    {
-      name: 'pagination',
-      projectId: 2,
-      description: 'milestone for pagination'
-    }])
+    return knex('milestones').insert([
+        {
+            name: 'First sprint',
+            projectId: 5,
+            description: 'Beginning, user management'
+        },
+        {
+            name: 'Second sprint',
+            projectId: 5,
+            description: 'Clients, projects'
+        },
+        {
+            name: 'Third sprint',
+            projectId: 5,
+            description: 'Calendar, riport, debug'
+        },
+        {
+            name: 'Final sprint',
+            projectId: 5,
+            description: 'Timesheet, final touch'
+        },
+        {
+            name: 'Make it work',
+            projectId: 1,
+            description: ''
+        },
+        {
+            name: 'Make it work',
+            projectId: 2,
+            description: ''
+        },
+        {
+            name: 'Make it work',
+            projectId: 3,
+            description: ''
+        },
+        {
+            name: 'Make it work',
+            projectId: 4,
+            description: ''
+        }
+    ])
 }

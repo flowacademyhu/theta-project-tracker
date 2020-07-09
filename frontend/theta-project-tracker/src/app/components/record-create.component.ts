@@ -18,7 +18,7 @@ import { EventEmitter } from '@angular/core';
     <mat-form-field>
       <mat-label>{{'project-select' | translate }}</mat-label>
       <mat-select formControlName="projectId" (selectionChange)="onProjectSelect($event)">
-        <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</mat-option>
+        <mat-option *ngFor="let project of projects" [value]="project.projectId">{{ project.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf="recordCreate.get('projectId').value">
@@ -77,10 +77,14 @@ export class RecordCreateComponent implements OnInit {
     })
   }
   onProjectSelect(event: any) {
+    console.log(this.projects);
     if (event) {
       this.milestoneService.fetchMilestones().subscribe(milestones => {
+        console.log(milestones)
         this.milestones = milestones.filter(m => m.projectId === this.recordCreate.get('projectId').value);
+        console.log(this.milestones)
       })
+      console.log('projectId: ' + this.recordCreate.get('projectId').value)
       this.recordCreate.get('milestoneId').enable()
     }
   }
