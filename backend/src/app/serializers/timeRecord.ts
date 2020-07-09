@@ -1,5 +1,7 @@
 import * as moment from "moment";
 import {Request, Response} from "express";
+import {TimeRecord} from "../models/timeRecord";
+import {UserTimeRecord} from "../models/userTimeRecord";
 
 export const createProjects = (timeRecords: Array<any>) => {
   let projects: Array<object> = [];
@@ -64,4 +66,18 @@ export const updateTimeRecord = (fromDate: string, userTimeRecordId: number) => 
     )
   }
   return timeRecords;
+}
+
+export const copy = (newUserTimeRecordIds, joinedTimeRecords, fromDate) => {
+  let newTimeRecords: Array<TimeRecord> = [];
+  for (let i = 0; i < newUserTimeRecordIds.length; i++) {
+    for (let j = 0; j < 7; j++) {
+      let fromDatePlusOne = moment(fromDate).add(j, 'day').format('YYYY-MM-DD');
+      newTimeRecords.push({
+        userTimeRecordId: newUserTimeRecordIds[i][0],
+        date: fromDatePlusOne,
+      })
+    }
+  }
+  return newTimeRecords;
 }
