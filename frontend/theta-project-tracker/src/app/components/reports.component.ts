@@ -22,17 +22,17 @@ import * as moment from "moment";
 </div>
 <div class="date-filter">
 <mat-form-field class="date-from-button" appearance="fill">
-    <mat-label>{{ 'from' | translate }}</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
+    <mat-label >{{'from' | translate}}</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)" [value]="startDate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+    <mat-datepicker #picker startView="month" [value]="startDate"></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
-    <mat-label>{{ 'to' | translate }}</mat-label>
-    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
+    <mat-label>{{'to' | translate}}</mat-label>
+    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)" [value]="endDate">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-    <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
+    <mat-datepicker #picker2 startView="month" [value]="endDate"></mat-datepicker>
 </mat-form-field>
 </div>
 <div class="row-filter">
@@ -210,7 +210,7 @@ export class ReportsComponent {
   }
   onClickReportByProjectHour() {
     this.users.setValue([]);
-    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByProjectHours(this.startDate, this.endDate, this.projects.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 1;
@@ -218,7 +218,7 @@ export class ReportsComponent {
 
   onClickReportByProjectCost() {
     this.users.setValue([]);
-    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByProjectCost(this.startDate, this.endDate, this.projects.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 2;
@@ -226,7 +226,7 @@ export class ReportsComponent {
 
   onClickReportByUserHours() {
     this.projects.setValue([]);
-    this.reportsService.getReportsByUserHours(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByUserHours(this.startDate, this.endDate, this.users.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 3;
@@ -234,14 +234,14 @@ export class ReportsComponent {
   
   onClickReportByUserCost() {
     this.projects.setValue([]);
-    this.reportsService.getReportsByUserCost(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsByUserCost(this.startDate, this.endDate, this.users.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 4;
   }
 
   onClickReportByProjectBudget() {
-    this.reportsService.getReportsBudget(this.startDate, this.endDate).subscribe((result: any) => {
+    this.reportsService.getReportsBudget(this.startDate, this.endDate, this.projects.value).subscribe((result: any) => {
       this.itemsSubject.next(result);
     })
     this.whichTabIsShown = 5;
