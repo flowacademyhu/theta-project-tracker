@@ -25,14 +25,14 @@ import * as moment from "moment";
     <mat-label >{{'from' | translate}}</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)" [value]="startDate">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker startView="month" [value]="startDate"></mat-datepicker>
+    <mat-datepicker #picker startView="month" ></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
     <mat-label>{{'to' | translate}}</mat-label>
     <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)" [value]="endDate">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-    <mat-datepicker #picker2 startView="month" [value]="endDate"></mat-datepicker>
+    <mat-datepicker #picker2 startView="month" ></mat-datepicker>
 </mat-form-field>
 </div>
 <div class="row-filter">
@@ -194,7 +194,7 @@ export class ReportsComponent {
   }
 
 
-  public onTabChange(type: ReportRoute) {
+  public onTabChange(type) {
     switch (type) {
       case ReportRoute.BY_PROJECT_COST:
       case ReportRoute.BY_PROJECT_HOURS:
