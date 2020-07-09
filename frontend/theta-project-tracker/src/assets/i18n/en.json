@@ -56,6 +56,11 @@
   "milestone-select": "Select Milestone",
   "activity-select": "Select Activity",
   "add-record": "Add New Record",
-  "export-to-excel": "Export to Excel"
+  "export-to-excel": "Export to Excel",
+  "to": "To:",
+  "from": "From:",
+  "users": "Users",
+  "add-action-label": "+ Add New Action Label",
+  "choose-date": "Choose a date"
 }
 

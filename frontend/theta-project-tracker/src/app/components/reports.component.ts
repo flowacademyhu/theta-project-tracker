@@ -22,14 +22,14 @@ import * as moment from "moment";
 </div>
 <div class="date-filter">
 <mat-form-field class="date-from-button" appearance="fill">
-    <mat-label>From:</mat-label>
+    <mat-label>{{ 'from' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
-    <mat-label>To:</mat-label>
+    <mat-label>{{ 'to' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
@@ -37,14 +37,14 @@ import * as moment from "moment";
 </div>
 <div class="row-filter">
 <mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" >
-  <mat-label>Projects</mat-label>
+  <mat-label>{{ 'project-select' | translate }}</mat-label>
   <mat-select [formControl]="projects" multiple>
     <mat-option *ngFor="let project of projectList$ | async" [value]="project">{{project.name}}</mat-option>
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>Users</mat-label>
+<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)">
+  <mat-label>{{ 'users' | translate}}</mat-label>
   <mat-select [formControl]="users" multiple>
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
