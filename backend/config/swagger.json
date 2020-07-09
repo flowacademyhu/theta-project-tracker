@@ -687,9 +687,9 @@
         }
       }
     },
-    "/project/user/{userId}": {
+    "/project/user/": {
       "post": {
-        "summary": "Add specific user to projects",
+        "summary": "Add and delete projectUsers",
         "tags": [
           "admin"
         ],
@@ -698,43 +698,6 @@
             "in": "header",
             "name": "Authorization",
             "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "userId",
-            "type": "number",
-            "required": true
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#definitions/ProjectUser"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Added"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete specific user from projects",
-        "tags": [
-          "admin"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "userId",
-            "type": "number",
-            "required": true
           },
           {
             "in": "body",
@@ -746,7 +709,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Deleted"
+            "description": "Done"
           }
         }
       }
@@ -2032,21 +1995,40 @@
       }
     },
     "ProjectUser": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "projectId": {
-            "type": "number"
-          },
-          "costToClientPerHour": {
-            "type": "number"
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "number"
+              },
+              "projectId": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "created": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "number"
+              },
+              "projectId": {
+                "type": "number"
+              },
+              "costToClientPerHour": {
+                "type": "number"
+              }
+            }
           }
         }
-      },
-      "required": [
-        "costToClientPerHour"
-      ]
+      }
     },
     "MilestoneCreate": {
       "type": "object",
