@@ -41,7 +41,7 @@ export const queryReportProjectByCost = async (req) => {
             query = query.where('timeRecords.date', '>=', from);
         }
         if (req.query.to){
-            let to = moment(req.query.to).format(DATE_FORMAT;
+            let to = moment(req.query.to).format(DATE_FORMAT);
             query = query.where('timeRecords.date', '<=', to);
         }
         const report = await query;
