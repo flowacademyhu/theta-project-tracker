@@ -14,44 +14,44 @@ import * as moment from "moment";
   selector: 'app-reports',
   template: `
   <div class="reports">
-  <button mat-raised-button (click)="onClickReportByProjectHour()">{{'report-by-project-hours' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByProjectCost()">{{'report-by-project-money' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByUserHours()">{{'report-by-contractor-hours' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByUserCost()">{{'report-by-contractor-money' | translate}}</button>
-  <button mat-raised-button (click)="onClickReportByProjectBudget()">{{'project-budget-report' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByProjectHour()" color="primary">{{'report-by-project-hours' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByProjectCost()" color="primary">{{'report-by-project-money' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByUserHours()" color="primary">{{'report-by-contractor-hours' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByUserCost()" color="primary">{{'report-by-contractor-money' | translate}}</button>
+  <button mat-raised-button (click)="onClickReportByProjectBudget()" color="primary">{{'project-budget-report' | translate}}</button>
 </div>
 <div class="date-filter">
 <mat-form-field class="date-from-button" appearance="fill">
-    <mat-label>{{'from' | translate}}</mat-label>
+    <mat-label>{{ 'from' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
-    <mat-label>{{'to' | translate}}</mat-label>
+    <mat-label>{{ 'to' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2 startView="month" [startAt]="endDate"></mat-datepicker>
 </mat-form-field>
 </div>
 <div class="row-filter">
-<mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>{{'projects' | translate}}</mat-label>
+<mat-form-field *ngIf="[1,2,5].includes(whichTabIsShown)" >
+  <mat-label>{{ 'project-select' | translate }}</mat-label>
   <mat-select [formControl]="projects" multiple>
     <mat-option *ngFor="let project of projectList$ | async" [value]="project">{{project.name}}</mat-option>
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)" appearance="fill">
-  <mat-label>{{'users' | translate}}</mat-label>
+<mat-form-field *ngIf="[3,4].includes(whichTabIsShown)">
+  <mat-label>{{ 'users' | translate}}</mat-label>
   <mat-select [formControl]="users" multiple>
     <mat-option *ngFor="let user of userList$ | async" [value]="user">{{user.firstName}} {{user.lastName}}</mat-option>
   </mat-select>
 </mat-form-field>
 </div>
 <div class="wrapper">
-<button mat-raised-button  (click)="onClickExport()">{{'export-to-excel' | translate}}</button>
+<button mat-raised-button  (click)="onClickExport()" color="accent">{{'export-to-excel' | translate}}</button>
 </div>
 
 <app-reports-table [items]="items$ | async" ></app-reports-table>
@@ -247,18 +247,18 @@ export class ReportsComponent {
     this.whichTabIsShown = 5;
   }
   onClickExportReportByProjectHours(){
-    this.exportsService.exportReportsByProjectHours();
+    this.exportsService.exportReportsByProjectHours(this.startDate, this.endDate, this.projects.value);
   }
   onClickExportReportByProjectCost(){
-    this.exportsService.exportReportsByProjectCost();
+    this.exportsService.exportReportsByProjectCost(this.startDate, this.endDate, this.projects.value);
   }
   onClickExportReportByUserHours(){
-    this.exportsService.exportReportsByUserHours();
+    this.exportsService.exportReportsByUserHours(this.startDate, this.endDate, this.users.value);
   }
   onClickExportReportByUserCost(){
-    this.exportsService.exportReportsByUserCost();
+    this.exportsService.exportReportsByUserCost(this.startDate, this.endDate, this.users.value);
   }
   onClickExportReportByProjectBudget(){
-    this.exportsService.exportReportsBudget();
+    this.exportsService.exportReportsBudget(this.startDate, this.endDate, this.projects.value);
   }
 }

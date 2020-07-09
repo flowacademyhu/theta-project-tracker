@@ -100,3 +100,11 @@ export const destroy = async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 }
+
+export const getStartAndEndDates = async (req: Request, res: Response) => {
+  let query: QueryBuilder = database(TableNames.timeRecords)
+      .min('date')
+      .max('date')
+  const report = await query;
+  res.status(200).json(report);
+}

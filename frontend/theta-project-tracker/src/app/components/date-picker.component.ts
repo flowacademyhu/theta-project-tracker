@@ -11,7 +11,7 @@ import { TimesheetService } from '../services/timsheet.service';
   <button  mat-raised-button (click)="onCopyLastWeek()">{{ 'copy-last-week' | translate }}</button>
   <mat-icon (click)="toPreviousWeek()">navigate_before</mat-icon>
   <mat-form-field appearance="fill">
-  <mat-label>{{'choose-date' | translate}}</mat-label>
+  <mat-label>{{ 'choose-date' | translate}}</mat-label>
   <input   matInput [matDatepicker]="picker" (dateChange)="updateDoB($event)" [value]="currentDate.value">
   <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
