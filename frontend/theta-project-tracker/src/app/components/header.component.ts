@@ -38,7 +38,7 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
       </mat-toolbar-row>
     </mat-toolbar>`,
   styles: [`
-    p, .mat-typhography p {
+       p, .mat-typhography p {
       font-size: 15px;
       margin:0;
       opacity: 0.8;
@@ -59,7 +59,6 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
       font-style: inherit;
       font-weight: normal;
       color: inherit;
-      box-sizing: border-box;
       hyphens: none;
       width: auto;
       height: 2.5rem;
@@ -70,13 +69,13 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
       position: relative;
       max-width: 250px;
       max-height: 50px;
-      margin-bottom: 0.75em;
       opacity: 1;
     }
     #spanOne {
       display: flex;
       flex:1 1 auto;
       justify-content: flex-start;
+      align-items: center;
     }
     #spanTwo {
       display: flex;
@@ -87,10 +86,18 @@ import { ConfirmModalComponent } from '../modals/confirm-modal.component';
     button {
     display: flex;
     font-size: 12;
-    border: none;
     color:#f0ead6;
+    border-radius: 0;
     opacity: 0.9;
     outline: 0;
+    }
+    .mat-icon-button {
+    padding: 0.7rem;
+    min-width: 0;
+    width: 140px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 0%;
     }
     #logOut {
       align-items: center;
