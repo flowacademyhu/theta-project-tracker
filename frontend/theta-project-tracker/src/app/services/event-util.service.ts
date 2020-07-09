@@ -14,8 +14,8 @@ import { map } from 'rxjs/operators';
 export class EventUtilService {
   constructor(private http: HttpClient) { }
 
-  getEvents(yearIterator, monthIterator): Observable<BackEndResp[]> {
-    return this.http.get<BackEndResp[]>(`http://localhost:3000/calendar?year=${yearIterator}&&month=${monthIterator}`);
+  getEvents(month, year): Observable<BackEndResp[]> {
+    return this.http.get<BackEndResp[]>(`http://localhost:3000/calendar?year=${year}&&month=${month}`);
   }
   createEvent(calendarData: BackEndResp) {
     console.log(calendarData);
@@ -34,7 +34,6 @@ export class EventUtilService {
 
 
 
-const TODAY_STR = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
 export interface BackEndResp {
   date: string;
   day?: string;

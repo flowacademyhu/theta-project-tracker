@@ -1,6 +1,6 @@
 import { CalendarModalComponent } from './../modals/calendar-dialog-modal.component';
 import { EventUtilService } from './../services/event-util.service';
-import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentChecked, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { map, isEmpty } from 'rxjs/operators';
 
 import {
@@ -30,58 +30,82 @@ import { isEmptyExpression } from '@angular/compiler';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TitleCasePipe } from '@angular/common';
-import { calendarFormat } from 'moment';
+import { calendarFormat, months, RFC_2822 } from 'moment';
+import { DateClickArg } from '@fullcalendar/interaction';
 
 
 
 @Component({
   selector: 'app-calendar',
   template: `
-  <full-calendar id="calendar" [options]="calendarOptions"></full-calendar>
+  <full-calendar #calendar class="calendar" [options]="calendarOptions"></full-calendar>
 
   `,
-  styles: [``]
+  styles: [`
+  .calendar {
+  width: 75%;
+  margin: 2em auto;
+}
+  `]
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private eventUtilService: EventUtilService, private dialog: MatDialog) { }
   validatorTitle = new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{0,}$/)]);
-  @ViewChild('calendar') calendarComponent: FullCalendarModule = new FullCalendarModule();
+  @ViewChild('calendar') public fullCalendar: FullCalendarComponent;
+  public calendarApi;
+  public date;
+  public month;
+  public year;
+  public day;
 
-  monthIterator = 7;
-  yearIterator = 2020;
-  public currentEvents: EventInput[];
+  currentEvents: EventInput[];
   subscriptions$: Subscription[] = [];
-
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    headerToolbar: { left: 'today', center: 'title', right: 'prev next' },
+    headerToolbar: { left: 'today', center: 'title', right: 'prev,next' },
+    aspectRatio: 2.5,
     customButtons: {
       prev: {
-        icon: 'left-single-arrow',
-        click() {
-          this.calendarComponent.getApi().next();
-        }
+        click: () => {
+          this.goPrev();
+        },
+      },
+      next: {
+        click: () => {
+        this.goNext();
       }
-    },
+    }
+  },
+    eventColor:  'rgba(34, 34, 34, 0.9)',
     weekends: true,
-    editable: true,
-    selectable: true,
-    selectMirror: true,
-    dayMaxEvents: true,
-    select: this.getMethod.bind(this),
+    selectable: false,
     eventClick: this.handleEventClick.bind(this),
     defaultAllDay: true,
     firstDay: 1,
   };
 
-  headerPrevNextButton() {
-    this.monthIterator--;
+
+  goPrev() {
+    this.calendarApi.prev();
+    const date = this.calendarApi.getDate();
+    this.month = date.getMonth() + 1;
+    this.year = date.getFullYear();
+    console.log(this.year, this.month, 'PREV');
+    this.getMethod(this.month, this.year );
   }
 
+  goNext() {
+    this.calendarApi.next(); // call a method on the Calendar object
+    const date = this.calendarApi.getDate();
+    this.month = date.getMonth() + 1;
+    this.year = date.getFullYear();
+    console.log(this.year, this.month, 'NEXT');
+    this.getMethod( this.month, this.year );
+  }
 
-  getMethod() {
-    this.eventUtilService.getEvents(this.yearIterator, this.monthIterator).pipe(map(data => {
+  getMethod(month, year) {
+    this.eventUtilService.getEvents(month, year).pipe(map(data => {
       const array: EventInput[] = [];
       for (const i of data) {
         let day: EventInput;
@@ -93,28 +117,36 @@ export class CalendarComponent implements OnInit, OnDestroy {
       }
       return array;
     }))
-      .subscribe(event => {
-        this.currentEvents = event;
-        this.calendarOptions.events = event;
+    .subscribe(event => {
+      this.currentEvents = event;
+      this.calendarOptions.events = event;
       });
+    }
+
+    ngOnInit(): void{
   }
 
-  ngOnInit(): void {
-    this.getMethod();
-  }
+
 
   ngOnDestroy(): void {
     this.subscriptions$.forEach(unsub => { unsub.unsubscribe(); }, );
   }
 
+  ngAfterViewInit(): void {
+    this.calendarApi = this.fullCalendar.getApi();
+    this.date = this.calendarApi.getDate();
+    this.day = this.date.getDay();
+    this.month = this.date.getMonth() + 1;
+    this.year = this.date.getFullYear();
+    this.getMethod(this.month, this.year);
+  }
+
   handleEventClick(clickInfo: EventClickArg) {
     const calendarApi = clickInfo.view.calendar;
     const dialogRef = this.dialog.open(CalendarModalComponent, {
-      width: '50%',
-      height: '25%'
     });
     const calendarData = {
-      multiplier: parseInt(clickInfo.event.title),
+      multiplier: parseInt(clickInfo.event.title, 2),
       date: clickInfo.event.startStr,
     };
     dialogRef.afterClosed().subscribe(res => {
@@ -122,12 +154,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
         const overT = dialogRef.componentInstance.hour.get('overTime').value;
         calendarData.multiplier = overT;
         this.eventUtilService.createEvent(calendarData).subscribe(event => {
-            this.getMethod();
+            this.getMethod(this.month, this.year);
         });
     } else if (res) {
       this.eventUtilService.deleteEvent(calendarData).subscribe(data => {
         clickInfo.event.remove();
-        this.getMethod();
+        this.getMethod(this.month, this.year);
       });
     }
   });
