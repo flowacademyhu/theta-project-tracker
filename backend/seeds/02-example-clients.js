@@ -1,15 +1,15 @@
 exports.seed = (knex) => {
     return knex('clients').insert([
         {
-            name: 'Client One',
-            description: 'this is a description'
+            name: 'Flow Academy',
+            description: 'Tudás, élmények útján!'
         },
         {
-            name: 'Client Two',
-            description: 'also a description'
+            name: 'Fluidpay',
+            description: 'Complexity. Simplified.'
         },
         {
-            name: 'Client Three',
-            description: 'this is not.'
+            name: 'Voodoo Park',
+            description: 'Solving the big problems'
         }])
 }

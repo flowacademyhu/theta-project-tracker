@@ -114,7 +114,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dataSource.data.find(u => u.id === user.id).lastName;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
-      width: '25%',
+      width: '20%',
       height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
@@ -127,7 +127,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onAddNewUser() {
     const dialogRef = this.dialog.open(NewUserModalComponent, {
-      width: '35%',
+      width: '30%',
       height: '80%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
@@ -140,7 +140,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams: { userId: user.id }
     });
     const dialogRef = this.dialog.open(NewUserModalComponent, {
-      width: '35%',
+      width: '30%',
       height: '80%',
       data: { userToEdit: user }
     });
