@@ -5,4 +5,5 @@ export interface Project {
   clientName?: string;
   description: string;
   budget: number;
+  projectId?: number
 }
