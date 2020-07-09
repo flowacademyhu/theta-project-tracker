@@ -9,43 +9,55 @@ export class ExportsService {
   constructor(private http: HttpClient) { }
   apiUrl = environment.baseUrl;
   exportReportsByProjectHours(startDate, endDate, projects) {
-    console.log(projects);
+    const arrayString = JSON.stringify(this.createArray(projects));
     return this.http.get(this.apiUrl + 'export/project/hours', { params: {
       from: startDate,
       to: endDate,
-      projects: projects
-    }} );
+      projects: arrayString
+    }} ).subscribe();
   }
 
-  exportReportsByProjectCost(startDate, endDate, projects): Observable<File> {
+  exportReportsByProjectCost(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
     return this.http.get<File>(this.apiUrl + 'export/project/cost', { params: {
       from: startDate,
       to: endDate,
-      projects: projects
-    }});
+      projects: arrayString
+    }} ).subscribe();
   }
 
-  exportReportsByUserHours(startDate, endDate, users): Observable<File> {
+  exportReportsByUserHours(startDate, endDate, users) {
+    const arrayString = JSON.stringify(this.createArray(users));
     return this.http.get<File>(this.apiUrl + 'export/user/hours', { params: {
       from: startDate,
       to: endDate,
-      users: users
+      users: arrayString
     }});
   }
 
-  exportReportsByUserCost(startDate, endDate, users): Observable<File> {
+  exportReportsByUserCost(startDate, endDate, users) {
+    const arrayString = JSON.stringify(this.createArray(users));
     return this.http.get<File>(this.apiUrl + 'export/user/cost', { params: {
       from: startDate,
       to: endDate,
-      users: users
+      users: arrayString
     }});
   }
 
-  exportReportsBudget(startDate, endDate, projects): Observable<File> {
+  exportReportsBudget(startDate, endDate, projects) {
+    const arrayString = JSON.stringify(this.createArray(projects));
     return this.http.get<File>(this.apiUrl + 'export/project/budget', { params: {
       from: startDate,
       to: endDate,
-      projects: projects
+      projects: arrayString
     }});
+  }
+
+  createArray(original) {
+    const result = [];
+    original.forEach(value => {
+      result.push(value.id);
+    })
+    return result;
   }
 }
