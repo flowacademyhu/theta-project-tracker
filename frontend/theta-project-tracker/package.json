@@ -32,14 +32,9 @@
     "@ngx-translate/core": "12.1.2",
     "@ngx-translate/http-loader": "^5.0.0",
     "moment": "^2.27.0",
-<<<<<<< HEAD
-    "rxjs": "~6.6.0",
-    "tslib": "^2.0.0",
-=======
     "ngx-moment": "^5.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
->>>>>>> master
     "yarn": "^1.22.4",
     "zone.js": "~0.10.2"
   },
