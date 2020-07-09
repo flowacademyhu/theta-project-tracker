@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { FormGroup, FormControl} from '@angular/forms';
-import { User } from '../models/user.model';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { User, ProjectAssigned } from '../models/user.model';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { ProjectUsersService } from '../services/projectUsers.service'
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Project } from '../models/project.model';
 
 @Component({
   selector: 'app-add-user-to-project-modal',
@@ -44,26 +45,39 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export class AddUserToProjectModalComponent implements OnInit { 
 
-  constructor(private userService: UserService, private projectUsersService: ProjectUsersService, @Inject(MAT_DIALOG_DATA) public data: any ) {}
+  constructor(private userService: UserService, private projectUsersService: ProjectUsersService, @Inject(MAT_DIALOG_DATA) public data: any ) {
+    if (data) {
+      this.project = data.projectToEdit
+    }
+  }
   subscriptions$: Subscription[] = [];
-  availableUsers: User[];
+  availableUsers: User[] = [];
+  filteredUsers: User[] = [];
   users: string[] = [];
   costToClientPerHour: number;
-  @Input() userToEdit: User;
+  @Input() project: Project;
+  projects: ProjectAssigned[] = [];
   newUser = new FormGroup({
-    user: new FormControl(null),
-    costToClientPerHour: new FormControl(null)
-  })
+    user: new FormControl(null, Validators.required),
+    costToClientPerHour: new FormControl(null, Validators.required)
+  })  
 
   ngOnInit(): void {
     this.subscriptions$.push(this.userService.fetchUsers().subscribe(users => {
       this.availableUsers = users;
-      this.users = this.availableUsers.map(u => u.firstName + ' ' + u.lastName);
+      this.availableUsers.forEach(u => {
+        this.projectUsersService.getUsersProjects(u.id).subscribe(projects => {
+          if (!projects.find(p => p.projectId === this.project.id)) {
+            this.filteredUsers.push(u);
+            this.users = this.filteredUsers.map(u => u.firstName + ' ' + u.lastName);
+          }
+        })
+      })
     }));
   }
 
   onAddNewUser() {
-    let chosen = this.availableUsers.find(u  => u.firstName + ' ' + u.lastName === this.newUser.get('user').value)
+    let chosen = this.filteredUsers.find(u  => u.firstName + ' ' + u.lastName === this.newUser.get('user').value)
    this.projectUsersService.assignProjectToUser(chosen.id,  [{projectId: this.data.projectToEdit.id, costToClientPerHour: this.newUser.value.costToClientPerHour}]).subscribe();
   }
 }

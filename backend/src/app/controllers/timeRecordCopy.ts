@@ -11,11 +11,7 @@ import {TimeRecord} from "../models/timeRecord";
 import * as _ from "lodash";
 
 const getDate = (req: Request) => {
-  if (req.query.date) {
-    return moment(req.query.date);
-  } else {
-    return moment();
-  }
+  return moment(req.body.date)
 }
 
 const pastArray = async (res: Response, fromDatePrevious) => {

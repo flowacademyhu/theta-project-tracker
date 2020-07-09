@@ -1,21 +1,25 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { TimesheetService } from '../services/timsheet.service';
+import { MilestoneService } from '../services/milestone.service';
+import { ActionLabelService } from '../services/action-label.service';
+import { ProjectUsersService } from '../services/projectUsers.service';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
   selector: 'app-record-one-week',
   template: `
-  <div class="wrapper">
+ <div class="wrapper">
   <mat-grid-list cols="30" rowHeight="100px">
-    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1"><strong>{{project}}</strong>
+    <mat-grid-tile class="project" [colspan]="3" [rowspan]="1"><strong>{{project}}</strong>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1">
-      <p>{{ milestone }}</p>
-      <p>{{ activity }}</p>
+      <p>{{ milestone }}&emsp;{{ actionLabel }}</p>
+      <p></p>
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="1" [rowspan]="1">
-   
       <mat-icon  matTooltip="{{ desc }}">sms</mat-icon>
     </mat-grid-tile>
     <mat-grid-tile class="tile" *ngFor="let day of days" [colspan]="day.cols" [rowspan]="day.rows">
@@ -31,9 +35,6 @@ import { EventEmitter } from '@angular/core';
     <mat-grid-tile class="tile" [colspan]="2" [rowspan]="1">
       <button mat-icon-button>
         <mat-icon (click)="onDeleteProject()">clear</mat-icon>
-      </button>
-      <button mat-icon-button (click)="getDailyHours()">
-        <mat-icon>save</mat-icon>
       </button>
     </mat-grid-tile>
   </mat-grid-list>
@@ -56,51 +57,60 @@ import { EventEmitter } from '@angular/core';
   `]
 })
 export class RecordOneWeekComponent implements OnInit {
-  @Input() project: string;
-  @Input() milestone: string;
-  @Input() activity: string;
-  @Input() desc: string;
+  projectId: number;
+  project: string;
+  milestoneId: number;
+  milestone: string;
+  activityId: number;
+  actionLabel: string;
+  desc: string;
+  ID: number;
   days = [
-    { cols: 3, rows: 1, name: 'monday' },
-    { cols: 3, rows: 1, name: 'tuesday' },
-    { cols: 3, rows: 1, name: 'wednesday' },
-    { cols: 3, rows: 1, name: 'thursday' },
-    { cols: 3, rows: 1, name: 'friday' },
-    { cols: 3, rows: 1, name: 'saturday' },
-    { cols: 3, rows: 1, name: 'sunday' },
+    { cols: 3, rows: 1, name: 'mon' },
+    { cols: 3, rows: 1, name: 'tue' },
+    { cols: 3, rows: 1, name: 'wed' },
+    { cols: 3, rows: 1, name: 'thu' },
+    { cols: 3, rows: 1, name: 'fri' },
+    { cols: 3, rows: 1, name: 'sat' },
+    { cols: 3, rows: 1, name: 'sun' },
   ];
-  @Output() projectEmitter: EventEmitter<Object> = new EventEmitter<Object>();
+  @Output() buttonToggle: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() projectToDelete: EventEmitter<string> = new EventEmitter<string>();
   timeSheet = new FormGroup({
     normalHours: new FormGroup({
-      monday: new FormControl(null),
-      tuesday: new FormControl(),
-      wednesday: new FormControl(),
-      thursday: new FormControl(),
-      friday: new FormControl(),
-      saturday: new FormControl(),
-      sunday: new FormControl(),
+      mon: new FormControl(0, Validators.max(8)),
+      tue: new FormControl(0, Validators.max(8)),
+      wed: new FormControl(0, Validators.max(8)),
+      thu: new FormControl(0, Validators.max(8)),
+      fri: new FormControl(0, Validators.max(8)),
+      sat: new FormControl(0, Validators.max(8)),
+      sun: new FormControl(0, Validators.max(8)),
     }),
     overTime: new FormGroup({
-      monday: new FormControl(),
-      tuesday: new FormControl(),
-      wednesday: new FormControl(),
-      thursday: new FormControl(),
-      friday: new FormControl(),
-      saturday: new FormControl(),
-      sunday: new FormControl(),
+      mon: new FormControl(0, Validators.max(4)),
+      tue: new FormControl(0, Validators.max(4)),
+      wed: new FormControl(0, Validators.max(4)),
+      thu: new FormControl(0, Validators.max(4)),
+      fri: new FormControl(0, Validators.max(4)),
+      sat: new FormControl(0, Validators.max(4)),
+      sun: new FormControl(0, Validators.max(4)),
     })
   })
-  constructor() { }
+  constructor(private timesheetService: TimesheetService, private milestoneService: MilestoneService,
+    private actionLabelService: ActionLabelService, private projectUserService: ProjectUsersService, private authService: AuthService) { }
+    week = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   ngOnInit(): void {
-  }
-  getDailyHours() {
-    let projectTotal = {
-      name: this.project,
-      normalHours: this.timeSheet.get('normalHours').value,
-      overTime: this.timeSheet.get('overTime').value
+    if (this.milestoneId && this.projectId && this.activityId) {
+      this.milestoneService.fetchMilestones().subscribe(milestones => {
+        this.milestone = milestones.find(m => m.id === this.milestoneId).name;
+      })
+      this.actionLabelService.fetchActionLabels().subscribe(labels => {
+        this.actionLabel = labels.find(l => l.id === this.activityId).name
+      })
+      this.projectUserService.getUsersProjects(this.authService.authenticate().id).subscribe(projects => {
+        this.project = projects.find(p => p.projectId === this.projectId).name
+      })
     }
-    this.projectEmitter.emit(projectTotal);
   }
   onDeleteProject() {
     this.projectToDelete.emit(this.project);
