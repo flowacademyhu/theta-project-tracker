@@ -7,7 +7,7 @@ const wb = new xl.Workbook();
 const ws = wb.addWorksheet('Sheet 1');
 const style = wb.createStyle({
     font: {
-        color: '#FF0000',
+        color: '#000000',
         size: 10,
     },
     numberFormat: '$#,##0.00; ($#,##0.00); -',

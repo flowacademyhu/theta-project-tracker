@@ -7,8 +7,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { SidenavContainerComponent } from './components/sidenav-container.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-// OUR COMPONENTS + STUFF
 import { NewClientModalComponent } from '../app/modals/new-client-modal-component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,7 +27,6 @@ import { UsersComponent } from '../app/components/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
-
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,12 +34,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './components/calendar.component';
 import { DeleteModalComponent } from '../app/modals/delete-modal.component';
-
 import { MilestonesComponent } from './components/milestones.component';
 import { ClientsComponent } from './components/clients.component';
 import { ClientManagementComponent } from '../app/components/client-management-component';
 import { ReportsTableComponent } from '../app/components/reports-table.component'
-
 import { NewMilestoneModalComponent } from './modals/new-milestone-modal.component';
 import { NewMilestoneComponent } from './components/new-milestone.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -53,6 +48,16 @@ import { ProfileComponent } from '../app/components/profile.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './services/auth.service';
+import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction';
+
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  interactionPlugin,
+]);
+
 import { ConfirmModalComponent } from './modals/confirm-modal.component';
 import { AddUserToProjectModalComponent } from './modals/add-user-to-project-modal.component'
 import { RecordCreateComponent } from '../app/components/record-create.component';
@@ -66,6 +71,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CalendarModalComponent } from './modals/calendar-dialog-modal.component';
 
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -112,16 +118,16 @@ export function appInit(provider: AuthService) {
     NewActionLabelComponent,
     EditUserComponent,
     DatePickerComponent,
-  
+    CalendarModalComponent
   ],
   imports: [
+    MatFormFieldModule,
     MatSidenavModule,
     MatListModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
     FormsModule,
@@ -132,8 +138,6 @@ export function appInit(provider: AuthService) {
     MatCardModule,
     MatRadioModule,
     MatTableModule,
-    MatDialogModule,
-    MatInputModule,
     MatButtonModule,
     MatPaginatorModule,
     MatExpansionModule,
@@ -142,6 +146,8 @@ export function appInit(provider: AuthService) {
     MatGridListModule,
     MatDividerModule,
     MatCheckboxModule,
+    MatDialogModule,
+    MatListModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -151,8 +157,14 @@ export function appInit(provider: AuthService) {
         useFactory: httpTranslateLoader,
         deps: [HttpClient],
       }
-    })
+    }),
+    MatListModule,
+    MatInputModule,
+    MatButtonModule,
+    FullCalendarModule,
+
   ],
+  bootstrap: [AppComponent],
   providers: [  {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
@@ -169,7 +181,6 @@ export function appInit(provider: AuthService) {
   MatNativeDateModule,
   DatePipe
 ],
-  bootstrap: [AppComponent],
   entryComponents: [DeleteModalComponent, NewClientModalComponent, NewProjectModalComponent]
 })
-export class AppModule { }  
+export class AppModule { }

@@ -121,14 +121,6 @@ export const queryReportBudget = async (req) => {
         const filterArray = JSON.parse(req.query.projects);
         query = query.whereIn('projectId', filterArray);
     }
-    if (req.query.from) {
-        let from = moment(req.query.from).format(DATE_FORMAT);
-        query = query.where('timeRecords.date', '>=', from);
-    }
-    if (req.query.to) {
-        let to = moment(req.query.to).format(DATE_FORMAT);
-        query = query.where('timeRecords.date', '<=', to);
-    }
     const report = await query;
     return (report);
 }
