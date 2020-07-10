@@ -1,62 +1,54 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ExportsService {
+  apiUrl = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
-  apiUrl = environment.baseUrl;
-  exportReportsByProjectHours(startDate, endDate, projects) {
-    const arrayString = JSON.stringify(this.createArray(projects));
-    return this.http.get(this.apiUrl + 'export/project/hours', { params: {
-      from: startDate,
-      to: endDate,
-      projects: arrayString
-    }} );
+
+  public exportReport(start, end, array, route, isUser: boolean) {
+    let params: HttpParams = new HttpParams();
+    params = params.append('from', start);
+    params = params.append('to', end);
+    if (array.length !== 0) {
+      params = params.append('projects', JSON.stringify(array.map(i => i.id)));
+    }
+    this.http.get(this.apiUrl + 'export' + route, { params, responseType: 'blob' }).subscribe((blob) => {
+      this.downloadFile(blob);
+    });
   }
 
-  exportReportsByProjectCost(startDate, endDate, projects) {
-    const arrayString = JSON.stringify(this.createArray(projects));
-    return this.http.get<File>(this.apiUrl + 'export/project/cost', { params: {
-      from: startDate,
-      to: endDate,
-      projects: arrayString
-    }} );
-  }
+  private downloadFile(data: Blob) {
+    // create blob
+    let newBlob;
 
-  exportReportsByUserHours(startDate, endDate, users) {
-    const arrayString = JSON.stringify(this.createArray(users));
-    return this.http.get<File>(this.apiUrl + 'export/user/hours', { params: {
-      from: startDate,
-      to: endDate,
-      users: arrayString
-    }});
-  }
+    // set application type
+    newBlob = new Blob([data], {type: 'application/vnd.ms-excel'});
 
-  exportReportsByUserCost(startDate, endDate, users) {
-    const arrayString = JSON.stringify(this.createArray(users));
-    return this.http.get<File>(this.apiUrl + 'export/user/cost', { params: {
-      from: startDate,
-      to: endDate,
-      users: arrayString
-    }});
-  }
+    // IE doesn't allow using a blob object directly as link href
+    // instead it is necessary to use msSaveOrOpenBlob
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(newBlob, 'export.xlsx');
+      return;
+    }
 
-  exportReportsBudget(startDate, endDate, projects) {
-    const arrayString = JSON.stringify(this.createArray(projects));
-    return this.http.get<File>(this.apiUrl + 'export/project/budget', { params: {
-      from: startDate,
-      to: endDate,
-      projects: arrayString
-    }});
-  }
+    // For other browsers:
+    // Create a link pointing to the ObjectURL containing the blob.
+    const downloadableData = window.URL.createObjectURL(newBlob);
 
-  createArray(original) {
-    const result = [];
-    original.forEach(value => {
-      result.push(value.id);
-    })
-    return result;
+    const link = document.createElement('a');
+    link.href = downloadableData;
+    link.download = 'export.xlsx';
+    // this is necessary as link.click() does not work on the latest firefox
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+    // tslint:disable-next-line:only-arrow-functions
+    setTimeout(function() {
+      // For Firefox it is necessary to delay revoking the ObjectURL
+      window.URL.revokeObjectURL(downloadableData);
+      link.remove();
+    }, 100);
   }
 }
