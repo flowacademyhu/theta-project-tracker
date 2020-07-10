@@ -31,7 +31,7 @@ export const index = async (req: Request, res: Response) => {
       month = req.query.month.toString();
     }
     const search = '%' + year + '-' + month + '%';
-    const modifiedDates: Array<OvertimeMultiplier> = await database(TableNames.overtimeMultipliers).where('date', 'like', search).select();
+    const modifiedDates: Array<OvertimeMultiplier> = await database(TableNames.overtimeMultipliers).where('date', 'like', search).select().orderBy('date', 'asc');
     let sqlMomentDateArray: Array<number> = [];
     let multipliersArray: Array<number> = [];
     for (let i = 0; i < modifiedDates.length; i++) {
@@ -70,7 +70,7 @@ export const index = async (req: Request, res: Response) => {
           multiplier: multiplier
         }
       );
-    }
+    } 
     res.status(200).json(daysWithMultipliers);
   } catch (error) {
     console.error(error);
