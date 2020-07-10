@@ -23,14 +23,14 @@ import * as moment from "moment";
 <div class="date-filter">
 <mat-form-field class="date-from-button" appearance="fill">
     <mat-label >{{'from' | translate}}</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)" [value]="startDate">
+    <input matInput [matDatepicker]="picker" (dateChange)="onStartDateChange($event)" [value]="startDate" [disabled]="'report/project/budget'===whichTabIsShown">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker startView="month" ></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field appearance="fill">
     <mat-label>{{'to' | translate}}</mat-label>
-    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)" [value]="endDate">
+    <input matInput [matDatepicker]="picker2" (dateChange)="onEndDateChange($event)" [value]="endDate" [disabled]="'report/project/budget'===whichTabIsShown">
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker #picker2 startView="month" ></mat-datepicker>
 </mat-form-field>
@@ -90,8 +90,8 @@ import * as moment from "moment";
 
 export class ReportsComponent {
   whichTabIsShown: ReportRoute = ReportRoute.BY_PROJECT_HOURS;
-  startDate = moment().format('YYYY-MM-DD');
-  endDate = moment().format('YYYY-MM-DD');
+  startDate = moment().startOf('month').format('YYYY-MM-DD');
+  endDate = moment().endOf('month').format('YYYY-MM-DD');
   projects = new FormControl([]);
   users = new FormControl([]);
   private itemsSubject = new ReplaySubject<Result>();
