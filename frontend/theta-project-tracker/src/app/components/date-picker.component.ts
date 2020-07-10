@@ -8,7 +8,7 @@ import { TimesheetService } from '../services/timsheet.service';
   selector: 'app-date-picker',
   template: `
   <div class="container">
-  <button  mat-raised-button (click)="onCopyLastWeek()">{{ 'copy-last-week' | translate }}</button>
+  <button  mat-raised-button (click)="onCopyLastWeek()" color="primary">{{ 'copy-last-week' | translate }}</button>
   <mat-icon (click)="toPreviousWeek()">navigate_before</mat-icon>
   <mat-form-field appearance="fill">
   <mat-label>{{ 'choose-date' | translate}}</mat-label>

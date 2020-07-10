@@ -21,7 +21,7 @@ export class TimesheetService {
         if (date) {
             params = params.append('date', date)
         }
-        return this.http.post<RecordCreate>(this.apiUrl + 'timeRecord', record, { params: params, responseType: 'text' });
+        return this.http.post(this.apiUrl + 'timeRecord', record, { params: params, responseType: 'text' });
     }
     updateTimeRecords(records: UpdateRecords, date?: string) {
         let params = new HttpParams();

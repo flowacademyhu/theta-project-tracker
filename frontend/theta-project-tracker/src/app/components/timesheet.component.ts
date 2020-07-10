@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   template: `
   <app-date-picker format='yyyy-MM-dd' (dateEmitter)="dateChange($event)" (onCopy)="createLastWeek($event)"></app-date-picker>
   <div class="warning" *ngIf="warn"><p [ngStyle]="{'color': 'red'}">{{ 'no-duplicates' | translate }}</p></div>
+  <div class="success" *ngIf="isSaveSuccesful"><p [ngStyle]="{'color': 'green'}">{{ 'save-succes' | translate }}</p></div>
   <div class="weekdays">
   <mat-grid-list cols="7" rowHeight="30px">
     <div class="save"> <button (click)="onSaveRecors()" mat-raised-button
@@ -56,14 +57,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   }
   .weekdays {
     margin-top: 70px;
-    margin-left: 560px;
-    width: 56%
+    margin-left: 610px;
+    width: 51%
   }
   
   .footer {
     margin-top: 5px;
-    width: 56%;
-    margin-left: 545px;
+    width: 51%;
+    margin-left: 591px;
     }
   mat-divider {
     width: 80%;
@@ -73,6 +74,10 @@ import { HttpErrorResponse } from '@angular/common/http';
     width: 9%;
     margin-right: auto;
     margin-left: auto;
+  }
+  .success {
+    width: 9%;
+    margin-left: 930px;
   }
   `],
 })
@@ -90,6 +95,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
   areRecordsValid: boolean;
   currentDisplayedDate: string;
   warn: boolean;
+  isSaveSuccesful: boolean;
   constructor(private authService: AuthService, private projectUserService: ProjectUsersService,
     private resolver: ComponentFactoryResolver, private timesheetService:
       TimesheetService, private datePickerService: DatePickerService) { }
@@ -139,7 +145,12 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     response = {
       modified: oneDArray
     }
-    this.timesheetService.updateTimeRecords(response, this.currentDisplayedDate).subscribe();
+    this.timesheetService.updateTimeRecords(response, this.currentDisplayedDate).subscribe(() => {
+      this.isSaveSuccesful = true;
+      setTimeout(() => {
+        this.isSaveSuccesful = false;
+      }, 3000);
+    });
   }
   getTotals(array) {
     const totalsNormal = [];

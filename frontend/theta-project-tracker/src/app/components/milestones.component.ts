@@ -87,7 +87,7 @@ export class MilestonesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onAddNewMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
-      width: '35%',
+      width: '15%',
       height: '45%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(() => {
@@ -98,7 +98,7 @@ export class MilestonesComponent implements OnInit, OnDestroy, AfterViewInit {
     const nameToPass = this.dataSource.data.find(u => u.id === milestone.id).name;
     const dialogRef = this.dialog.open(DeleteModalComponent, {
       data: { name: nameToPass },
-      width: '25%',
+      width: '20%',
       height: '15%'
     });
     this.subscriptions$.push(dialogRef.afterClosed().subscribe(result => {
@@ -111,7 +111,7 @@ export class MilestonesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onOpenEditModal(milestone) {
     const dialogRef = this.dialog.open(NewMilestoneModalComponent, {
-      width: '35%',
+      width: '15%',
       height: '45%',
       data: { milestoneToEdit: milestone }
     });

@@ -58,7 +58,7 @@
   "export-to-excel": "Export to Excel",
   "add-action-label": "+ Add New Action Label",
   "save-record": "Save Records",
-  "no-duplicates": "Cannot create duplicates!",
+  "no-duplicates": "Cannot create duplicates",
   "copy-last-week": "Copy Last Week",
   "choose-date": "Choose a date",
   "from": "From:",
@@ -66,6 +66,7 @@
   "users": "Users",
   "actionLabel": "Action Label",
   "new-user": "Add New User",
-  "add": "Add"
+  "add": "Add",
+  "save-succes": "Saved"
 }
 

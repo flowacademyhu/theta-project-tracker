@@ -12,12 +12,16 @@ import { AuthService } from '../services/auth.service';
   selector: 'app-record-one-week',
   template: `
  <div class="wrapper">
-  <mat-grid-list cols="30" rowHeight="100px">
+  <mat-grid-list cols="33" rowHeight="100px">
     <mat-grid-tile class="project" [colspan]="3" [rowspan]="1"><strong>{{project}}</strong>
     </mat-grid-tile>
-    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1">
-      <p>{{ milestone }}&emsp;{{ actionLabel }}</p>
-      <p></p>
+    <mat-grid-tile class="tile" [colspan]="2" [rowspan]="1">
+      <p>{{ milestone }}</p>
+     
+    </mat-grid-tile>
+    <mat-grid-tile class="tile" [colspan]="3" [rowspan]="1" #extra>
+      <p>{{actionLabel}}</p>
+     
     </mat-grid-tile>
     <mat-grid-tile class="tile" [colspan]="1" [rowspan]="1">
       <mat-icon  matTooltip="{{ desc }}">sms</mat-icon>
@@ -54,6 +58,10 @@ import { AuthService } from '../services/auth.service';
     width: 80%;
     overflow: auto;
   }
+
+  #extra {
+    text-align: left;
+  }
   `]
 })
 export class RecordOneWeekComponent implements OnInit {
@@ -87,13 +95,13 @@ export class RecordOneWeekComponent implements OnInit {
       sun: new FormControl(0, Validators.max(8)),
     }),
     overTime: new FormGroup({
-      mon: new FormControl(0, Validators.max(4)),
-      tue: new FormControl(0, Validators.max(4)),
-      wed: new FormControl(0, Validators.max(4)),
-      thu: new FormControl(0, Validators.max(4)),
-      fri: new FormControl(0, Validators.max(4)),
-      sat: new FormControl(0, Validators.max(4)),
-      sun: new FormControl(0, Validators.max(4)),
+      mon: new FormControl(0),
+      tue: new FormControl(0),
+      wed: new FormControl(0),
+      thu: new FormControl(0),
+      fri: new FormControl(0),
+      sat: new FormControl(0),
+      sun: new FormControl(0),
     })
   })
   constructor(private timesheetService: TimesheetService, private milestoneService: MilestoneService,

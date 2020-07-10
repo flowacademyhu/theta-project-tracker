@@ -1,21 +1,40 @@
 exports.seed = (knex) => {
     return knex('projects').insert([
         {
-            name: 'Project One',
+            name: 'Adventure',
             clientId: 1,
-            description: 'its filled',
-            budget: 1500
+            description: 'Classic game',
+            budget: 800
         },
         {
-            name: 'Project Two',
-            clientId: 2,
-            description: 'its not',
-            budget: 2000
+            name: 'Bomberman',
+            clientId: 1,
+            description: 'Try it out',
+            budget: 800
         },
         {
-            name: 'Project Three',
+            name: 'Pengo',
+            clientId: 1,
+            description: 'Penguins',
+            budget: 800
+        },
+        {
+            name: 'Space Invaders',
+            clientId: 1,
+            description: 'Arcade game',
+            budget: 800
+        },
+        {
+            name: 'Project Tracker',
             clientId: 3,
-            description: 'description',
-            budget: 2500
-        }])
+            description: 'Final project',
+            budget: 5000
+        },
+        {
+            name: 'Test Aggregator',
+            clientId: 2,
+            description: 'Final project',
+            budget: 5000
+        }
+        ])
 }

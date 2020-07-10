@@ -1,20 +1,28 @@
 exports.seed = (knex) => {
     return knex('actionLabels').insert([
         {
-            projectId: 1,
-            name: 'development',
+            projectId: 5,
+            name: 'new feature',
         },
         {
-            projectId: 1,
-            name: 'training',
+            projectId: 5,
+            name: 'debug',
         },
         {
-            projectId: 2,
+            projectId: 5,
             name: 'stackoverflow',
         },
         {
-            projectId: 2,
-            name: 'debug',
+            projectId: 5,
+            name: 'test',
+        },
+        {
+            projectId: 5,
+            name: 'styles',
+        },
+        {
+            projectId: 5,
+            name: 'documentation',
         }
     ])
 }
